@@ -1,0 +1,45 @@
+/* Enter your custom styles here */
+
+/*@import url('https://fonts.googleapis.com/css?family=Satisfy');*/
+/*.clCustomFont {*/
+/*    font-family: 'Satisfy', cursive;*/
+/*}*/
+
+.sapContrastPlus.clCustomHeaderBg {
+    background-color: #fff!important;
+    color: #2f3c48;
+    text-shadow: none;
+}
+
+.sapContrastPlus.clCustomHeaderBg .sapMBtnInner {
+    color: #2f3c48;
+    text-shadow: none;
+}
+
+.sapContrastPlus.clCustomHeaderBg .sapMText {
+    color: #2f3c48;
+}
+
+.sapContrastPlus.sapMIBar-CTX.clCustomHeaderBg .sapMBtn:hover>.sapMBtnHoverable:not(.sapMBtnActive) {
+    background-color: transparent;
+    color: #346187;
+}
+.sapUxAPObjectPageSectionHeader {
+    box-sizing: border-box;
+    height: 1rem;
+    line-height: 1rem;
+    padding: 0 3rem 0 3rem;
+}
+
+.sapUiFormM .sapUiFormContainerTitle>.sapUiFormTitle {
+    height: 0rem;
+    line-height: 0rem;
+}
+.sapUiMediumMarginBottom {
+    margin-bottom: 0rem!important;
+}
+.sapUxAPObjectPageSectionTitle {
+    color: #333333;
+    font-size: 1.375rem;
+     border-bottom: 0rem solid #999999; 
+}

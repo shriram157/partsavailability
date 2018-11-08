@@ -1,0 +1,41 @@
+{
+	"welcomeFile": "/partsAvailability/index.html",
+	"authenticationMethod": "route",
+	"logout": {
+		"logoutEndpoint": "/do/logout"
+	},
+	"routes": [{
+		"source": "^/partsAvailability/(.*)$",
+		"target": "$1",
+		"localDir": "webapp",
+		"authenticationType": "xsuaa",
+		"scope": {
+			"GET": [
+				"$XSAPPNAME.InternalUserDisplay",
+				"$XSAPPNAME.DealerDisplay"
+			],
+			"default": "$XSAPPNAME.DealerDisplay"
+
+		}
+	}, {
+		"source": "/node(.*)",
+		"destination": "core-node-backend",
+		"csrfProtection": true,
+		"authenticationType": "xsuaa",
+		"scope": {
+			"GET": [
+				"$XSAPPNAME.InternalUserDisplay",
+				"$XSAPPNAME.DealerDisplay"
+			],
+			"default": "$XSAPPNAME.DealerDisplay"
+		}
+
+	}, 
+		
+		{
+		"source": "/userDetails/(.*)",
+		"destination": "core-node-backend"
+	}	
+
+	]
+}
