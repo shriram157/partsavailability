@@ -71,6 +71,10 @@ module.exports = function () {
 				var json = JSON.parse(body);
 				res.json(json);
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+				
+>>>>>>> refs/heads/master
 =======
 				
 >>>>>>> refs/heads/master
