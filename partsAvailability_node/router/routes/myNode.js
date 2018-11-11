@@ -70,6 +70,10 @@ module.exports = function () {
 				// console.log(csrfToken);
 				var json = JSON.parse(body);
 				res.json(json);
+<<<<<<< HEAD
+=======
+				
+>>>>>>> refs/heads/master
 			} else {
 
 				var result = JSON.stringify(body);
