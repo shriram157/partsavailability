@@ -1,0 +1,53 @@
+{
+    "xsappname": "partsAvailability_local",
+    "tenant-mode": "dedicated",
+    "description": "Security profile of called application",
+    "scopes": [{
+        "name": "$XSAPPNAME.DealerDisplay",
+        "description": "Dealer display"
+    }, {
+        "name": "$XSAPPNAME.InternalUserDisplay",
+        "description": "Internal User display"
+    }],
+    "attributes": [{
+        "name": "DealerCode",
+        "description": "Dealer Code",
+        "valueType": "s"
+    }, {
+        "name": "Language",
+        "description": "Language",
+        "valueType": "s"
+    }, {
+        "name": "UserType",
+        "description": "UserType, identifies dealer or not",
+        "valueType": "s"
+    }
+    
+    ],
+    "role-templates": [{
+        "name": "Internal_TCI_User",
+        "description": "View any product for any division lexus or toyota",
+        "scope-references": [
+            "$XSAPPNAME.InternalUserDisplay"
+        ],
+        "attribute-references": [
+            "DealerCode",
+            "Language",
+            "UserType"
+    
+        ]
+    }, {
+        "name": "Dealer_User",
+        "description": "This is a dealeruser ",
+        "scope-references": [
+            "$XSAPPNAME.DealerDisplay"
+        ],
+        "attribute-references": [
+            "DealerCode",
+            "Language",
+            "UserType"
+        
+        
+        ]
+    }]
+}
