@@ -17,8 +17,7 @@ sap.ui.define([
 		onInit: function () {
 
 			// instantiate the display model
-			// I made this comment in codeREadyForDevDeploy and wanted to merge to codeReadyforQASDeploy without affecting the 
-			// mta.yaml file. This is staged and Committed in the codeREadyForDevDeploy Branch. 
+
 
 			this.getView().setModel(new sap.ui.model.json.JSONModel(), "materialDisplayModel");
 
