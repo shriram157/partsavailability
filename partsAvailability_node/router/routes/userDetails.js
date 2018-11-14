@@ -14,7 +14,7 @@ module.exports = function () {
 	var options = {};
 	options = Object.assign(options, xsenv.getServices({
 		api: {
-			name: "S4HANA_CUPS"
+			name: "PARTS_AVAILABILITY_APIM_CUPS"
 		}
 	}));
 
@@ -83,11 +83,13 @@ module.exports = function () {
 			console.log('send to ui data', sendToUi);
 
 			var obj_data = JSON.parse(parsedData);
-
 			console.log('after json Parse', obj_data);
-
+            var userType = obj_data.UserType[0];
+          
+            if (userType == 'Dealer' ) {
 			var legacyDealer = obj_data.DealerCode[0];
-			var userType = obj_data.UserType[0];
+            }
+			// var userType = obj_data.UserType[0];
 
 			console.log('Dealer Number logged in and accessed parts Availability App', legacyDealer);
 

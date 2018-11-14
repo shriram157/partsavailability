@@ -1,6 +1,9 @@
-<mvc:View xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:uxap="sap.uxap" xmlns:l="sap.ui.layout" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:tci="partsAvailability.utilities.headerLogo" xmlns:layout="sap.ui.layout" xmlns:html="http://www.w3.org/1999/xhtml" controllerName="partsAvailability.controller.searchMaterialandDisplay">
+<mvc:View xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:uxap="sap.uxap" xmlns:l="sap.ui.layout" xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m" xmlns:tci="partsAvailability.utilities.headerLogo" xmlns:layout="sap.ui.layout" xmlns:html="http://www.w3.org/1999/xhtml"
+	controllerName="partsAvailability.controller.searchMaterialandDisplay">
 	<App id="idAppControl">
-		<pages><Page xmlns="sap.m">
+		<pages>
+			<Page xmlns="sap.m">
 				<customHeader>
 					<Bar class="sapUiSmallPaddingBeginEnd clCustomHeaderBg">
 						<contentLeft>
@@ -20,11 +23,13 @@
 								<uxap:ObjectPageSubSection title="{selectedDealerModel>/Dealer_Name}" border-bottom="none">
 									<!--<uxap:blocks/>-->
 									<uxap:blocks>
-										<MessageStrip id="messageStripError" text="" showIcon="true" showCloseButton="true" class="sapUiMediumMarginBottom" visible="{detailView>/materialFormError}"/>
+										<MessageStrip id="messageStripError" text="" showIcon="true" showCloseButton="true" class="sapUiMediumMarginBottom"
+											visible="{detailView>/materialFormError}"/>
 									</uxap:blocks>
-							
 									<uxap:blocks>
-										<f:SimpleForm columnsL="1" columnsM="1" editable="true" emptySpanL="0" emptySpanM="0" id="idSimpleFormHeader" labelSpanL="3" labelSpanM="3" layout="ResponsiveGridLayout" maxContainerCols="2" minWidth="1024">
+										<f:SimpleForm columnsL="1" columnsM="1" editable="true" emptySpanL="0" emptySpanM="0" id="idSimpleFormHeader" labelSpanL="3" labelSpanM="3"
+											layout="ResponsiveGridLayout" maxContainerCols="2" minWidth="1024" >
+											
 											<f:content>
 												<!--<core:Title width="10rem"/>-->
 												<Label design="Standard" id="idDealerInputLabel" text="{i18n>DEALER_SEARCH_FIELD_LABEL}" textAlign="Left">
@@ -32,8 +37,13 @@
 														<layout:GridData span="L2 M12 S12"/>
 													</layoutData>
 												</Label>
-												<ComboBox showSecondaryValues="true" required="true" visible="{detailView>/visibleByDefault}" wrap="false" fieldGroupIds="requiredField" editable="{detailView>/editAllowed}" width="40rem" wrapping="false" placeholder="{i18n>DEALER_PLACEHOLDER_TEXT}" value="{BpDealerModel>/BusinessPartnerKey}" filterSecondaryValues="true" id="dealerID" enabled="{detailView>/onlyShownoEditForChange}" items="{path: 'BpDealerModel>/', sorter: { path: 'BusinessPartner' }, length:300 }" selectedKey="{BusinessPartnerKey}" selectionChange="onBusinessPartnerSelected" showValueStateMessage="false" textAlign="Begin">
-													<core:ListItem key="{BpDealerModel>BusinessPartnerKey}" text="{BpDealerModel>BusinessPartner}" additionalText="{BpDealerModel>BusinessPartnerName}"/>
+												<ComboBox showSecondaryValues="true" required="true" visible="{detailView>/visibleByDefault}" wrap="false" fieldGroupIds="requiredField"
+													editable="{detailView>/editAllowed}" width="40rem" wrapping="false" placeholder="{i18n>DEALER_PLACEHOLDER_TEXT}"
+													value="{BpDealerModel>/BusinessPartnerKey}" filterSecondaryValues="true" id="dealerID" enabled="{detailView>/onlyShownoEditForChange}"
+													items="{path: 'BpDealerModel>/', sorter: { path: 'BusinessPartner' }, length:300 }" selectedKey="{BusinessPartnerKey}"
+													selectionChange="onBusinessPartnerSelected" showValueStateMessage="false" textAlign="Begin">
+													<core:ListItem key="{BpDealerModel>BusinessPartnerKey}" text="{BpDealerModel>BusinessPartner}"
+														additionalText="{BpDealerModel>BusinessPartnerName}"/>
 													<layoutData>
 														<layout:GridData span="L2 M12 S12"/>
 													</layoutData>
@@ -44,9 +54,14 @@
 														<layout:GridData span="L2 M12 S12"/>
 													</layoutData>
 												</Label>
-												<Input id="material_id" required="true" placeholder="{i18n>PART_NUMBER_PLACEHOLDER_TEXT}" name="materialNumberChange" value="{ path: 'materialDisplayModel>/Material', type: 'sap.ui.model.odata.type.String' , constraints : { minLength: 1,maxLength: 20, nullable:false} }" width="auto" type="Text" showSuggestion="true" liveChange="liveChangeDataEntered" suggestionItemSelected="matnrFromSuggestionSelectedChange" valueLiveUpdate="false" change="CheckEnteredMatnrChange" valueHelpRequest="handleValueHelpForMaterial" suggest="handleSuggest" startSuggestion="3" suggestionItems="{ path: 'materialSuggestionModel>/Matsuggestions' }" fieldWidth="auto" maxSuggestionWidth="300px">
+												<Input id="material_id" required="true" placeholder="{i18n>PART_NUMBER_PLACEHOLDER_TEXT}" name="materialNumberChange"
+													value="{ path: 'materialDisplayModel>/Material', type: 'sap.ui.model.odata.type.String' , constraints : { minLength: 1,maxLength: 20, nullable:false} }"
+													width="auto" type="Text" showSuggestion="true" liveChange="liveChangeDataEntered" suggestionItemSelected="matnrFromSuggestionSelectedChange"
+													valueLiveUpdate="false" change="CheckEnteredMatnrChange" valueHelpRequest="handleValueHelpForMaterial" suggest="handleSuggest"
+													startSuggestion="3" suggestionItems="{ path: 'materialSuggestionModel>/Matsuggestions' }" fieldWidth="auto" maxSuggestionWidth="300px">
 													<suggestionItems>
-														<core:ListItem key="{materialSuggestionModel>Material}" text="{materialSuggestionModel>Material}" additionalText="{materialSuggestionModel>MaterialName}" width="auto"/>
+														<core:ListItem key="{materialSuggestionModel>Material}" text="{materialSuggestionModel>Material}"
+															additionalText="{materialSuggestionModel>MaterialName}" width="auto"/>
 													</suggestionItems>
 													<layoutData>
 														<layout:GridData span="L2 M10 S12" linebreak="false" linebreakL="false" linebreakM="false" linebreakS="false" linebreakXL="false"/>
@@ -57,7 +72,8 @@
 														<layout:GridData span="L2 M12 S12"/>
 													</layoutData>
 												</Label>
-												<Button icon="sap-icon://search" id="idViewSearchButtonl" press="handlePartSearch" width="auto" enabled="{detailView>/enableMaterialEntered}" text="{i18n>SEARCH}" type="Emphasized">
+												<Button icon="sap-icon://search" id="idViewSearchButtonl" press="handlePartSearch" width="auto"
+													enabled="{detailView>/enableMaterialEntered}" text="{i18n>SEARCH}" type="Emphasized">
 													<layoutData>
 														<layout:GridData span="L2 M12 S12"/>
 													</layoutData>
@@ -66,7 +82,8 @@
 										</f:SimpleForm>
 									</uxap:blocks>
 									<uxap:blocks>
-										<f:SimpleForm id="materialData_id" class="zFormBorder" editable="false" layout="ResponsiveGridLayout" adjustLabelSpan="false" visible="{detailView>/afterMaterialFound}" singleContainerFullSize="true" backgroundDesign="Solid">
+										<f:SimpleForm id="materialData_id"  class="myFormBorder" editable="false" layout="ResponsiveGridLayout" adjustLabelSpan="false"
+											visible="{detailView>/afterMaterialFound}" singleContainerFullSize="true" backgroundDesign="Solid" >
 											<core:Title/>
 											<Label text="{i18n>PART_DESCRIPTION}"/>
 											<Text text="{materialDisplayModel>/MaterialText}"/>
@@ -97,7 +114,7 @@
 										</f:SimpleForm>
 									</uxap:blocks>
 									<uxap:blocks>
-										<Table id="idInventoryT" inset="false" items="{inventoryModel>/items}" mode="None" visible="{detailView>/afterMaterialFound}">
+										<Table id="idInventoryT"  inset="false" items="{inventoryModel>/items}" mode="None" visible="{detailView>/afterMaterialFound}" alternateRowColors="true">
 											<headerToolbar/>
 											<columns>
 												<Column id="idLocation" hAlign="Centre" minScreenWidth="Phone">
@@ -137,12 +154,13 @@
 														<!--<Text text="{inventoryModel>Qtybackorder}"/>-->
 														<!--<Text text="{inventoryModel>stopSalesFlag}"/>-->
 														<!--<Text text="{inventoryModel>Z3plqtyavail}"/>-->
-														<Text text="{ path:'inventoryModel>Z3plqtyavail', formatter:'.formatter.quantity' }" visible="{detailView>/visibleZ3plqty}" id="id3PlValue" hAlign="Center"/>
+														<Text text="{ path:'inventoryModel>Z3plqtyavail', formatter:'.formatter.quantity' }" visible="{detailView>/visibleZ3plqty}" id="id3PlValue"
+															hAlign="Center"/>
 													</cells>
 												</ColumnListItem>
 											</items>
 										</Table>
-										<Table id="idForwardSupersession" inset="false" items="{superSessionModel>/items}" mode="None" visible="{detailView>/afterMaterialFound}">
+										<Table id="idForwardSupersession" class="myFormBorder" inset="false" items="{superSessionModel>/items}" mode="None" visible="{detailView>/afterMaterialFound}" alternateRowColors="true">
 											<headerToolbar>
 												<Toolbar>
 													<Label id="idToolbarLabel" text="{i18n>FORWARD_SUPER_SESSION}"/>
@@ -161,27 +179,32 @@
 														<Text id="idPartDescriptions" text="{i18n>PART_DESCRIPTION}"/>
 													</header>
 												</Column>
-												<Column demandPopin="true" hAlign="Centre" id="idDealerNet" minScreenWidth="Tablet" popinDisplay="Inline" visible="{superSessionModel>/CurrentStockVisible}">
+												<Column demandPopin="true" hAlign="Centre" id="idDealerNet" minScreenWidth="Tablet" popinDisplay="Inline"
+													visible="{superSessionModel>/CurrentStockVisible}">
 													<header>
 														<Text id="idDealerNetText" text="{i18n>DEALER_NET_TEXT}"/>
 													</header>
 												</Column>
-												<Column demandPopin="true" hAlign="Centre" id="idQtyRequired" minScreenWidth="Tablet" visible="{superSessionModel>/BlockedStockQuantityVisible}">
+												<Column demandPopin="true" hAlign="Centre" id="idQtyRequired" minScreenWidth="Tablet"
+													visible="{superSessionModel>/BlockedStockQuantityVisible}">
 													<header>
 														<Text id="idQtyRequiredText" text="{i18n>QTY_REQUIRED_TEXT}"/>
 													</header>
 												</Column>
-												<Column demandPopin="true" hAlign="Centre" id="quantityAvail" minScreenWidth="Tablet" popinDisplay="Inline" visible="{superSessionModel>/BlockedStockQuantityVisible}">
+												<Column demandPopin="true" hAlign="Centre" id="quantityAvail" minScreenWidth="Tablet" popinDisplay="Inline"
+													visible="{superSessionModel>/BlockedStockQuantityVisible}">
 													<header>
 														<Text id="idQuantityAvail" text="{i18n>QUAN_AVAIL_TEXT}"/>
 													</header>
 												</Column>
-												<Column demandPopin="true" hAlign="Centre" id="idPartforwardSuper" minScreenWidth="Tablet" visible="{superSessionModel>/QualityInspectionStockQuantityVisible}">
+												<Column demandPopin="true" hAlign="Centre" id="idPartforwardSuper" minScreenWidth="Tablet"
+													visible="{superSessionModel>/QualityInspectionStockQuantityVisible}">
 													<header>
 														<Text id="idPartForwardSuperSessionText" text="{i18n>PART_HAS_FORWARD_SUPERSESSION}"/>
 													</header>
 												</Column>
-												<Column demandPopin="true" hAlign="Centre" id="idLAstUpdatedDateC" minScreenWidth="Tablet" visible="{superSessionModel>/QualityInspectionStockQuantityVisible}">
+												<Column demandPopin="true" hAlign="Centre" id="idLAstUpdatedDateC" minScreenWidth="Tablet"
+													visible="{superSessionModel>/QualityInspectionStockQuantityVisible}">
 													<header>
 														<Text id="idLastUpdatedDate" text="{i18n>LAST_UPDATED_DATE}"/>
 													</header>
@@ -191,7 +214,8 @@
 												<ColumnListItem type="Active" press="onPressSuperSession" id="supersessionData">
 													<cells>
 														<!--<Text text="{superSessionModel>MatnrSuper}" width="100%"/>-->
-														<ObjectIdentifier title="{superSessionModel>MatnrSuper}" text="{Description}" titleActive="true" titlePress="handleMatnrSuperPress" hAlign="Center"/>
+														<ObjectIdentifier title="{superSessionModel>MatnrSuper}" text="{Description}" titleActive="true" titlePress="handleMatnrSuperPress"
+															hAlign="Center"/>
 														<Text text="{superSessionModel>PartDesc}" hAlign="Center"/>
 														<Text text="{superSessionModel>DealerNet}" hAlign="Center"/>
 														<!--<Text text="{superSessionModel>QtyReqd}"/>-->
@@ -199,7 +223,9 @@
 														<!--<Text text="{superSessionModel>QtyAvail}"/>-->
 														<Text text="{ path:'superSessionModel>QtyAvail', formatter:'.formatter.quantity' }" hAlign="Center"/>
 														<Text text="{superSessionModel>HasForwSuper}" hAlign="Center"/>
-														<Text text="{ path: 'superSessionModel>LastUpdDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd', strictParsing: true , UTC: true } }" hAlign="Center"/>
+														<Text
+															text="{ path: 'superSessionModel>LastUpdDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd', strictParsing: true , UTC: true } }"
+															hAlign="Center"/>
 													</cells>
 												</ColumnListItem>
 											</items>

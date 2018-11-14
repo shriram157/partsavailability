@@ -27,7 +27,7 @@ module.exports = function () {
 	var options = {};
 	options = Object.assign(options, xsenv.getServices({
 		api: {
-			name: "S4HANA_CUPS"
+			name: "PARTS_AVAILABILITY_APIM_CUPS"
 		}
 	}));
 
@@ -83,8 +83,8 @@ module.exports = function () {
 
 		var material = req.param('Material');
 		var langu = req.param('Language');
-		var sUrl = "/MD_PRODUCT_FS_SRV/I_MaterialText(Material='" + (material) + "',Language='" + (langu) + "')?$format=json&?sap-client=" +
-			client;
+		var sUrl = "/ZMD_PRODUCT_FS_SRV/I_MaterialText(Material='" + (material) + "',Language='" + (langu) + "')?$format=json&?sap-client=" +
+			client;   //// TODO: To revisit and zmd to md
 
 		var csrfToken;
 		request({
@@ -114,8 +114,8 @@ module.exports = function () {
 		var material = req.param('Material');
 		var division = req.param('Division');
 
-		var sUrl = "/MD_PRODUCT_FS_SRV/C_Product_Fs('" + (material) + "')?$format=json&?sap-client=" + client;
-		var csrfToken;
+		var sUrl = "/ZMD_PRODUCT_FS_SRV/C_Product_Fs('" + (material) + "')?$format=json&?sap-client=" + client;
+		var csrfToken;     //// TODO: To revisit and zmd to md
 
 		request({
 			url: url + sUrl,
@@ -275,8 +275,8 @@ module.exports = function () {
 
 		var sTerm = req.param('Material');
  
-		var sUrl = "/MD_PRODUCT_FS_SRV/I_MaterialText?$filter=startswith(Material," + "'" + (sTerm) + "')&$format=json&?sap-client=" + client;
-		var csrfToken;
+		var sUrl = "/ZMD_PRODUCT_FS_SRV/I_MaterialText?$filter=startswith(Material," + "'" + (sTerm) + "')&$format=json&?sap-client=" + client;
+		var csrfToken;   // // TODO: zmd to md
   
 
 		request({

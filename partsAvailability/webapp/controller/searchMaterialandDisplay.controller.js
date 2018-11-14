@@ -125,35 +125,24 @@ sap.ui.define([
 			var that = this;
 			// this.sDivision;
 			// this.nodeJsUrl = "https://tcipn1sap01.tci.internal.toyota.ca:51130";
-			this.nodeJsUrl = "/node";
+			
+			
+			     var sLocation = window.location.host;
+      var sLocation_conf = sLocation.search("webide");
+    
+      if (sLocation_conf == 0) {
+        this.sPrefix = "/partsAvailability_node";
+      } else {
+        this.sPrefix = "";
+        
+     }
+      
+      this.nodeJsUrl = this.sPrefix + "/node";
+			
+			
 
-			// $.ajax({
-			// 	url: this.nodeJsUrl + "/API_BUSINESS_PARTNER",
-			// 	type: "GET",
-			// 	dataType: "json",
-
-			// 	success: function (oData) {
-			// 		var BpDealer = [];
-			// 		$.each(oData.d.results, function (i, item) {
-			// 			var BpLength = item.BusinessPartner.length;
-
-			// 			BpDealer.push({
-			// 				"BusinessPartnerKey": item.BusinessPartner,
-			// 				"BusinessPartner": item.BusinessPartner.substring(5, BpLength),
-			// 				"BusinessPartnerName": item.OrganizationBPName1 //item.BusinessPartnerFullName
-			// 			});
-
-			// 		});
-			// 		that.getView().setModel(new sap.ui.model.json.JSONModel(BpDealer), "BpDealerModel");
-			// 		that._getTheUserAttributes();
-
-			// 	},
-			// 	error: function (response) {
-
-			// 	}
-			// });
 			$.ajax({
-				url: "/userDetails/attributes",
+				url:  this.sPrefix + "/userDetails/attributes",
 				type: "GET",
 				dataType: "json",
 
@@ -197,7 +186,7 @@ sap.ui.define([
 
 				}.bind(this),
 				error: function (response) {
-
+	          	sap.ui.core.BusyIndicator.hide();
 				}
 			});
 		},
@@ -467,7 +456,7 @@ sap.ui.define([
 					that._materialDisplayModel.setProperty("/MaterialText", oData.d.MaterialName);
 					// material found put the screen for display. 
 					that._oViewModel.setProperty("/afterMaterialFound", true);
-					sap.ui.core.BusyIndicator.hide();
+			
 					that.getView().byId("messageStripError").setProperty("visible", false);
 					//  lets make one more call to get the Division. 
 					that._getTheDivision(oData.d.Material);
@@ -558,8 +547,7 @@ sap.ui.define([
 
 			var sUrlforSupplyingPlant = this.nodeJsUrl + "/MD_PRODUCT_FS_SRV/A_Customer?customer=" + (selectedCustomer) +
 				"&division=" + (this.sDivision) + "";
-
-			sap.ui.core.BusyIndicator.show();
+ 
 			var that = this;
 			$.ajax({
 				url: sUrlforSupplyingPlant,
@@ -580,7 +568,7 @@ sap.ui.define([
 					// } else {
 					that.getView().byId("messageStripError").setProperty("visible", false);
 					// }
-					sap.ui.core.BusyIndicator.hide();
+ 
 					// sheshu request on 25/09 @5.47Pm
 					if (oData.d.results.length !== 0) {
 						that._materialDisplayModel.setProperty("/SupplyingPlant", oData.d.results["0"].SupplyingPlant);
@@ -634,14 +622,14 @@ sap.ui.define([
 
 			//  this call is through the odata gateway.  - Begin
 			var that = this;
-			sap.ui.core.BusyIndicator.show();
+
 			$.ajax({
 				url: sUrlforPricingDetails,
 				type: "GET",
 				dataType: "json",
 
 				success: function (oData) {
-					sap.ui.core.BusyIndicator.hide();
+					 
 					that._materialDisplayModel.setProperty("/Dealernet", oData.d.Item.Dealernet);
 					that._materialDisplayModel.setProperty("/Msrp", oData.d.Item.Msrp);
 					that._materialDisplayModel.setProperty("/Roundingprofile", oData.d.Item.Roundingprofile);
@@ -710,14 +698,14 @@ sap.ui.define([
 					selectedCustomer) + "&Matnr=" + (selectedMaterial) + "&LanguageKey=" + (sCurrentLocale) + "&Plant=" + (supplyingPlant) +
 				"&Division=" + (this.sDivision);
 
-			sap.ui.core.BusyIndicator.show();
+		
 			var that = this;
 			$.ajax({
 				url: sUrlforBackSuperSet, //url + sUrlforForwardSuppression,
 				type: "GET",
 				dataType: "json",
 				success: function (oData) {
-					sap.ui.core.BusyIndicator.hide();
+				
 					if (oData.d.BackPartsSuper.MatnrSuper) {
 
 						this._materialDisplayModel.setProperty("/MatnrSuper", oData.d.BackPartsSuper.MatnrSuper);
@@ -832,13 +820,13 @@ sap.ui.define([
 				"stopSalesFlag": sStopSaleFlag,
 				"Z3plqtyavail": sZ3plqtyavail
 			});
-			sap.ui.core.BusyIndicator.show();
+	 
 			$.ajax({
 				url: sUrlforQuantitySet, //url + sUrlforQuantity,
 				type: "GET",
 				dataType: "json",
 				success: function (oData) {
-					sap.ui.core.BusyIndicator.hide();
+				 	sap.ui.core.BusyIndicator.hide();   //  this is where I end the busy indicator
 					$.each(oData.d.results, function (i, item) {
 						if ((item.Location == "A") || (item.Location == "O")) {
 							item.Location = "California";

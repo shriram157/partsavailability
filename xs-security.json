@@ -1,5 +1,5 @@
 {
-    "xsappname": "partsAvailability_local",
+    "xsappname": "partsAvailability",
     "tenant-mode": "dedicated",
     "description": "Security profile of called application",
     "scopes": [{
@@ -31,10 +31,9 @@
             "$XSAPPNAME.InternalUserDisplay"
         ],
         "attribute-references": [
-            "DealerCode",
+        	"DealerCode",
             "Language",
             "UserType"
-    
         ]
     }, {
         "name": "Dealer_User",
@@ -46,8 +45,7 @@
             "DealerCode",
             "Language",
             "UserType"
-        
-        
+ 
         ]
     }]
 }

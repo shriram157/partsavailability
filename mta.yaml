@@ -7,9 +7,9 @@ modules:
    type: nodejs
    path: partsAvailability_node
    parameters:
-      host: partsAvailability_node
+      host: QAS-partsAvailability_node
       register-service-url: true
-      service-name: partsAvailability_node
+      service-name: QAS-partsAvailability_node
       service-url: '${default-url}'
       disk-quota: 256MB
       memory: 256MB
@@ -18,16 +18,16 @@ modules:
       properties:
          url: '${default-url}'
    requires:
-      - name: S4HANA_CUPS
+      - name: PARTS_AVAILABILITY_APIM_CUPS
       - name: uaa_partsAvailability
       
  - name: partsAvailability
    type: html5
    path: partsAvailability
    parameters:
-      host: partsAvailability
+      host: QAS-partsAvailability
       register-service-url: true
-      service-name: partsAvailability
+      service-name: QAS-partsAvailability
       service-url: '${default-url}'
       disk-quota: 256M
       memory: 256M
@@ -35,13 +35,14 @@ modules:
       builder: grunt
    requires:
     - name: uaa_partsAvailability
+    - name: dest_qas_partsAvailability
     - name: partsAvailability_node_api
       group: destinations
       properties:
           name: core-node-backend
           url: '~{url}'
           forwardAuthToken: true 
-    - name: dest_partsAvailability
+   
    provides:
     - name: partsAvailability
  
@@ -52,16 +53,16 @@ resources:
       service-plan: application
       service: xsuaa
    type: org.cloudfoundry.managed-service
+ 
+ - name: PARTS_AVAILABILITY_APIM_CUPS
+   type: org.cloudfoundry.existing-service
+   parameters:
+     service-name: PARTS_AVAILABILITY_APIM_CUPS
+   properties:
+     odata-call-service-name: '${service-name}'
 
- - name: dest_partsAvailability
+ - name: dest_qas_partsAvailability
    parameters:
       service-plan: lite
       service: destination
-   type: org.cloudfoundry.managed-service
-
- - name: S4HANA_CUPS
-   type: org.cloudfoundry.existing-service
-   parameters:
-     service-name: S4HANA_CUPS
-   properties:
-     odata-call-service-name: '${service-name}'
+   type: org.cloudfoundry.managed-service   
