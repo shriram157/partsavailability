@@ -7,9 +7,9 @@ modules:
    type: nodejs
    path: partsAvailability_node
    parameters:
-      host: QAS-partsAvailability_node
+      host: partsAvailability_node
       register-service-url: true
-      service-name: QAS-partsAvailability_node
+      service-name: partsAvailability_node
       service-url: '${default-url}'
       disk-quota: 256MB
       memory: 256MB
@@ -25,9 +25,9 @@ modules:
    type: html5
    path: partsAvailability
    parameters:
-      host: QAS-partsAvailability
+      host: partsAvailability
       register-service-url: true
-      service-name: QAS-partsAvailability
+      service-name: partsAvailability
       service-url: '${default-url}'
       disk-quota: 256M
       memory: 256M
@@ -35,7 +35,7 @@ modules:
       builder: grunt
    requires:
     - name: uaa_partsAvailability
-    - name: dest_qas_partsAvailability
+    - name: dest_partsAvailability
     - name: partsAvailability_node_api
       group: destinations
       properties:
@@ -61,7 +61,7 @@ resources:
    properties:
      odata-call-service-name: '${service-name}'
 
- - name: dest_qas_partsAvailability
+ - name: dest_partsAvailability
    parameters:
       service-plan: lite
       service: destination
