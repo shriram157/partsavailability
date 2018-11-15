@@ -1,5 +1,5 @@
 ID: partsAvailability
-_schema-version: '2.1'
+_schema-version: '3.1'
 description: 'partsAvailability Application MTA '
 version: 0.0.1
 modules:
@@ -15,6 +15,7 @@ modules:
       memory: 256MB
    provides:
     - name: partsAvailability_node_api
+      public: false
       properties:
          url: '${default-url}'
    requires:
