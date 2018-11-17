@@ -19,7 +19,7 @@
 		}
 	}, {
 		"source": "/node(.*)",
-		"destination": "core-node-backend",
+		"destination": "parts-node-backend",
 		"csrfProtection": true,
 		"authenticationType": "xsuaa",
 		"scope": {
@@ -34,7 +34,7 @@
 		
 		{
 		"source": "/userDetails/(.*)",
-		"destination": "core-node-backend"
+		"destination": "parts-node-backend"
 	}	
 
 	]

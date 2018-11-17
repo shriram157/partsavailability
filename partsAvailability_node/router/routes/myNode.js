@@ -44,6 +44,16 @@ module.exports = function () {
 		"Content-Type": "application/json",
 		"APIKey": APIKey,
 		"x-csrf-token": "Fetch"
+		};
+		
+	var reqHeader_zProduct = {
+		"Authorization": auth64,
+		"Content-Type": "application/json",
+		"APIKey": APIKey,
+		"x-csrf-token": "Fetch",
+		"Cache-Control" : "no-cache, no-store, must-revalidate",
+		"Pragma" : "no-cache",
+        "Expires" :  0
 	};
 
 	app.use(function (req, res, next) {
@@ -83,7 +93,7 @@ module.exports = function () {
 
 		var material = req.param('Material');
 		var langu = req.param('Language');
-		var sUrl = "/ZMD_PRODUCT_FS_SRV/I_MaterialText(Material='" + (material) + "',Language='" + (langu) + "')?$format=json&?sap-client=" +
+		var sUrl = "/MD_PRODUCT_FS_SRV/I_MaterialText(Material='" + (material) + "',Language='" + (langu) + "')?$format=json&?sap-client=" +
 			client;   //// TODO: To revisit and zmd to md
 
 		var csrfToken;
@@ -114,7 +124,7 @@ module.exports = function () {
 		var material = req.param('Material');
 		var division = req.param('Division');
 
-		var sUrl = "/ZMD_PRODUCT_FS_SRV/C_Product_Fs('" + (material) + "')?$format=json&?sap-client=" + client;
+		var sUrl = "/MD_PRODUCT_FS_SRV/C_Product_Fs('" + (material) + "')?$format=json&?sap-client=" + client;
 		var csrfToken;     //// TODO: To revisit and zmd to md
 
 		request({
@@ -192,7 +202,7 @@ module.exports = function () {
 
 		request({
 			url: url + sUrlforPricingDetails,  
-			headers: reqHeader
+			headers: reqHeader_zProduct
 
 		}, function (error, response, body) {
 			if (!error && response.statusCode == 200) {
@@ -226,7 +236,7 @@ module.exports = function () {
 
 		request({
 			url: url + sUrlForBackSuperSet, //url+sUrl+sUrlforPriceSet,
-		    headers: reqHeader
+		    headers: reqHeader_zProduct
 		}, function(error, response, body) {
 			if (!error && response.statusCode == 200) {
 				csrfToken = response.headers['x-csrf-token'];
@@ -253,7 +263,7 @@ module.exports = function () {
 
 		request({
 			url: url + sUrlforQuantity, //url+sUrl+sUrlforPriceSet,
-			headers: reqHeader
+			headers: reqHeader_zProduct
 
 		}, function(error, response, body) {
 			if (!error && response.statusCode == 200) {
@@ -275,7 +285,7 @@ module.exports = function () {
 
 		var sTerm = req.param('Material');
  
-		var sUrl = "/ZMD_PRODUCT_FS_SRV/I_MaterialText?$filter=startswith(Material," + "'" + (sTerm) + "')&$format=json&?sap-client=" + client;
+		var sUrl = "/MD_PRODUCT_FS_SRV/I_MaterialText?$filter=startswith(Material," + "'" + (sTerm) + "')&$format=json&?sap-client=" + client;
 		var csrfToken;   // // TODO: zmd to md
   
 

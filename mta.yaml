@@ -40,12 +40,13 @@ modules:
     - name: partsAvailability_node_api
       group: destinations
       properties:
-          name: core-node-backend
+          name: parts-node-backend
           url: '~{url}'
           forwardAuthToken: true 
    
    provides:
     - name: partsAvailability
+
  
 resources:
  - name: uaa_partsAvailability
