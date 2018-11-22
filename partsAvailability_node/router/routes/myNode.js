@@ -90,7 +90,7 @@ module.exports = function () {
 
 	// get material Text
 	app.get('/MD_PRODUCT_FS_SRV/I_MaterialText', function (req, res) {
-
+///MD_PRODUCT_FS_SRV/I_MaterialText(Material='70',Language='EN')?$format=json&?sap-client=200"
 		var material = req.param('Material');
 		var langu = req.param('Language');
 		var sUrl = "/MD_PRODUCT_FS_SRV/I_MaterialText(Material='" + (material) + "',Language='" + (langu) + "')?$format=json&?sap-client=" +
@@ -121,6 +121,7 @@ module.exports = function () {
 	// get product details. 	
 
 	app.get('/MD_PRODUCT_FS_SRV/C_Product_fs', function (req, res) {
+		//https://partsavailability_node_local.cfapps.us10.hana.ondemand.com/node/MD_PRODUCT_FS_SRV/I_MaterialText?Material=70&Language=EN
 		var material = req.param('Material');
 		var division = req.param('Division');
 
@@ -283,6 +284,7 @@ module.exports = function () {
 	
 		app.get('/MD_PRODUCT_FS_SRV/I_MaterialSuggest', function(req, res) {
 
+///MD_PRODUCT_FS_SRV/I_MaterialText?$filter=startswith(Material,'426')&$format=json&?sap-client=200"
 		var sTerm = req.param('Material');
  
 		var sUrl = "/MD_PRODUCT_FS_SRV/I_MaterialText?$filter=startswith(Material," + "'" + (sTerm) + "')&$format=json&?sap-client=" + client;
