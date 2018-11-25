@@ -1,3 +1,4 @@
+
 /*eslint no-console: 0, no-unused-vars: 0, no-shadow: 0, new-cap: 0*/
 /*eslint-env node, es6 */
 'use strict';
@@ -9,25 +10,15 @@ var JWTStrategy = require('@sap/xssec').JWTStrategy;
 
 var async = require('async');
 
-module.exports = function () {
+// vehicle Locator Node Module. 
+module.exports = function() {
 	var app = express.Router();
-	//Hello Router
-	app.get('/', (req, res) => {
-		var output = '<a os Details</a> - Your Node Module is up and Running</br> ';
-		// console.log(req);
-
-		res.type('text/html').status(200).send(output);
-	});
-
-	var auth64;
 
 	// SAP Calls Start from here
-	
-
 	var options = {};
 	options = Object.assign(options, xsenv.getServices({
 		api: {
-			name: "PARTS_AVAILABILITY_APIM_CUPS"
+			name: "PARTS_AVAILABILITY_APIM_CUPS" 
 		}
 	}));
 
@@ -36,24 +27,16 @@ module.exports = function () {
 		url = options.api.host,
 		APIKey = options.api.APIKey,
 		client = options.api.client;
+     	console.log('The API Management URL', url);
 
-	auth64 = 'Basic ' + new Buffer(uname + ':' + pwd).toString('base64');
+
+	var auth64 = 'Basic ' + new Buffer(uname + ':' + pwd).toString('base64');
 
 	var reqHeader = {
 		"Authorization": auth64,
 		"Content-Type": "application/json",
 		"APIKey": APIKey,
 		"x-csrf-token": "Fetch"
-		};
-		
-	var reqHeader_zProduct = {
-		"Authorization": auth64,
-		"Content-Type": "application/json",
-		"APIKey": APIKey,
-		"x-csrf-token": "Fetch",
-		"Cache-Control" : "no-cache, no-store, must-revalidate",
-		"Pragma" : "no-cache",
-        "Expires" :  0
 	};
 
 	app.use(function (req, res, next) {
@@ -61,253 +44,49 @@ module.exports = function () {
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 		next();
 	});
-
-
-
-	//  get business partner details 
-	app.get('/API_BUSINESS_PARTNER', function (req, res) {
-
-		var csrfToken;
-		request({
-			url: url +
-				"/API_BUSINESS_PARTNER/A_BusinessPartner/?$format=json&$expand=to_Customer&?sap-client=" + client +
-				"&$filter=BusinessPartnerType%20eq%20%27Z001%27&$orderby=BusinessPartner%20asc",
-			headers: reqHeader
-
-		}, function (error, response, body) {
-			if (!error && response.statusCode == 200) {
-				csrfToken = response.headers['x-csrf-token'];
-				// console.log(csrfToken);
-				var json = JSON.parse(body);
-				res.json(json);
-			} else {
-
-				var result = JSON.stringify(body);
-				res.type('application/json').status(400).send(result);
-			}
-		});
-	});
-
-	// get material Text
-	app.get('/MD_PRODUCT_FS_SRV/I_MaterialText', function (req, res) {
-///MD_PRODUCT_FS_SRV/I_MaterialText(Material='70',Language='EN')?$format=json&?sap-client=200"
-		var material = req.param('Material');
-		var langu = req.param('Language');
-		var sUrl = "/MD_PRODUCT_FS_SRV/I_MaterialText(Material='" + (material) + "',Language='" + (langu) + "')?$format=json&?sap-client=" +
-			client;   //// TODO: To revisit and zmd to md
-
-		var csrfToken;
-		request({
-			url: url + sUrl,
-			headers: reqHeader
-
-		}, function (error, response, body) {
-
-			if (!error && response.statusCode == 200) {
-				csrfToken = response.headers['x-csrf-token'];
-
-				var json = JSON.parse(body);
-				res.json(json);
-
-			} else {
-
-				var result = JSON.stringify(body);
-				res.type('application/json').status(400).send(result);
-			}
-		});
-
-	});
-
-	// get product details. 	
-
-	app.get('/MD_PRODUCT_FS_SRV/C_Product_fs', function (req, res) {
-		//https://partsavailability_node_local.cfapps.us10.hana.ondemand.com/node/MD_PRODUCT_FS_SRV/I_MaterialText?Material=70&Language=EN
-		var material = req.param('Material');
-		var division = req.param('Division');
-
-		var sUrl = "/MD_PRODUCT_FS_SRV/C_Product_Fs('" + (material) + "')?$format=json&?sap-client=" + client;
-		var csrfToken;     //// TODO: To revisit and zmd to md
-
-		request({
-			url: url + sUrl,
-			headers: reqHeader
-
-		}, function (error, response, body) {
-
-			if (!error && response.statusCode == 200) {
-				csrfToken = response.headers['x-csrf-token'];
-				var json = JSON.parse(body);
-				res.json(json);
-
-			} else {
-
-				var result = JSON.stringify(body);
-				res.type('application/json').status(400).send(result);
-			}
-		});
-
-	});
-
-	// get the Supplying plant
-
-	app.get('/MD_PRODUCT_FS_SRV/A_Customer', function (req, res) {
-
-		var selectedCustomer = req.param('customer');
-		var division = req.param('division');
-		var finalUrl = url + sUrlforSupplyingPlant;
-
-		var sUrlforSupplyingPlant = "/API_BUSINESS_PARTNER/A_Customer(Customer=" + "'" +
-			(selectedCustomer) + "'" + ")/to_CustomerSalesArea?sap-client=" + client + "&$format=json&$filter=SalesOrganization" + " eq'" +
-			"7000" + "'" +
-			"and DistributionChannel" +
-			" eq'" + "10" + "'" + "&$select=SupplyingPlant";
-
-		var csrfToken;
-		console.log(url + sUrlforSupplyingPlant);
-
-		request({
-			url: url + sUrlforSupplyingPlant,
-			headers: reqHeader
-
-		}, function (error, response, body) {
-			if (!error && response.statusCode == 200) {
-				csrfToken = response.headers['x-csrf-token'];
-				var json = JSON.parse(body);
-				res.json(json);
-			} else {
-
-				var result = JSON.stringify(body);
-				res.type('application/json').status(400).send(result);
-			}
-		});
-
-	});
-
-	// get the pricing details - price set. 
-	app.get('/ZMD_PRODUCT_FS_SRV/zc_PriceSet', function (req, res) {
-
-		var csrfToken;
-
-		var selectedMaterial = req.param('Matnr');
-		var sCurrentLocale = req.param('LanguageKey');
-		var supplyingPlant = req.param('Plant');
-		var selectedCustomer = req.param('Customer');
-		var division = req.param('division');
-
-		var sUrlforPricingDetails = "/ZMD_PRODUCT_FS_SRV/zc_PriceSet(Customer=" + "'" + (selectedCustomer) + "'," +
-			"DisChannel" + "='" + "10" + "'," + "Division" + "='" + (division) + "'," + "Matnr" + "='" + (selectedMaterial) + "'," +
-			"SalesDocType" + "='" + "ZAF" + "'," + "SalesOrg" + "='" + "7000" + "'," + "AddlData" + "=" + true + "," + "LanguageKey" + "='" + (
-				sCurrentLocale) + "'," + "Plant" + "='" + (supplyingPlant) + "')" + "?$format=json&?sap-client=" + client;
-
-		console.log(url + sUrlforPricingDetails);
-
-		request({
-			url: url + sUrlforPricingDetails,  
-			headers: reqHeader_zProduct
-
-		}, function (error, response, body) {
-			if (!error && response.statusCode == 200) {
-				csrfToken = response.headers['x-csrf-token'];
-				var json = JSON.parse(body);
-				res.json(json);
-
-			} else {
-				var result = JSON.stringify(body);
-					res.type('application/json').status(400).send(result);
-
-			}
-		});
-	});
-   
-   // get the backsuper set service. 
-   	app.get('/ZMD_PRODUCT_FS_SRV/zc_BackSuperSet2', function(req, res) {
-
-		var csrfToken;
-
-		var selectedMaterial = req.param('Matnr');
-		var sCurrentLocale = req.param('LanguageKey');
-		var supplyingPlant = req.param('Plant');
-		var selectedCustomer = req.param('Customer');
-		var division = req.param('Division');
-
-		var sUrlForBackSuperSet = "/ZMD_PRODUCT_FS_SRV/zc_BackSuperSet(Customer=" + "'" + (selectedCustomer) +
-			"'," + "DisChannel" + "='" + "10" + "'," + "Division" + "='" + (division) + "'," + "Matnr" + "='" + (selectedMaterial) + "'," +
-			"SalesDocType" + "='" + "ZAF" + "'," + "SalesOrg" + "='" + "7000" + "'," + "LanguageKey" + "='" + (sCurrentLocale) + "'," +
-			"Plant" + "='" + (supplyingPlant) + "')" + "?$format=json&$expand=toForwSuper&?sap-client=" + client; 
-
-		request({
-			url: url + sUrlForBackSuperSet, //url+sUrl+sUrlforPriceSet,
-		    headers: reqHeader_zProduct
-		}, function(error, response, body) {
-			if (!error && response.statusCode == 200) {
-				csrfToken = response.headers['x-csrf-token'];
-				var json = JSON.parse(body);
-				res.json(json);
-			} else {
-
-				var result = JSON.stringify(body);
-				res.type('application/json').status(400).send(result);
-			}
-		});
-	});
-   
-	// quantity set service
 	
-		app.get('/ZMD_PRODUCT_FS_SRV/zc_QuantitySet', function(req, res) {
-
 		var csrfToken;
+	// simple version of bridge call
+	app.all('/*', function(req, res, next) {
 
-		var selectedMaterial = req.param('Matnr');
+    	let headOptions = {};
+		
+		// prepare the magic reverse proxy header for odata service to work. 
+        // let originalHost = req.hostname;
+        // if (!!req.headers.host){
+        //     headOptions.host = req.headers.host;
+        // }
 
-		var sUrlforQuantity = "/ZMD_PRODUCT_FS_SRV/zc_QuantitySet?$filter=Matnr eq" + "'" + (selectedMaterial) + "'" +
-			"&$format=json";
+		//only support the basic auth
+        headOptions.Authorization = auth64;
 
-		request({
-			url: url + sUrlforQuantity, //url+sUrl+sUrlforPriceSet,
-			headers: reqHeader_zProduct
-
-		}, function(error, response, body) {
-			if (!error && response.statusCode == 200) {
-				csrfToken = response.headers['x-csrf-token'];
-				var json = JSON.parse(body);
-				res.json(json);
-			} else {
-
-				var result = JSON.stringify(body);
-				res.type('application/json').status(400).send(result);
-			}
-		});
-	});
-	
-
-	//  call the material service again for returning the suggestion list. 
-	
-		app.get('/MD_PRODUCT_FS_SRV/I_MaterialSuggest', function(req, res) {
-
-///MD_PRODUCT_FS_SRV/I_MaterialText?$filter=startswith(Material,'426')&$format=json&?sap-client=200"
-		var sTerm = req.param('Material');
+        let method = req.method;
+        let xurl = url +req.url;
+         console.log('Method', method);
+        console.log('Incoming Url', xurl);
+        
+//  if the method = post you need a csrf token.         
  
-		var sUrl = "/MD_PRODUCT_FS_SRV/I_MaterialText?$filter=startswith(Material," + "'" + (sTerm) + "')&$format=json&?sap-client=" + client;
-		var csrfToken;   // // TODO: zmd to md
-  
+        let xRequest = 
+			request({
+				method : method,
+				url : xurl,
+				headers: reqHeader
+ 			}
+		);
+        
+        req.pipe(xRequest);
 
-		request({
-			url: url + sUrl,
-			headers:  reqHeader
-
-		}, function(error, response, body) {
-			if (!error && response.statusCode == 200) {
-				csrfToken = response.headers['x-csrf-token'];
-				var json = JSON.parse(body);
-				res.json(json);
-				} else {
-
-				var result = JSON.stringify(body);
-				res.type('application/json').status(400).send(result);
-			}
-		});
+        xRequest.on('response', (response) => {
+        	// delete response.headers['set-cookie'];
+        		csrfToken = response.headers['x-csrf-token'];
+        	xRequest.pipe(res);
+        }).on('error', (error) => {
+        	next(error);
+       });
 	});
 	
-
 	return app;
 };
+
+

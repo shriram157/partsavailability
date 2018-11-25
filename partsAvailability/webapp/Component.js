@@ -29,17 +29,52 @@ sap.ui.define([
 			this.setModel(models.createDeviceModel(), "device");
 		
 		
-		//	var mConfig = this.getMetadata().getManifestEntry("/sap.app/dataSources/MD_PRODUCT_FS_SRV");
-		/*	var oDataModel = new ODataModel(mConfig.uri, {
-				useBatch: true,
-				disableHeadRequestForToken: true,
-				defaultUpdateMethod: 'PATCH',
+// ============================== md_product service==========================Begin
+			var mConfig = this.getMetadata().getManifestEntry("/sap.app/dataSources/MD_PRODUCT_FS_SRV");
+			//  if running on a local version,  use the destination otherwise use /node.			
+			var sLocation = window.location.host;
+			var sLocation_conf = sLocation.search("webide");
+			if (sLocation_conf == 0) {
+				mConfig.uri = "/partsAvailability_node" + mConfig.uri;
+			} else {
+			}
+			var oDataModel = new ODataModel(mConfig.uri, {
+				useBatch: false,
 				json: true
 			});
-			this.setModel(oDataModel, "vehicleDataModel");	*/
-			
-			
-			
+			this.setModel(oDataModel, "materialDisplayModeloData");
+// ============================== md_product service==========================End	
+// ============================== zmd_product service==========================Begin
+				var mConfig = this.getMetadata().getManifestEntry("/sap.app/dataSources/ZMD_PRODUCT_FS_SRV");
+			//  if running on a local version,  use the destination otherwise use /node.			
+			var sLocation = window.location.host;
+			var sLocation_conf = sLocation.search("webide");
+			if (sLocation_conf == 0) {
+				mConfig.uri = "/partsAvailability_node" + mConfig.uri;
+			} else {
+			}
+			var oDataModel = new ODataModel(mConfig.uri, {
+				useBatch: false,
+				json: true
+			});
+			this.setModel(oDataModel, "zMaterialDisplayModel");		
+// ============================== zmd_product service==========================Begin
+// ==============================api_business partner==========================Begin
+				var mConfig = this.getMetadata().getManifestEntry("/sap.app/dataSources/API_BUSINESS_PARTNER");
+			//  if running on a local version,  use the destination otherwise use /node.			
+			var sLocation = window.location.host;
+			var sLocation_conf = sLocation.search("webide");
+			if (sLocation_conf == 0) {
+				mConfig.uri = "/partsAvailability_node" + mConfig.uri;
+			} else {
+			}
+			var oDataModel = new ODataModel(mConfig.uri, {
+				useBatch: false,
+				json: true
+			});
+			this.setModel(oDataModel, "aPiBusinessPartner");	
+
+
 		}
 	});
 });

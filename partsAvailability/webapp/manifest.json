@@ -16,6 +16,30 @@
 			"version": "0.0.0"
 		},
 		"dataSources": {
+			"MD_PRODUCT_FS_SRV": {
+				"uri": "/node/MD_PRODUCT_FS_SRV/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
+					"localUri": "localService/MD_PRODUCT_FS_SRV/metadata.xml"
+				}
+			},
+			"ZMD_PRODUCT_FS_SRV": {
+				"uri": "/node/ZMD_PRODUCT_FS_SRV/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
+					"localUri": "localService/ZMD_PRODUCT_FS_SRV/metadata.xml"
+				}
+			},
+				"API_BUSINESS_PARTNER": {
+				"uri": "/node/API_BUSINESS_PARTNER/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
+					"localUri": "localService/API_BUSINESS_PARTNER/metadata.xml"
+				}
+			}		
 
 		}
 	},
@@ -68,6 +92,39 @@
 				"settings": {
 					"bundleName": "partsAvailability.i18n.i18n"
 				}
+			},
+			"materialDisplayModeloData": {
+				"uri": "/node/MD_PRODUCT_FS_SRV/",
+				"type": "sap.ui.model.odata.v2.ODataModel",
+				"settings": {
+					"defaultOperationMode": "Server",
+					"defaultBindingMode": "OneWay",
+					"defaultCountMode": "Request"
+				},
+				"dataSource": "MD_PRODUCT_FS_SRV",
+				"preload": true
+			},
+			"zMaterialDisplayModel": {
+				"uri": "/node/ZMD_PRODUCT_FS_SRV/",
+				"type": "sap.ui.model.odata.v2.ODataModel",
+				"settings": {
+					"defaultOperationMode": "Server",
+					"defaultBindingMode": "OneWay",
+					"defaultCountMode": "Request"
+				},
+				"dataSource": "ZMD_PRODUCT_FS_SRV",
+				"preload": true
+			},
+						"aPiBusinessPartner": {
+				"uri": "/node/API_BUSINESS_PARTNER/",
+				"type": "sap.ui.model.odata.v2.ODataModel",
+				"settings": {
+					"defaultOperationMode": "Server",
+					"defaultBindingMode": "OneWay",
+					"defaultCountMode": "Request"
+				},
+				"dataSource": "API_BUSINESS_PARTNER",
+				"preload": true
 			}
 
 		},
@@ -76,7 +133,7 @@
 				"uri": "css/style.css"
 			}]
 		},
-	"routing": {
+		"routing": {
 			"config": {
 				"routerClass": "sap.m.routing.Router",
 				"viewType": "XML",
@@ -90,23 +147,22 @@
 					]
 				}
 			},
-			"routes": [
-				{
+			"routes": [{
 					"pattern": "",
 					"name": "PartssearchandDisplay",
 					"target": [
 						"PartssearchandDisplay"
 					]
-				} 
-				
+				}
+
 			],
 			"targets": {
 				"PartssearchandDisplay": {
 					"viewName": "searchMaterialandDisplay",
 					"viewLevel": 1,
 					"transition": "slide"
-				} 
+				}
 			}
-		}	
+		}
 	}
 }
