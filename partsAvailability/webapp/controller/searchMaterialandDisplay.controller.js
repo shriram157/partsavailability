@@ -16,7 +16,6 @@ sap.ui.define([
 		formatter: formatter,
 		onInit: function () {
 
-
 			var oI18nModel = new sap.ui.model.resource.ResourceModel({
 				bundleUrl: "i18n/i18n.properties"
 			});
@@ -74,9 +73,8 @@ sap.ui.define([
 
 			// initialize the models needed to display the records. 
 
-			 this._materialDisplayModel = new JSONModel();
-			 this.getView().setModel(this._materialDisplayModel, "materialDisplayModel"); 
-
+			this._materialDisplayModel = new JSONModel();
+			this.getView().setModel(this._materialDisplayModel, "materialDisplayModel");
 
 			var oMaterialData = this.getOwnerComponent().getModel("oMaterialData");
 			this.getView().setModel(oMaterialData, "oMaterialData");
@@ -370,16 +368,15 @@ sap.ui.define([
 			//	var oMaterialDisplayModel = [];
 			var client = 200;
 
+			// /MD_PRODUCT_FS_SRV/I_MaterialText(Material='4261A53341',Language='EN')?$select=MaterialName
+			//this._oODataModel.read("/TReqHdrSet('" + AttReqno + "')/FileSet"
+			//	oMaterialDisplayModel.read("/I_MaterialText(Material=" + materialFromScreen  + ",Language=" + sCurrentLocale + ")"){
 
-// /MD_PRODUCT_FS_SRV/I_MaterialText(Material='4261A53341',Language='EN')?$select=MaterialName
-          //this._oODataModel.read("/TReqHdrSet('" + AttReqno + "')/FileSet"
-          		//	oMaterialDisplayModel.read("/I_MaterialText(Material=" + materialFromScreen  + ",Language=" + sCurrentLocale + ")"){
-          		
-          oMaterialDisplayModel.read("/I_MaterialText(Material='" + materialFromScreen + "',Language='" + sCurrentLocale + "')", {
+			oMaterialDisplayModel.read("/I_MaterialText(Material='" + materialFromScreen + "',Language='" + sCurrentLocale + "')", {
 
 				urlParameters: {
 					// "$filter": "(Material='" + (materialFromScreen) + "',Language='" + (sCurrentLocale) + "')"
-						
+
 				},
 
 				success: $.proxy(function (oData) {
@@ -429,40 +426,41 @@ sap.ui.define([
 			// var that = this;
 			var oApiBusinessPartner = this.getModel("aPiBusinessPartner");
 
-				oApiBusinessPartner.read("/A_Customer('" +selectedCustomer+ "')" + "/to_CustomerSalesArea(Customer='" +selectedCustomer+ "',SalesOrganization='7000',DistributionChannel='10',Division='10')" , {
-				urlParameters: {
-							"$select": "SupplyingPlant"
-				},
+			oApiBusinessPartner.read("/A_Customer('" + selectedCustomer + "')" + "/to_CustomerSalesArea(Customer='" + selectedCustomer +
+				"',SalesOrganization='7000',DistributionChannel='10',Division='" + this.sDivision + "')", {
+					urlParameters: {
+						"$select": "SupplyingPlant"
+					},
 
-				success: $.proxy(function (oData) {
-					this.getView().byId("messageStripError").setProperty("visible", false);
+					success: $.proxy(function (oData) {
+						this.getView().byId("messageStripError").setProperty("visible", false);
 
-					// sheshu request on 25/09 @5.47Pm
-					if (oData.length !== 0) {
-						this._materialDisplayModel.setProperty("/SupplyingPlant", oData.SupplyingPlant);
-						this.supplyingPlant = oData.SupplyingPlant;
-						this._call_the_priceSetService(oData.SupplyingPlant);
-					} else {
-						var supplyingPlant = "  "; // just a dummy entry Price set needs this
+						// sheshu request on 25/09 @5.47Pm
+						if (oData.length !== 0) {
+							this._materialDisplayModel.setProperty("/SupplyingPlant", oData.SupplyingPlant);
+							this.supplyingPlant = oData.SupplyingPlant;
+							this._call_the_priceSetService(oData.SupplyingPlant);
+						} else {
+							var supplyingPlant = "  "; // just a dummy entry Price set needs this
 
-						this._call_the_priceSetService(supplyingPlant);
-					}
+							this._call_the_priceSetService(supplyingPlant);
+						}
 
-				}, this),
-				error: function () {
-					sap.ui.core.BusyIndicator.hide();
-					this.dealerSearchError = true;
+					}, this),
+					error: function () {
+						sap.ui.core.BusyIndicator.hide();
+						this.dealerSearchError = true;
 
-					this._oViewModel.setProperty("/afterMaterialFound", false);
+						this._oViewModel.setProperty("/afterMaterialFound", false);
 
-					var errorMessage = that._oResourceBundle.getText("materialNotFound"); //systemErrorOccured
+						var errorMessage = that._oResourceBundle.getText("materialNotFound"); //systemErrorOccured
 
-					this.getView().byId("messageStripError").setProperty("visible", true);
-					this.getView().byId("messageStripError").setText(errorMessage);
-					this.getView().byId("messageStripError").setType("Error");
-				}.bind(this)
+						this.getView().byId("messageStripError").setProperty("visible", true);
+						this.getView().byId("messageStripError").setText(errorMessage);
+						this.getView().byId("messageStripError").setType("Error");
+					}.bind(this)
 
-			});
+				});
 
 		},
 
@@ -471,34 +469,62 @@ sap.ui.define([
 			var sCurrentLocale = this.sCurrentLocale;
 			var selectedCustomer = this.sSelectedDealer;
 			var selectedMaterial = this.getView().byId("material_id").getValue();
-	        var client = 200;
+			var client = 200;
 			var ozMaterialDisplayModel = this.getModel("zMaterialDisplayModel");
-            var priceSetUrl =  "(Customer=" + "'" + (selectedCustomer) + "'," + "DisChannel" + "='" + "10" + "'," + "Division" + "='" + (this.sDivision) +
-						"'," + "Matnr" + "='" + (selectedMaterial) + "'," + "SalesDocType" + "='" + "ZAF" + "'," + "SalesOrg" + "='" + "7000" + "'," +
-						"AddlData" + "=" + true + "," + "LanguageKey" + "='" +
-						(sCurrentLocale) + "'," + "Plant" + "='" + (supplyingPlant) + "')" + "?sap-client=" + client;
-		
+			var priceSetUrl = "(Customer=" + "'" + (selectedCustomer) + "'," + "DisChannel" + "='" + "10" + "'," + "Division" + "='" + (this.sDivision) +
+				"'," + "Matnr" + "='" + (selectedMaterial) + "'," + "SalesDocType" + "='" + "ZAF" + "'," + "SalesOrg" + "='" + "7000" + "'," +
+				"AddlData" + "=" + true + "," + "LanguageKey" + "='" +
+				(sCurrentLocale) + "'," + "Plant" + "='" + (supplyingPlant) + "')" + "?sap-client=" + client;
+
 			var that = this;
-			ozMaterialDisplayModel.read("/zc_PriceSet" + priceSetUrl , {
+			ozMaterialDisplayModel.read("/zc_PriceSet" + priceSetUrl, {
 				urlParameters: {
 
 				},
 
 				success: $.proxy(function (oData) {
-					this._materialDisplayModel.setProperty("/Dealernet", oData.Item.Dealernet);
-					this._materialDisplayModel.setProperty("/Msrp", oData.Item.Msrp);
-					this._materialDisplayModel.setProperty("/Roundingprofile", oData.Item.Roundingprofile);
+					
+			if (oData.Item.DoNotDisp != "X" ){
+				this.doNotDisplayReceived = false;
+					this.getView().byId("messageStripError").setProperty("visible", false);  // if there are any old messages clear it. 
+			    	this._materialDisplayModel.setProperty("/Msrp", oData.Item.Msrp);	
+			    	this._materialDisplayModel.setProperty("/Qtybackorder", oData.Item.Qtybackorder);
+					this._materialDisplayModel.setProperty("/Z3plqtyavail", oData.Item.Z3plqtyavail);
+					this._materialDisplayModel.setProperty("/invQtyReceived", oData.Item.Qtyavail);
+						this._materialDisplayModel.setProperty("/Dealernet", oData.Item.Dealernet);
+						this._materialDisplayModel.setProperty("/Roundingprofile", oData.Item.Roundingprofile);
+			}else {
+				this.doNotDisplayReceived = true;
+				
+			      		var warningMessage = this._oResourceBundle.getText("ParthasDoNotDisplay"); //Part Number has Do not display flag
+						this.getView().byId("messageStripError").setProperty("visible", true);
+						this.getView().byId("messageStripError").setText(warningMessage);
+						this.getView().byId("messageStripError").setType("Warning");
+				
+				
+				
+				    this._materialDisplayModel.setProperty("/Msrp", "");
+				  	this._materialDisplayModel.setProperty("/Qtybackorder", "");
+					this._materialDisplayModel.setProperty("/Z3plqtyavail", "");
+					this._materialDisplayModel.setProperty("/invQtyReceived", "");
+						this._materialDisplayModel.setProperty("/Dealernet", "");
+						this._materialDisplayModel.setProperty("/Roundingprofile", "");
+			}
+					
+				
+				
+			
+					
 					this._materialDisplayModel.setProperty("/Partreturnable", oData.Item.Partreturnable);
 					this._materialDisplayModel.setProperty("/Partstocked", oData.Item.Partstocked);
 					this._materialDisplayModel.setProperty("/Shippedvia", oData.Item.Shippedvia);
 					this._materialDisplayModel.setProperty("/Plantdesc", oData.Item.Plantdesc);
 					// stop sales flag 
 					this._materialDisplayModel.setProperty("/stopSalesFlag", oData.Item.Stopsalesdesc);
-					this._materialDisplayModel.setProperty("/Qtybackorder", oData.Item.Qtybackorder);
-					this._materialDisplayModel.setProperty("/Z3plqtyavail", oData.Item.Z3plqtyavail);
+
 
 					//	that.stopSalesFlag = oData.d.Item.Stopsalesdesc;
-					this._materialDisplayModel.setProperty("/invQtyReceived", oData.Item.Qtyavail);
+				//	this._materialDisplayModel.setProperty("/invQtyReceived", oData.Item.Qtyavail);
 					this._materialDisplayModel.setProperty("/Parttypedesc", oData.Item.Parttypedesc);
 					this._materialDisplayModel.setProperty("/plantReceived", supplyingPlant);
 					this._materialDisplayModel.setProperty("/z3plPlantReceived", oData.Item.Z3plplant);
@@ -513,7 +539,9 @@ sap.ui.define([
 						this.getView().byId("messageStripError").setText(warningMessage);
 						this.getView().byId("messageStripError").setType("Warning");
 					} else {
+						if (this.doNotDisplayReceived != true){
 						this.getView().byId("messageStripError").setProperty("visible", false);
+						}
 
 					}
 
@@ -522,7 +550,16 @@ sap.ui.define([
 					//		that._callTheInventory_service(supplyingPlant);   -- commenting this out as we are getting the quantity from the main screen
 
 					this._callTheQuanity_service(selectedMaterial);
+		    //      	} else {
+		    //      	//  get the pricing to not display 
+		         	    
+		         	
+		         	
+		    //      			sap.ui.core.BusyIndicator.hide();
+		    //      			// part number has do not display flag 
 
+		         		
+		    //      	} // do not display check end. 
 				}, this),
 
 				error: function () {
@@ -563,14 +600,15 @@ sap.ui.define([
 			var oZMaterialDisplayModel = this.getModel("zMaterialDisplayModel");
 
 			var client = 200;
-			var urlForBackSuperSet = "(Customer=" + "'" + (selectedCustomer) + "'," + "DisChannel" + "='" + "10" + "'," + "Division" + "='" + (this.sDivision) +
-						"'," + "Matnr" + "='" + (selectedMaterial) + "'," +
-						"SalesDocType" + "='" + "ZAF" + "'," + "SalesOrg" + "='" + "7000" + "'," + "LanguageKey" + "='" + (sCurrentLocale) + "'," +
-						"Plant" + "='" + (supplyingPlant) + "')" + "?sap-client=" + client;
+			var urlForBackSuperSet = "(Customer=" + "'" + (selectedCustomer) + "'," + "DisChannel" + "='" + "10" + "'," + "Division" + "='" + (
+					this.sDivision) +
+				"'," + "Matnr" + "='" + (selectedMaterial) + "'," +
+				"SalesDocType" + "='" + "ZAF" + "'," + "SalesOrg" + "='" + "7000" + "'," + "LanguageKey" + "='" + (sCurrentLocale) + "'," +
+				"Plant" + "='" + (supplyingPlant) + "')" + "?sap-client=" + client;
 			var that = this;
 			oZMaterialDisplayModel.read("/zc_BackSuperSet" + urlForBackSuperSet, {
 				urlParameters: {
-			  	"$expand": "toForwSuper"
+					"$expand": "toForwSuper"
 				},
 
 				success: $.proxy(function (oData) {
@@ -585,10 +623,42 @@ sap.ui.define([
 							this.userClickedSuperSession = false;
 						}
 					}
+					// ================ header Type - Begin ================================
+					//    oData.Type = "C"; // remove this
+					switch (oData.Type) {
+					case "C":
+						//TYPEC
+						var headMessage = this._oResourceBundle.getText("TYPECHEAD");
+
+						break;
+					case "M":
+						var headMessage = this._oResourceBundle.getText("TYPEMHEAD");
+						break;
+					case "A":
+						var headMessage = this._oResourceBundle.getText("TYPEAHEAD");
+						break;
+					case "I":
+						var headMessage = this._oResourceBundle.getText("TYPEI");
+						break;
+					case "F":
+						var headMessage = this._oResourceBundle.getText("TYPEF");
+						break;
+					default:
+					}
+					if (headMessage){
+					headMessage = " : " + headMessage;
+					}else {
+						headMessage="";	
+					}
+					// set the header description to material display model. 
+					this._materialDisplayModel.setProperty("/headerTypeDesc", headMessage);
+
+					// ================ header Type - End ================================		
 
 					var superSession = [];
 					this._superSessionModel.setProperty("/items", superSession); // instatiate here to avoid screen refresh issues. 
 					this.getView().setModel(this._superSessionModel, "superSessionModel");
+					var that = this;
 					$.each(oData.toForwSuper.results, function (i, item) {
 
 						if (item.ValidFrom == null) {
@@ -601,15 +671,47 @@ sap.ui.define([
 							// var localDate = new Date(utcTime); //.toUTCString();
 
 						}
+						// ===============================ITem
+						switch (item.Type) {
+						case "C":
+							//TYPEC
+							var itemMessage = that._oResourceBundle.getText("TYPEC");
+							break;
+						case "M":
+							var itemMessage = that._oResourceBundle.getText("TYPEM");
+							break;
+						case "A":
+							var itemMessage = that._oResourceBundle.getText("TYPEA");
+							break;
+						case "I":
+							var itemMessage = that._oResourceBundle.getText("TYPEI");
+							break;
+						case "F":
+							var itemMessage = that._oResourceBundle.getText("TYPEF");
+							break;
+						default:
+						}
+
+						//================================= end of Item. 
+//  if the part has do not display flag then comment out the price and quantity data. 
+                      if (that.doNotDisplayReceived == true ) {
+                      	item.DealerNet = "";
+                      	item.QtyReqd   = "";
+                      	item.QtyAvail  = "";
+                      } else {
+                      	
+                      		that.getView().byId("messageStripError").setProperty("visible", false);
+                      };
 
 						superSession.push({
 							"MatnrSuper": item.MatnrSuper,
 							"PartDesc": item.PartDesc,
+							"Type": itemMessage,
 							"DealerNet": item.DealerNet,
 							"QtyReqd": item.QtyReqd,
 							"QtyAvail": item.QtyAvail,
 							"HasForwSuper": item.HasForwSuper,
-							"LastUpdDate": item.ValidFrom   //localDate
+							"LastUpdDate": item.ValidFrom //localDate
 
 						});
 
@@ -625,7 +727,7 @@ sap.ui.define([
 					this._superSessionModel.setProperty("/items", superSession);
 					this.getView().setModel(this._superSessionModel, "superSessionModel");
 
-					this.getView().byId("messageStripError").setProperty("visible", false);
+				
 
 				}, this),
 
@@ -691,18 +793,14 @@ sap.ui.define([
 			var that = this;
 			oZMaterialDisplayModel.read("/zc_QuantitySet", {
 				urlParameters: {
-					"$filter": "Matnr eq" + "'" + (selectedMaterial) + "'" 
+					"$filter": "Matnr eq" + "'" + (selectedMaterial) + "'"
 				},
 
 				success: $.proxy(function (oData) {
 
-					// $.ajax({
-					// 	url: sUrlforQuantitySet, //url + sUrlforQuantity,
-					// 	type: "GET",
-					// 	dataType: "json",
-					// 	success: function (oData) {
 
 					sap.ui.core.BusyIndicator.hide(); //  this is where I end the busy indicator
+					var that = this;
 					$.each(oData.results, function (i, item) {
 						if ((item.Location == "A") || (item.Location == "O")) {
 							item.Location = "California";
@@ -711,20 +809,23 @@ sap.ui.define([
 						} else {
 							item.Location = item.Location;
 						}
-
+                          if (that.doNotDisplayReceived == true ) {
+                          	item.QtyAvailable = "";
+                          }
 						materialInventory.push({
 							"PlantDesc": item.Location,
 							"MatlWrhsStkQtyInMatlBaseUnit": item.QtyAvailable
 								// "Qtybackorder": item.QtyBackorder
 						});
-
 					});
 
 					this._materialInventory.setProperty("/items", materialInventory);
 					this.getView().setModel(this._materialInventory, "inventoryModel");
 					var oModelSuperSession = this.getView().getModel("inventoryModel");
 					oModelSuperSession.refresh();
-					this.getView().byId("messageStripError").setProperty("visible", false);
+							if (this.doNotDisplayReceived != true){
+						this.getView().byId("messageStripError").setProperty("visible", false);
+						}
 
 				}, this),
 				error: function () {
@@ -880,10 +981,10 @@ sap.ui.define([
 
 			var oMaterialDisplayModel = this.getModel("materialDisplayModeloData");
 
-			     oMaterialDisplayModel.read("/I_MaterialText", {
+			oMaterialDisplayModel.read("/I_MaterialText", {
 				urlParameters: {
-				
-					 "$filter": "startswith(Material," + "'" + (sTerm) + "')"
+
+					"$filter": "startswith(Material," + "'" + (sTerm) + "')"
 				},
 
 				success: $.proxy(function (oData) {

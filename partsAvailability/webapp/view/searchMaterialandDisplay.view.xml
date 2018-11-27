@@ -147,15 +147,15 @@
 												<ColumnListItem>
 													<cells>
 														<!--<Text text="{superSessionModel>MatnrSuper}" width="100%"/>-->
-														<Text text="{inventoryModel>PlantDesc}" hAlign="Center"/>
+														<Text text="{inventoryModel>PlantDesc}" />
 														<!--<Text text="{inventoryModel>MatlWrhsStkQtyInMatlBaseUnit}"/>-->
-														<Text text="{ path:'inventoryModel>MatlWrhsStkQtyInMatlBaseUnit', formatter:'.formatter.quantity' }" hAlign="Center"/>
-														<Text text="{ path:'inventoryModel>Qtybackorder', formatter:'.formatter.quantity' }" hAlign="Center"/>
+														<Text text="{ path:'inventoryModel>MatlWrhsStkQtyInMatlBaseUnit', formatter:'.formatter.quantity' }" />
+														<Text text="{ path:'inventoryModel>Qtybackorder', formatter:'.formatter.quantity' }" />
 														<!--<Text text="{inventoryModel>Qtybackorder}"/>-->
 														<!--<Text text="{inventoryModel>stopSalesFlag}"/>-->
 														<!--<Text text="{inventoryModel>Z3plqtyavail}"/>-->
 														<Text text="{ path:'inventoryModel>Z3plqtyavail', formatter:'.formatter.quantity' }" visible="{detailView>/visibleZ3plqty}" id="id3PlValue"
-															hAlign="Center"/>
+														/>
 													</cells>
 												</ColumnListItem>
 											</items>
@@ -164,7 +164,7 @@
 											<headerToolbar>
 												<Toolbar>
 													<Label id="idToolbarLabel" text="{i18n>FORWARD_SUPER_SESSION}"/>
-													<Text id="idSuperSessionDescriptiont" text="{ }"/>
+													<Text id="idSuperSessionDescriptiont" text="{materialDisplayModel>/headerTypeDesc}"/>
 													<ToolbarSpacer/>
 												</Toolbar>
 											</headerToolbar>
@@ -174,36 +174,41 @@
 														<Text id="idPartNumberText" text="{i18n>PART_NUMBER}"/>
 													</header>
 												</Column>
-												<Column demandPopin="true" hAlign="Centre" id="idPartDescCol" minScreenWidth="Tablet" visible="{superSessionModel>/CurrentStockVisible}">
+												<Column demandPopin="true" hAlign="Center" id="idPartDescCol" minScreenWidth="Tablet" visible="{superSessionModel>/CurrentStockVisible}">
 													<header>
 														<Text id="idPartDescriptions" text="{i18n>PART_DESCRIPTION}"/>
 													</header>
 												</Column>
-												<Column demandPopin="true" hAlign="Centre" id="idDealerNet" minScreenWidth="Tablet" popinDisplay="Inline"
+	             						<Column demandPopin="true" hAlign="Center" id="idTypeCol" minScreenWidth="Tablet" >
+													<header>
+														<Text id="idType" text="{i18n>TYPE}"/>
+													</header>
+												</Column>				
+												<Column demandPopin="true" hAlign="Center" id="idDealerNet" minScreenWidth="Tablet" popinDisplay="Inline"
 													visible="{superSessionModel>/CurrentStockVisible}">
 													<header>
 														<Text id="idDealerNetText" text="{i18n>DEALER_NET_TEXT}"/>
 													</header>
 												</Column>
-												<Column demandPopin="true" hAlign="Centre" id="idQtyRequired" minScreenWidth="Tablet"
+												<Column demandPopin="true" hAlign="Center" id="idQtyRequired" minScreenWidth="Tablet"
 													visible="{superSessionModel>/BlockedStockQuantityVisible}">
 													<header>
 														<Text id="idQtyRequiredText" text="{i18n>QTY_REQUIRED_TEXT}"/>
 													</header>
 												</Column>
-												<Column demandPopin="true" hAlign="Centre" id="quantityAvail" minScreenWidth="Tablet" popinDisplay="Inline"
+												<Column demandPopin="true" hAlign="Center" id="quantityAvail" minScreenWidth="Tablet" popinDisplay="Inline"
 													visible="{superSessionModel>/BlockedStockQuantityVisible}">
 													<header>
 														<Text id="idQuantityAvail" text="{i18n>QUAN_AVAIL_TEXT}"/>
 													</header>
 												</Column>
-												<Column demandPopin="true" hAlign="Centre" id="idPartforwardSuper" minScreenWidth="Tablet"
+												<Column demandPopin="true" hAlign="Center" id="idPartforwardSuper" minScreenWidth="Tablet"
 													visible="{superSessionModel>/QualityInspectionStockQuantityVisible}">
 													<header>
 														<Text id="idPartForwardSuperSessionText" text="{i18n>PART_HAS_FORWARD_SUPERSESSION}"/>
 													</header>
 												</Column>
-												<Column demandPopin="true" hAlign="Centre" id="idLAstUpdatedDateC" minScreenWidth="Tablet"
+												<Column demandPopin="true" hAlign="Center" id="idLAstUpdatedDateC" minScreenWidth="Tablet"
 													visible="{superSessionModel>/QualityInspectionStockQuantityVisible}">
 													<header>
 														<Text id="idLastUpdatedDate" text="{i18n>LAST_UPDATED_DATE}"/>
@@ -215,17 +220,18 @@
 													<cells>
 														<!--<Text text="{superSessionModel>MatnrSuper}" width="100%"/>-->
 														<ObjectIdentifier title="{superSessionModel>MatnrSuper}" text="{Description}" titleActive="true" titlePress="handleMatnrSuperPress"
-															hAlign="Center"/>
-														<Text text="{superSessionModel>PartDesc}" hAlign="Center"/>
-														<Text text="{superSessionModel>DealerNet}" hAlign="Center"/>
+															/>
+														<Text text="{superSessionModel>PartDesc}"  />
+														<Text text="{superSessionModel>Type}" />
+														<Text text="{superSessionModel>DealerNet}" />
 														<!--<Text text="{superSessionModel>QtyReqd}"/>-->
-														<Text text="{ path:'superSessionModel>QtyReqd', formatter:'.formatter.quantity' }" hAlign="Center"/>
+														<Text text="{ path:'superSessionModel>QtyReqd', formatter:'.formatter.quantity' }" />
 														<!--<Text text="{superSessionModel>QtyAvail}"/>-->
-														<Text text="{ path:'superSessionModel>QtyAvail', formatter:'.formatter.quantity' }" hAlign="Center"/>
-														<Text text="{superSessionModel>HasForwSuper}" hAlign="Center"/>
+														<Text text="{ path:'superSessionModel>QtyAvail', formatter:'.formatter.quantity' }" />
+														<Text text="{superSessionModel>HasForwSuper}" />
 														<Text
 															text="{ path: 'superSessionModel>LastUpdDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd', strictParsing: true , UTC: true } }"
-															hAlign="Center"/>
+															/>
 													</cells>
 												</ColumnListItem>
 											</items>
