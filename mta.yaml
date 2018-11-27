@@ -7,9 +7,9 @@ modules:
    type: nodejs
    path: partsAvailability_node
    parameters:
-      host: partsAvailability_node
+      host: qas_partsAvailability_node
       register-service-url: true
-      service-name: partsAvailability_node
+      service-name: qas_partsAvailability_node
       service-url: '${default-url}'
       disk-quota: 256MB
       memory: 256MB
@@ -20,23 +20,23 @@ modules:
          url: '${default-url}'
    requires:
       - name: PARTS_AVAILABILITY_APIM_CUPS
-      - name: uaa_partsAvailability
+      - name: qas_uaa_partsAvailability
       
  - name: partsAvailability
    type: html5
    path: partsAvailability
    parameters:
-      host: partsAvailability
+      host: qas_partsAvailability
       register-service-url: true
-      service-name: partsAvailability
+      service-name: qas_partsAvailability
       service-url: '${default-url}'
       disk-quota: 256M
       memory: 256M
    build-parameters:
       builder: grunt
    requires:
-    - name: uaa_partsAvailability
-    - name: dest_partsAvailability
+    - name: qas_uaa_partsAvailability
+    - name: qas_dest_partsAvailability
     - name: partsAvailability_node_api
       group: destinations
       properties:
@@ -49,7 +49,7 @@ modules:
 
  
 resources:
- - name: uaa_partsAvailability
+ - name: qas_uaa_partsAvailability
    parameters:
       path: ./xs-security.json
       service-plan: application
@@ -63,7 +63,7 @@ resources:
    properties:
      odata-call-service-name: '${service-name}'
 
- - name: dest_partsAvailability
+ - name: qas_dest_partsAvailability
    parameters:
       service-plan: lite
       service: destination
