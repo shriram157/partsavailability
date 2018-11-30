@@ -40,7 +40,7 @@
 												<ComboBox showSecondaryValues="true" required="true" visible="{detailView>/visibleByDefault}" wrap="false" fieldGroupIds="requiredField"
 													editable="{detailView>/editAllowed}" width="40rem" wrapping="false" placeholder="{i18n>DEALER_PLACEHOLDER_TEXT}"
 													value="{BpDealerModel>/BusinessPartnerKey}" filterSecondaryValues="true" id="dealerID" enabled="{detailView>/onlyShownoEditForChange}"
-													items="{path: 'BpDealerModel>/', sorter: { path: 'BusinessPartner' }, length:300 }" selectedKey="{BusinessPartnerKey}"
+													items="{path: 'BpDealerModel>/', sorter: { path: 'BusinessPartner' }, length:350 }" selectedKey="{BusinessPartnerKey}"
 													selectionChange="onBusinessPartnerSelected" showValueStateMessage="false" textAlign="Begin">
 													<core:ListItem key="{BpDealerModel>BusinessPartnerKey}" text="{BpDealerModel>BusinessPartner}"
 														additionalText="{BpDealerModel>BusinessPartnerName}"/>
@@ -57,7 +57,7 @@
 												<Input id="material_id" required="true" placeholder="{i18n>PART_NUMBER_PLACEHOLDER_TEXT}" name="materialNumberChange"
 													value="{ path: 'materialDisplayModel>/Material', type: 'sap.ui.model.odata.type.String' , constraints : { minLength: 1,maxLength: 20, nullable:false} }"
 													width="auto" type="Text" showSuggestion="true" liveChange="liveChangeDataEntered" suggestionItemSelected="matnrFromSuggestionSelectedChange"
-													valueLiveUpdate="false" change="CheckEnteredMatnrChange" valueHelpRequest="handleValueHelpForMaterial" suggest="handleSuggest"
+													valueLiveUpdate="false" change="CheckEnteredMatnrChange" valueHelpRequest="handleValueHelpForMaterial" suggest="handleSuggest" enabled="{detailView>/materialInputAllow}"
 													startSuggestion="3" suggestionItems="{ path: 'materialSuggestionModel>/Matsuggestions' }" fieldWidth="auto" maxSuggestionWidth="300px">
 													<suggestionItems>
 														<core:ListItem key="{materialSuggestionModel>Material}" text="{materialSuggestionModel>Material}"

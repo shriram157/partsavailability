@@ -81,7 +81,19 @@ module.exports = function () {
 			console.log(samlData);
 
 			console.log('send to ui data', sendToUi);
+			
+			
+			// ===================only for local testing - remove next deploy
+	// 					var obj_temp =
+	// 			{ Language: [ 'English', 'English' ],
+	// 			  UserType: [ 'Dealer', 'Dealer' ],
+ //               DealerCode: [ '42120', '42120' ] };
+	// 		// console.log(req.authInfo.userAttributes);
+	// 		 var parsedData = JSON.stringify(obj_temp);
+	// //		 console.log('After Json Stringify', parsedData);
 
+			
+// =========================================
 			var obj_data = JSON.parse(parsedData);
 			console.log('after json Parse', obj_data);
             var userType = obj_data.UserType[0];
@@ -115,57 +127,75 @@ module.exports = function () {
 					headers: reqHeader
 
 				}, function (error, response, body) {
+					
+					var attributeFromSAP;
 					if (!error && response.statusCode == 200) {
 						csrfToken = response.headers['x-csrf-token'];
 
 						var json = JSON.parse(body);
-						for (var i = 0; i < json.d.results.length; i++) {
-							// if (json.d.results[i].BusinessPartnerType == "Z001") {
+						// console.log(json);  // // TODO: delete it Guna
+				
+				
+				
+				for (var i = 0; i < json.d.results.length; i++) {
 
-							receivedData = {};
+					receivedData = {};
 
-							var BpLength = json.d.results[i].BusinessPartner.length;
-							receivedData.BusinessPartnerName = json.d.results[i].OrganizationBPName1;
-							receivedData.BusinessPartnerKey = json.d.results[i].BusinessPartner;
-							receivedData.BusinessPartner = json.d.results[i].BusinessPartner.substring(5, BpLength);
+					var BpLength = json.d.results[i].BusinessPartner.length;
+					receivedData.BusinessPartnerName = json.d.results[i].OrganizationBPName1;
+					receivedData.BusinessPartnerKey = json.d.results[i].BusinessPartner;
+					receivedData.BusinessPartner = json.d.results[i].BusinessPartner.substring(5, BpLength);
 
-							switch (json.d.results[i].to_Customer.Attribute1) {
-							case "01":
-								receivedData.Division = "10";
-								receivedData.Attribute = "01"
-								break;
-							case "02":
-								receivedData.Division = "20";
-								receivedData.Attribute = "02"
-								break;
-							case "03":
-								receivedData.Division = "Dual";
-								receivedData.Attribute = "03"
-								break;
-							case "04":
-								receivedData.Division = "10";
-								receivedData.Attribute = "04"
-								break;
-							case "05":
-								receivedData.Division = "Dual";
-								receivedData.Attribute = "05"
-								break;
-							default:
-							}
+					let attributeFromSAP;
+					try {
+						attributeFromSAP = json.d.results[i].to_Customer.Attribute1;
+					} catch (e) {
+						console.log("The Data is sent without Attribute value for the BP", json.d.results[i].BusinessPartner)
+							// return;
+					}
 
-							if ((receivedData.BusinessPartner == legacyDealer) && (userType == 'Dealer')) {
-								sendToUi.legacyDealer = receivedData.BusinessPartner,
-									sendToUi.legacyDealerName = receivedData.BusinessPartnerName
-								sendToUi.attributes.push(receivedData);
-								break;
-							}
+				
+					switch (attributeFromSAP) {
+					case "01":
+						receivedData.Division = "10";
+						receivedData.Attribute = "01"
+						break;
+					case "02":
+						receivedData.Division = "20";
+						receivedData.Attribute = "02"
+						break;
+					case "03":
+						receivedData.Division = "Dual";
+						receivedData.Attribute = "03"
+						break;
+					case "04":
+						receivedData.Division = "10";
+						receivedData.Attribute = "04"
+						break;
+					case "05":
+						receivedData.Division = "Dual";
+						receivedData.Attribute = "05"
+						break;
+					default:
+						receivedData.Division = "10";  //  lets put that as a toyota dealer
+						receivedData.Attribute = "01"
+						
+					}
+			
 
-							if (userType == 'Dealer') {
-								continue;
-							} else {
-								sendToUi.attributes.push(receivedData);
-							}
-						}
+					if ((receivedData.BusinessPartner == legacyDealer) && (userType == 'Dealer')) {
+						sendToUi.legacyDealer = receivedData.BusinessPartner,
+							sendToUi.legacyDealerName = receivedData.BusinessPartnerName
+						sendToUi.attributes.push(receivedData);
+						break;
+					}
+
+					if (userType == 'Dealer') {
+						continue;
+					} else {
+						sendToUi.attributes.push(receivedData);
+					}
+				}
 		
 					res.type("application/json").status(200).send(sendToUi);
 					console.log('Results sent successfully');

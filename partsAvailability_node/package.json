@@ -23,7 +23,7 @@
   },
   "files": [],
   "main": "server.js",
-  "name": "partsAvailability_Node",
+  "name": "qas_partsAvailability_Node",
   "scripts": {
     "start": "node server.js",
     "test": "node ./node_modules/gulp/bin/gulp test",

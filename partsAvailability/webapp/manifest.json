@@ -22,6 +22,7 @@
 				"settings": {
 					"odataVersion": "2.0",
 					"localUri": "localService/MD_PRODUCT_FS_SRV/metadata.xml"
+					
 				}
 			},
 			"ZMD_PRODUCT_FS_SRV": {
@@ -99,7 +100,10 @@
 				"settings": {
 					"defaultOperationMode": "Server",
 					"defaultBindingMode": "OneWay",
-					"defaultCountMode": "Request"
+					"defaultCountMode": "Request",
+					  "serviceUrlParams": {
+                       "sap-client": "200"
+                   }
 				},
 				"dataSource": "MD_PRODUCT_FS_SRV",
 				"preload": true
@@ -110,7 +114,10 @@
 				"settings": {
 					"defaultOperationMode": "Server",
 					"defaultBindingMode": "OneWay",
-					"defaultCountMode": "Request"
+					"defaultCountMode": "Request",
+					  "serviceUrlParams": {
+                       "sap-client": "200"
+                   }
 				},
 				"dataSource": "ZMD_PRODUCT_FS_SRV",
 				"preload": true
@@ -121,7 +128,10 @@
 				"settings": {
 					"defaultOperationMode": "Server",
 					"defaultBindingMode": "OneWay",
-					"defaultCountMode": "Request"
+					"defaultCountMode": "Request",
+					  "serviceUrlParams": {
+                       "sap-client": "200"
+                   }
 				},
 				"dataSource": "API_BUSINESS_PARTNER",
 				"preload": true

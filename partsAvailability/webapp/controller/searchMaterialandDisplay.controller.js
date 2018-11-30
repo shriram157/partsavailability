@@ -247,6 +247,7 @@ sap.ui.define([
 
 							oViewModel.setProperty("/enableMaterialEntered", false);
 							oViewModel.setProperty("/afterMaterialFound", false);
+							oViewModel.setProperty("/materialInputAllow", false);
 
 						}
 					}
@@ -307,7 +308,7 @@ sap.ui.define([
 
 			var materialFromScreen = this.getView().byId("material_id").getValue();
 			var selectedCustomerT = this.getView().byId("dealerID").getValue();
-
+			this.getView().byId("messageStripError").setProperty("visible", false);
 			if (!materialFromScreen || !selectedCustomerT) {
 				//mandatory parameters not made
 				oViewModel.setProperty("/enableMaterialEntered", false);
@@ -453,7 +454,7 @@ sap.ui.define([
 
 						this._oViewModel.setProperty("/afterMaterialFound", false);
 
-						var errorMessage = that._oResourceBundle.getText("materialNotFound"); //systemErrorOccured
+						var errorMessage = that._oResourceBundle.getText("supplyingPlantNotFound"); //systemErrorOccured
 
 						this.getView().byId("messageStripError").setProperty("visible", true);
 						this.getView().byId("messageStripError").setText(errorMessage);
@@ -483,38 +484,32 @@ sap.ui.define([
 				},
 
 				success: $.proxy(function (oData) {
-					
-			if (oData.Item.DoNotDisp != "X" ){
-				this.doNotDisplayReceived = false;
-					this.getView().byId("messageStripError").setProperty("visible", false);  // if there are any old messages clear it. 
-			    	this._materialDisplayModel.setProperty("/Msrp", oData.Item.Msrp);	
-			    	this._materialDisplayModel.setProperty("/Qtybackorder", oData.Item.Qtybackorder);
-					this._materialDisplayModel.setProperty("/Z3plqtyavail", oData.Item.Z3plqtyavail);
-					this._materialDisplayModel.setProperty("/invQtyReceived", oData.Item.Qtyavail);
+
+					if (oData.Item.DoNotDisp != "X") {
+						this.doNotDisplayReceived = false;
+						this.getView().byId("messageStripError").setProperty("visible", false); // if there are any old messages clear it. 
+						this._materialDisplayModel.setProperty("/Msrp", oData.Item.Msrp);
+						this._materialDisplayModel.setProperty("/Qtybackorder", oData.Item.Qtybackorder);
+						this._materialDisplayModel.setProperty("/Z3plqtyavail", oData.Item.Z3plqtyavail);
+						this._materialDisplayModel.setProperty("/invQtyReceived", oData.Item.Qtyavail);
 						this._materialDisplayModel.setProperty("/Dealernet", oData.Item.Dealernet);
 						this._materialDisplayModel.setProperty("/Roundingprofile", oData.Item.Roundingprofile);
-			}else {
-				this.doNotDisplayReceived = true;
-				
-			      		var warningMessage = this._oResourceBundle.getText("ParthasDoNotDisplay"); //Part Number has Do not display flag
+					} else {
+						this.doNotDisplayReceived = true;
+
+						var warningMessage = this._oResourceBundle.getText("ParthasDoNotDisplay"); //Part Number has Do not display flag
 						this.getView().byId("messageStripError").setProperty("visible", true);
 						this.getView().byId("messageStripError").setText(warningMessage);
 						this.getView().byId("messageStripError").setType("Warning");
-				
-				
-				
-				    this._materialDisplayModel.setProperty("/Msrp", "");
-				  	this._materialDisplayModel.setProperty("/Qtybackorder", "");
-					this._materialDisplayModel.setProperty("/Z3plqtyavail", "");
-					this._materialDisplayModel.setProperty("/invQtyReceived", "");
+
+						this._materialDisplayModel.setProperty("/Msrp", "");
+						this._materialDisplayModel.setProperty("/Qtybackorder", "");
+						this._materialDisplayModel.setProperty("/Z3plqtyavail", "");
+						this._materialDisplayModel.setProperty("/invQtyReceived", "");
 						this._materialDisplayModel.setProperty("/Dealernet", "");
 						this._materialDisplayModel.setProperty("/Roundingprofile", "");
-			}
-					
-				
-				
-			
-					
+					}
+
 					this._materialDisplayModel.setProperty("/Partreturnable", oData.Item.Partreturnable);
 					this._materialDisplayModel.setProperty("/Partstocked", oData.Item.Partstocked);
 					this._materialDisplayModel.setProperty("/Shippedvia", oData.Item.Shippedvia);
@@ -522,9 +517,8 @@ sap.ui.define([
 					// stop sales flag 
 					this._materialDisplayModel.setProperty("/stopSalesFlag", oData.Item.Stopsalesdesc);
 
-
 					//	that.stopSalesFlag = oData.d.Item.Stopsalesdesc;
-				//	this._materialDisplayModel.setProperty("/invQtyReceived", oData.Item.Qtyavail);
+					//	this._materialDisplayModel.setProperty("/invQtyReceived", oData.Item.Qtyavail);
 					this._materialDisplayModel.setProperty("/Parttypedesc", oData.Item.Parttypedesc);
 					this._materialDisplayModel.setProperty("/plantReceived", supplyingPlant);
 					this._materialDisplayModel.setProperty("/z3plPlantReceived", oData.Item.Z3plplant);
@@ -539,8 +533,8 @@ sap.ui.define([
 						this.getView().byId("messageStripError").setText(warningMessage);
 						this.getView().byId("messageStripError").setType("Warning");
 					} else {
-						if (this.doNotDisplayReceived != true){
-						this.getView().byId("messageStripError").setProperty("visible", false);
+						if (this.doNotDisplayReceived != true) {
+							this.getView().byId("messageStripError").setProperty("visible", false);
 						}
 
 					}
@@ -550,16 +544,13 @@ sap.ui.define([
 					//		that._callTheInventory_service(supplyingPlant);   -- commenting this out as we are getting the quantity from the main screen
 
 					this._callTheQuanity_service(selectedMaterial);
-		    //      	} else {
-		    //      	//  get the pricing to not display 
-		         	    
-		         	
-		         	
-		    //      			sap.ui.core.BusyIndicator.hide();
-		    //      			// part number has do not display flag 
+					//      	} else {
+					//      	//  get the pricing to not display 
 
-		         		
-		    //      	} // do not display check end. 
+					//      			sap.ui.core.BusyIndicator.hide();
+					//      			// part number has do not display flag 
+
+					//      	} // do not display check end. 
 				}, this),
 
 				error: function () {
@@ -625,33 +616,32 @@ sap.ui.define([
 					}
 					// ================ header Type - Begin ================================
 					//    oData.Type = "C"; // remove this
-					switch (oData.Type) {
-					case "C":
-						//TYPEC
-						var headMessage = this._oResourceBundle.getText("TYPECHEAD");
-
-						break;
-					case "M":
-						var headMessage = this._oResourceBundle.getText("TYPEMHEAD");
-						break;
-					case "A":
-						var headMessage = this._oResourceBundle.getText("TYPEAHEAD");
-						break;
-					case "I":
-						var headMessage = this._oResourceBundle.getText("TYPEI");
-						break;
-					case "F":
-						var headMessage = this._oResourceBundle.getText("TYPEF");
-						break;
-					default:
-					}
-					if (headMessage){
-					headMessage = " : " + headMessage;
-					}else {
-						headMessage="";	
-					}
-					// set the header description to material display model. 
-					this._materialDisplayModel.setProperty("/headerTypeDesc", headMessage);
+					// switch (oData.Type) {
+					// case "C":
+					// 	//TYPEC
+					// 	var headMessage = this._oResourceBundle.getText("TYPEMHEAD");//Multiple
+					// 	break;
+					// case "M":
+					// 	var headMessage = this._oResourceBundle.getText("TYPEMHEAD"); // Multiple
+					// 	break;
+					// case "A":
+					// 	var headMessage = this._oResourceBundle.getText("TYPEAHEAD");  // elective
+					// 	break;
+					// case "I":
+					// 	var headMessage = this._oResourceBundle.getText("TYPEI");
+					// 	break;
+					// case "F":
+					// 	var headMessage = this._oResourceBundle.getText("TYPEF");
+					// 	break;
+					// default:
+					// }
+					// if (headMessage) {
+					// 	headMessage = " : " + headMessage;
+					// } else {
+					// 	headMessage = "";
+					// }
+					// // set the header description to material display model. 
+					// this._materialDisplayModel.setProperty("/headerTypeDesc", headMessage);
 
 					// ================ header Type - End ================================		
 
@@ -659,6 +649,7 @@ sap.ui.define([
 					this._superSessionModel.setProperty("/items", superSession); // instatiate here to avoid screen refresh issues. 
 					this.getView().setModel(this._superSessionModel, "superSessionModel");
 					var that = this;
+					this.headerMessageSet = false;
 					$.each(oData.toForwSuper.results, function (i, item) {
 
 						if (item.ValidFrom == null) {
@@ -676,32 +667,64 @@ sap.ui.define([
 						case "C":
 							//TYPEC
 							var itemMessage = that._oResourceBundle.getText("TYPEC");
+							//for header 
+							if (that.headerMessageSet == false) {
+								var headMessageHeader = that._oResourceBundle.getText("TYPEMHEAD"); //Multiple
+								that._materialDisplayModel.setProperty("/headerTypeDesc", headMessageHeader);
+								that.headerMessageSet = true;
+							}
 							break;
 						case "M":
 							var itemMessage = that._oResourceBundle.getText("TYPEM");
+
+							//for header 
+							if (that.headerMessageSet == false) {
+								var headMessageHeader = that._oResourceBundle.getText("TYPEMHEAD"); //Multiple
+								that._materialDisplayModel.setProperty("/headerTypeDesc", headMessageHeader);
+								that.headerMessageSet = true;
+							}
 							break;
 						case "A":
-							var itemMessage = that._oResourceBundle.getText("TYPEA");
+							// var itemMessage = that._oResourceBundle.getText("TYPEA");
+							var itemMessage = "";
+							if (that.headerMessageSet == false) {
+								var headMessageHeader = that._oResourceBundle.getText("TYPEAHEAD"); // elective
+								that._materialDisplayModel.setProperty("/headerTypeDesc", headMessageHeader);
+								that.headerMessageSet = true;
+							}
 							break;
 						case "I":
-							var itemMessage = that._oResourceBundle.getText("TYPEI");
+							// var itemMessage = that._oResourceBundle.getText("TYPEI");
+							var itemMessage = "";
+							if (that.headerMessageSet == false) {
+								var headMessageHeader = that._oResourceBundle.getText("TYPEI"); // elective
+								that._materialDisplayModel.setProperty("/headerTypeDesc", headMessageHeader);
+								that.headerMessageSet = true;
+							}
 							break;
 						case "F":
-							var itemMessage = that._oResourceBundle.getText("TYPEF");
+							// var itemMessage = that._oResourceBundle.getText("TYPEF");
+							var itemMessage = "";
+							if (that.headerMessageSet == false) {
+								var headMessageHeader = that._oResourceBundle.getText("TYPEF"); // elective
+								that._materialDisplayModel.setProperty("/headerTypeDesc", headMessageHeader);
+								that.headerMessageSet = true;
+							}
+
 							break;
 						default:
 						}
 
 						//================================= end of Item. 
-//  if the part has do not display flag then comment out the price and quantity data. 
-                      if (that.doNotDisplayReceived == true ) {
-                      	item.DealerNet = "";
-                      	item.QtyReqd   = "";
-                      	item.QtyAvail  = "";
-                      } else {
-                      	
-                      		that.getView().byId("messageStripError").setProperty("visible", false);
-                      };
+						//  if the part has do not display flag then comment out the price and quantity data. 
+						if (that.doNotDisplayReceived == true) {
+							item.DealerNet = "";
+							item.QtyReqd = "";
+							item.QtyAvail = "";
+						} else {
+
+							that.getView().byId("messageStripError").setProperty("visible", false);
+						};
 
 						superSession.push({
 							"MatnrSuper": item.MatnrSuper,
@@ -726,8 +749,6 @@ sap.ui.define([
 
 					this._superSessionModel.setProperty("/items", superSession);
 					this.getView().setModel(this._superSessionModel, "superSessionModel");
-
-				
 
 				}, this),
 
@@ -798,7 +819,6 @@ sap.ui.define([
 
 				success: $.proxy(function (oData) {
 
-
 					sap.ui.core.BusyIndicator.hide(); //  this is where I end the busy indicator
 					var that = this;
 					$.each(oData.results, function (i, item) {
@@ -809,9 +829,9 @@ sap.ui.define([
 						} else {
 							item.Location = item.Location;
 						}
-                          if (that.doNotDisplayReceived == true ) {
-                          	item.QtyAvailable = "";
-                          }
+						if (that.doNotDisplayReceived == true) {
+							item.QtyAvailable = "";
+						}
 						materialInventory.push({
 							"PlantDesc": item.Location,
 							"MatlWrhsStkQtyInMatlBaseUnit": item.QtyAvailable
@@ -823,9 +843,9 @@ sap.ui.define([
 					this.getView().setModel(this._materialInventory, "inventoryModel");
 					var oModelSuperSession = this.getView().getModel("inventoryModel");
 					oModelSuperSession.refresh();
-							if (this.doNotDisplayReceived != true){
+					if (this.doNotDisplayReceived != true) {
 						this.getView().byId("messageStripError").setProperty("visible", false);
-						}
+					}
 
 				}, this),
 				error: function () {
@@ -927,8 +947,28 @@ sap.ui.define([
 						currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
 
 					} else { // set the lexus logo
-						var currentImageSource = this.getView().byId("idLexusLogo");
-						currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
+						if (this.sDivision == "Dual") {
+							// read the url division. default make it toyota
+							var isDivisionSent = window.location.search.match(/Division=([^&]*)/i);
+							if (isDivisionSent) {
+								this.sDivision = window.location.search.match(/Division=([^&]*)/i)[1];
+								if (this.sDivision == 10) {
+									var currentImageSource = this.getView().byId("idLexusLogo");
+									currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
+								} else {
+									var currentImageSource = this.getView().byId("idLexusLogo");
+									currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
+								}
+							} else { // for default behaviour we use toyota. 
+								this.sDivision = "10";
+								var currentImageSource = this.getView().byId("idLexusLogo");
+								currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
+							}
+						} else { // it is lexus
+							var currentImageSource = this.getView().byId("idLexusLogo");
+							currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
+
+						}
 
 					}
 

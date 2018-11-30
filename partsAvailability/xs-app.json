@@ -1,11 +1,11 @@
 {
-	"welcomeFile": "/partsAvailability/index.html",
+	"welcomeFile": "/partsavailability/index.html",
 	"authenticationMethod": "route",
 	"logout": {
 		"logoutEndpoint": "/do/logout"
 	},
 	"routes": [{
-		"source": "^/partsAvailability/(.*)$",
+		"source": "^/partsavailability/(.*)$",
 		"target": "$1",
 		"localDir": "webapp",
 		"authenticationType": "xsuaa",
