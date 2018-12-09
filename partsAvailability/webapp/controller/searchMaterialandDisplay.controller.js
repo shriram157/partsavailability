@@ -121,7 +121,8 @@ sap.ui.define([
 							"BusinessPartnerKey": item.BusinessPartnerKey,
 							"BusinessPartner": item.BusinessPartner, //.substring(5, BpLength),
 							"BusinessPartnerName": item.BusinessPartnerName, //item.OrganizationBPName1 //item.BusinessPartnerFullName
-							"Division": item.Division
+							"Division": item.Division,
+							"BusinessPartnerType": item.BusinessPartnerType
 						});
 
 					});
@@ -171,7 +172,25 @@ sap.ui.define([
 				oViewModel.setProperty("/editAllowed", true);
 			} else {
 				//he is  a dealer.
+				
+				//ets also set the division from the url here
+				
+			  var isDivisionSent = window.location.search.match(/Division=([^&]*)/i);
+				if (isDivisionSent) {
+					this.sDivision = window.location.search.match(/Division=([^&]*)/i)[1];
+					if (this.sDivision == '10') // set the toyoto logo
+						{
+							var currentImageSource = this.getView().byId("idLexusLogo");
+							currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
 
+						} else { // set the lexus logo
+							var currentImageSource = this.getView().byId("idLexusLogo");
+							currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
+
+						}
+				}
+
+     
 				for (var i = 0; i < aDataBP.length; i++) {
 					if (aDataBP[i].BusinessPartner == userDetails[0].DealerCode) {
 						this.getView().byId("dealerID").setSelectedKey(aDataBP[i].BusinessPartnerKey);
@@ -180,6 +199,7 @@ sap.ui.define([
 						this.sSelectedDealer = aDataBP[i].BusinessPartnerKey;
 						this._selectedDealerModel.setProperty("/Dealer_No", aDataBP[i].BusinessPartnerKey);
 						this._selectedDealerModel.setProperty("/Dealer_Name", aDataBP[i].BusinessPartnerName);
+						this._selectedDealerModel.setProperty("/Dealer_Type", aDataBP[i].BusinessPartnerType);
 
 						oViewModel.setProperty("/editAllowed", false);
 
@@ -409,8 +429,46 @@ sap.ui.define([
 		}, // end of handlepart search
 
 		_getTheDivision: function (Material) {
+			
+			// if he is a dual dealer and the url has no division it is gettin difficult for local testing.  so 
+			// lets put a popup dialog. 
+		
+			if (this.sDivision == "Dual" ||  this.sDivision_old == "Dual" ){
+					sap.ui.core.BusyIndicator.hide();
+		        var that = this;
+		       
+				   this.sDivision_old = "Dual";// TODO: will comment out before qc
+			  sap.m.MessageBox.confirm("Dealer Brand Selection for Dual Dealers", {
+					title: "The selecte dealer is of type Dual",
+					actions:["Toyota","Lexus"],
+					icon:"",
+				    onClose: function(action){
+				    	if(action=="Toyota"){
+				    	 	that.sDivision = "10";
+				    				sap.ui.core.BusyIndicator.show();
+				    	that._callSupplyingPlant();
+				    	}
+				    	else
+				    		{
+					    	
+					    	that.sDivision = "20";
+					    	sap.ui.core.BusyIndicator.show();
+					    		that._callSupplyingPlant();
+				    		}
+				    }
+				}); 
+			
+			}  else {// end of if for this.sDivision
+			
+			
+			
+			
 
 			this._callSupplyingPlant();
+			
+		 }
+			
+			
 
 		},
 
@@ -478,6 +536,14 @@ sap.ui.define([
 				(sCurrentLocale) + "'," + "Plant" + "='" + (supplyingPlant) + "')" + "?sap-client=" + client;
 
 			var that = this;
+
+			// pio indicator check . 
+			// var oDealerType = this.getView().getModel("selectedDealerModel").getProperty("/Dealer_type");
+			var dealerData = this.getView().getModel("selectedDealerModel").getData();
+			var oDealerType = dealerData.Dealer_Type;
+			
+			//	this._selectedDealerModel.setProperty("/Dealer_type", aDataBP[i].BusinessPartnerType);
+
 			ozMaterialDisplayModel.read("/zc_PriceSet" + priceSetUrl, {
 				urlParameters: {
 
@@ -485,7 +551,7 @@ sap.ui.define([
 
 				success: $.proxy(function (oData) {
 
-					if (oData.Item.DoNotDisp != "X") {
+					if (oData.Item.DoNotDisp !== "X" && !(oData.Item.PIOInd === '01' && oDealerType === 'Z001')) {
 						this.doNotDisplayReceived = false;
 						this.getView().byId("messageStripError").setProperty("visible", false); // if there are any old messages clear it. 
 						this._materialDisplayModel.setProperty("/Msrp", oData.Item.Msrp);
@@ -526,16 +592,16 @@ sap.ui.define([
 
 					/// if the stop sales Flag = Yes then populate the warning message. 
 
-					if (oData.Item.Stopsalesdesc == "Yes" || oData.Item.Stopsalesdesc == "Oui") {
+					if ((oData.Item.Stopsalesdesc == "Yes" || oData.Item.Stopsalesdesc == "Oui") && !(this.doNotDisplayReceived == true)) {
 
-						var warningMessage = this._oResourceBundle.getText("ParthasStopSales"); //Part Number has Stop Sales Flag as Yes
+						var warningMessage1 = this._oResourceBundle.getText("ParthasStopSales"); //Part Number has Stop Sales Flag as Yes
 						this.getView().byId("messageStripError").setProperty("visible", true);
-						this.getView().byId("messageStripError").setText(warningMessage);
+						this.getView().byId("messageStripError").setText(warningMessage1);
 						this.getView().byId("messageStripError").setType("Warning");
 					} else {
-						if (this.doNotDisplayReceived != true) {
-							this.getView().byId("messageStripError").setProperty("visible", false);
-						}
+						// if (this.doNotDisplayReceived != true) {
+						// 	this.getView().byId("messageStripError").setProperty("visible", false);
+						// }
 
 					}
 
@@ -825,7 +891,7 @@ sap.ui.define([
 						if ((item.Location == "A") || (item.Location == "O")) {
 							item.Location = "California";
 						} else if (item.Location == "T") {
-							item.Location = "Kentuncky";
+							item.Location = "Kentucky";
 						} else {
 							item.Location = item.Location;
 						}
@@ -844,7 +910,7 @@ sap.ui.define([
 					var oModelSuperSession = this.getView().getModel("inventoryModel");
 					oModelSuperSession.refresh();
 					if (this.doNotDisplayReceived != true) {
-						this.getView().byId("messageStripError").setProperty("visible", false);
+					//c	this.getView().byId("messageStripError").setProperty("visible", false);
 					}
 
 				}, this),
@@ -938,6 +1004,10 @@ sap.ui.define([
 
 			for (var i = 0; i < aDataBP.length; i++) {
 				if (aDataBP[i].BusinessPartner == sSelectedText) {
+
+					// extract the business partner type to be validated for pio indicator. 
+
+					this._selectedDealerModel.setProperty("/Dealer_type", aDataBP[i].BusinessPartnerType);
 					// set the Division  				    
 					this.sDivision = aDataBP[i].Division;
 

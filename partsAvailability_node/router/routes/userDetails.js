@@ -108,19 +108,17 @@ module.exports = function () {
 			// var legacyDealer = '01050'; // local testing
 			// var userType = 'Dealer'
 
-			//if  usertype eq dealer then just get the details for that dealer,  otherwise get everything else
+		//	if  usertype eq dealer then just get the details for that dealer,  otherwise get everything else
 
-			// if (userType == 'Dealer') {
-			// 	var url1 = "/API_BUSINESS_PARTNER/A_BusinessPartner/?$format=json&$expand=to_Customer&$filter=endswith(BusinessPartner," + "'" + (
-			// 			legacyDealer) +
-			// 		"') and endswith(BusinessPartnerType,'Z001')&$format=json&$expand=to_Customer&?sap-client=" + client +
-			// 		"&$orderby=BusinessPartner%20asc";
-			// } else {
+			if (userType == 'Dealer') {
 
-			var url1 = "/API_BUSINESS_PARTNER/A_BusinessPartner/?$format=json&$expand=to_Customer&?sap-client=" + client +
-				"&$filter=BusinessPartnerType%20eq%20%27Z001%27&$orderby=BusinessPartner%20asc";
+			var url1 = "/API_BUSINESS_PARTNER/A_BusinessPartner/?$format=json&$filter=SearchTerm2 eq'"+ legacyDealer +"'&$expand=to_Customer&$format=json&?sap-client=" + client ;			 
 
-			// }
+			} else {
+
+        	var url1 = "/API_BUSINESS_PARTNER/A_BusinessPartner/?$format=json&$expand=to_Customer&?sap-client=" + client + "&$filter=BusinessPartnerType eq 'Z001' or BusinessPartnerType eq 'Z004' or BusinessPartnerType eq 'Z005'  &$orderby=BusinessPartner asc"	;		
+
+			 }
 			console.log('Final url being fetched', url + url1);
 			request({
 					url: url + url1,
@@ -145,6 +143,7 @@ module.exports = function () {
 					receivedData.BusinessPartnerName = json.d.results[i].OrganizationBPName1;
 					receivedData.BusinessPartnerKey = json.d.results[i].BusinessPartner;
 					receivedData.BusinessPartner = json.d.results[i].BusinessPartner.substring(5, BpLength);
+					receivedData.BusinessPartnerType = json.d.results[i].BusinessPartnerType;
 
 					let attributeFromSAP;
 					try {

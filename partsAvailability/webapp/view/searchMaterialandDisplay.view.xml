@@ -20,27 +20,26 @@
 					<uxap:sections>
 						<uxap:ObjectPageSection showTitle="true" titleUppercase="false" visible="true">
 							<uxap:subSections>
-								<uxap:ObjectPageSubSection title="{selectedDealerModel>/Dealer_Name}" border-bottom="none">
-									<!--<uxap:blocks/>-->
+								<uxap:ObjectPageSubSection title="{selectedDealerModel>/Dealer_Name}">
+									<!-- <uxap:blocks/> -->
 									<uxap:blocks>
 										<MessageStrip id="messageStripError" text="" showIcon="true" showCloseButton="true" class="sapUiMediumMarginBottom"
 											visible="{detailView>/materialFormError}"/>
 									</uxap:blocks>
 									<uxap:blocks>
 										<f:SimpleForm columnsL="1" columnsM="1" editable="true" emptySpanL="0" emptySpanM="0" id="idSimpleFormHeader" labelSpanL="3" labelSpanM="3"
-											layout="ResponsiveGridLayout" maxContainerCols="2" minWidth="1024" >
-											
+											layout="ResponsiveGridLayout" maxContainerCols="2" minWidth="1024">
 											<f:content>
-												<!--<core:Title width="10rem"/>-->
+												<!-- <core:Title width="10rem"/> -->
 												<Label design="Standard" id="idDealerInputLabel" text="{i18n>DEALER_SEARCH_FIELD_LABEL}" textAlign="Left">
 													<layoutData>
 														<layout:GridData span="L2 M12 S12"/>
 													</layoutData>
 												</Label>
-												<ComboBox showSecondaryValues="true" required="true" visible="{detailView>/visibleByDefault}" wrap="false" fieldGroupIds="requiredField"
-													editable="{detailView>/editAllowed}" width="40rem" wrapping="false" placeholder="{i18n>DEALER_PLACEHOLDER_TEXT}"
-													value="{BpDealerModel>/BusinessPartnerKey}" filterSecondaryValues="true" id="dealerID" enabled="{detailView>/onlyShownoEditForChange}"
-													items="{path: 'BpDealerModel>/', sorter: { path: 'BusinessPartner' }, length:350 }" selectedKey="{BusinessPartnerKey}"
+												<ComboBox showSecondaryValues="true" required="true" visible="{detailView>/visibleByDefault}" fieldGroupIds="requiredField"
+													editable="{detailView>/editAllowed}" width="40rem" placeholder="{i18n>DEALER_PLACEHOLDER_TEXT}" value="{BpDealerModel>/BusinessPartnerKey}"
+													filterSecondaryValues="true" id="dealerID" enabled="{detailView>/onlyShownoEditForChange}"
+													items="{path: 'BpDealerModel>/', sorter: { path: 'BusinessPartner' }, length:750 }" selectedKey="{BusinessPartnerKey}"
 													selectionChange="onBusinessPartnerSelected" showValueStateMessage="false" textAlign="Begin">
 													<core:ListItem key="{BpDealerModel>BusinessPartnerKey}" text="{BpDealerModel>BusinessPartner}"
 														additionalText="{BpDealerModel>BusinessPartnerName}"/>
@@ -48,7 +47,7 @@
 														<layout:GridData span="L2 M12 S12"/>
 													</layoutData>
 												</ComboBox>
-												<!--<core:Title/>-->
+												<!-- <core:Title/> -->
 												<Label design="Standard" id="idMaterialInputLabel" text="{i18n>PART_NUMBER}" textAlign="Left">
 													<layoutData>
 														<layout:GridData span="L2 M12 S12"/>
@@ -57,11 +56,12 @@
 												<Input id="material_id" required="true" placeholder="{i18n>PART_NUMBER_PLACEHOLDER_TEXT}" name="materialNumberChange"
 													value="{ path: 'materialDisplayModel>/Material', type: 'sap.ui.model.odata.type.String' , constraints : { minLength: 1,maxLength: 20, nullable:false} }"
 													width="auto" type="Text" showSuggestion="true" liveChange="liveChangeDataEntered" suggestionItemSelected="matnrFromSuggestionSelectedChange"
-													valueLiveUpdate="false" change="CheckEnteredMatnrChange" valueHelpRequest="handleValueHelpForMaterial" suggest="handleSuggest" enabled="{detailView>/materialInputAllow}"
-													startSuggestion="3" suggestionItems="{ path: 'materialSuggestionModel>/Matsuggestions' }" fieldWidth="auto" maxSuggestionWidth="300px">
+													valueLiveUpdate="false" change="CheckEnteredMatnrChange" valueHelpRequest="handleValueHelpForMaterial" suggest="handleSuggest"
+													enabled="{detailView>/materialInputAllow}" startSuggestion="3" suggestionItems="{ path: 'materialSuggestionModel>/Matsuggestions' }"
+													fieldWidth="auto" maxSuggestionWidth="500px">
 													<suggestionItems>
 														<core:ListItem key="{materialSuggestionModel>Material}" text="{materialSuggestionModel>Material}"
-															additionalText="{materialSuggestionModel>MaterialName}" width="auto"/>
+															additionalText="{materialSuggestionModel>MaterialName}"/>
 													</suggestionItems>
 													<layoutData>
 														<layout:GridData span="L2 M10 S12" linebreak="false" linebreakL="false" linebreakM="false" linebreakS="false" linebreakXL="false"/>
@@ -82,8 +82,8 @@
 										</f:SimpleForm>
 									</uxap:blocks>
 									<uxap:blocks>
-										<f:SimpleForm id="materialData_id"  class="myFormBorder" editable="false" layout="ResponsiveGridLayout" adjustLabelSpan="false"
-											visible="{detailView>/afterMaterialFound}" singleContainerFullSize="true" backgroundDesign="Solid" >
+										<f:SimpleForm id="materialData_id" class="myFormBorder" editable="false" layout="ResponsiveGridLayout" adjustLabelSpan="false"
+											visible="{detailView>/afterMaterialFound}" singleContainerFullSize="true" backgroundDesign="Solid">
 											<core:Title/>
 											<Label text="{i18n>PART_DESCRIPTION}"/>
 											<Text text="{materialDisplayModel>/MaterialText}"/>
@@ -91,7 +91,7 @@
 											<Text text="{materialDisplayModel>/Dealernet}"/>
 											<Label text="{i18n>BACKWARD_SUPERSESSION}"/>
 											<Link text="{materialDisplayModel>/MatnrSuper}" press="handleMatnrSuperPress"/>
-											<!--<Text text="{Werks}"/>-->
+											<!-- <Text text="{Werks}"/> -->
 											<Label text="{i18n>RETURNABLE}"/>
 											<Text text="{materialDisplayModel>/Partreturnable}"/>
 											<Label text="{i18n>PART_TYPE_CODE}"/>
@@ -100,9 +100,13 @@
 											<Text text="{materialDisplayModel>/Obsolete}"/>
 											<core:Title/>
 											<Label text="{i18n>SELL_PACKAGE_QTY}" id="sellpackageqtyLabelId"/>
-											<!--<Label text="{path:'i18n>SELL_PACKAGE_QTY', formatter: '.getItsSpeakersName'}" />-->
+											<!--
+<Label text="{path:'i18n>SELL_PACKAGE_QTY', formatter: '.getItsSpeakersName'}" />
+-->
 											<Text text="{path:'materialDisplayModel>/Roundingprofile', formatter:'.formatter.quantity'}"/>
-											<!--<Text text="{materialDisplayModel>/Roundingprofile}"/>-->
+											<!--
+<Text text="{materialDisplayModel>/Roundingprofile}"/>
+-->
 											<Label text="{i18n>SUGGESTED_LIST_PRICE}"/>
 											<Text text="{materialDisplayModel>/Msrp}"/>
 											<Label text="{i18n>STOP_SALES_FLAG}"/>
@@ -114,30 +118,35 @@
 										</f:SimpleForm>
 									</uxap:blocks>
 									<uxap:blocks>
-										<Table id="idInventoryT"  inset="false" items="{inventoryModel>/items}" mode="None" visible="{detailView>/afterMaterialFound}" alternateRowColors="true">
+										<Table id="idInventoryT" inset="false" items="{inventoryModel>/items}" mode="None" visible="{detailView>/afterMaterialFound}"
+											alternateRowColors="true">
 											<headerToolbar/>
 											<columns>
-												<Column id="idLocation" hAlign="Centre" minScreenWidth="Phone">
+												<Column id="idLocation" hAlign="Center" minScreenWidth="Phone">
 													<header>
 														<Text id="isLocationText" text="{i18n>LOCATION_TEXT}"/>
 													</header>
 												</Column>
-												<Column demandPopin="true" hAlign="Centre" id="idQtyAvailable" minScreenWidth="Tablet">
+												<Column demandPopin="true" hAlign="Center" id="idQtyAvailable" minScreenWidth="Tablet">
 													<header>
 														<Text id="idQtyAvail" text="{i18n>QTY_AVAILABLE}"/>
 													</header>
 												</Column>
-												<Column demandPopin="true" id="idQtyBO" hAlign="Centre" minScreenWidth="Tablet" popinDisplay="Inline">
+												<Column demandPopin="true" id="idQtyBO" hAlign="Center" minScreenWidth="Tablet" popinDisplay="Inline">
 													<header>
 														<Text id="idQtyBackOrd" text="{i18n>QTY_BACK_ORDERED}"/>
 													</header>
 												</Column>
-												<!--<Column demandPopin="true" hAlign="Centre" id="idStopSalesflgC" minScreenWidth="Tablet">-->
-												<!--	<header>-->
-												<!--		<Text id="idStopSalesflg" text="{i18n>STOP_SALES_FLAG}"/>-->
-												<!--	</header>-->
-												<!--</Column>-->
-												<Column demandPopin="true" id="3PlqtyText" hAlign="Centre" minScreenWidth="Tablet" popinDisplay="Inline">
+												<!--
+<Column demandPopin="true" hAlign="Centre" id="idStopSalesflgC" minScreenWidth="Tablet">
+-->
+												<!-- 	<header> -->
+												<!--
+		<Text id="idStopSalesflg" text="{i18n>STOP_SALES_FLAG}"/>
+-->
+												<!-- 	</header> -->
+												<!-- </Column> -->
+												<Column demandPopin="true" id="PlqtyText" hAlign="Center" minScreenWidth="Tablet" popinDisplay="Inline">
 													<header>
 														<Text id="id3Plqty" text="{i18n>3PL_QTY_AVAIL_TEXT}"/>
 													</header>
@@ -146,21 +155,26 @@
 											<items>
 												<ColumnListItem>
 													<cells>
-														<!--<Text text="{superSessionModel>MatnrSuper}" width="100%"/>-->
-														<Text text="{inventoryModel>PlantDesc}" />
-														<!--<Text text="{inventoryModel>MatlWrhsStkQtyInMatlBaseUnit}"/>-->
-														<Text text="{ path:'inventoryModel>MatlWrhsStkQtyInMatlBaseUnit', formatter:'.formatter.quantity' }" />
-														<Text text="{ path:'inventoryModel>Qtybackorder', formatter:'.formatter.quantity' }" />
-														<!--<Text text="{inventoryModel>Qtybackorder}"/>-->
-														<!--<Text text="{inventoryModel>stopSalesFlag}"/>-->
-														<!--<Text text="{inventoryModel>Z3plqtyavail}"/>-->
-														<Text text="{ path:'inventoryModel>Z3plqtyavail', formatter:'.formatter.quantity' }" visible="{detailView>/visibleZ3plqty}" id="id3PlValue"
-														/>
+														<!--
+<Text text="{superSessionModel>MatnrSuper}" width="100%"/>
+-->
+														<Text text="{inventoryModel>PlantDesc}"/>
+														<!--
+<Text text="{inventoryModel>MatlWrhsStkQtyInMatlBaseUnit}"/>
+-->
+														<Text text="{ path:'inventoryModel>MatlWrhsStkQtyInMatlBaseUnit', formatter:'.formatter.quantity' }"/>
+														<Text text="{ path:'inventoryModel>Qtybackorder', formatter:'.formatter.quantity' }"/>
+														<!-- <Text text="{inventoryModel>Qtybackorder}"/> -->
+														<!-- <Text text="{inventoryModel>stopSalesFlag}"/> -->
+														<!-- <Text text="{inventoryModel>Z3plqtyavail}"/> -->
+														<Text text="{ path:'inventoryModel>Z3plqtyavail', formatter:'.formatter.quantity' }" visible="{detailView>/visibleZ3plqty}" id="id3PlValue"/>
 													</cells>
 												</ColumnListItem>
 											</items>
 										</Table>
-										<Table id="idForwardSupersession" class="myFormBorder" inset="false" items="{superSessionModel>/items}" mode="None" visible="{detailView>/afterMaterialFound}" alternateRowColors="true">
+										<Table id="idForwardSupersession" class="myFormBorder" inset="false"
+											items="{ path: 'superSessionModel>/items', sorter: { path: 'Type', descending:true } }" mode="None"
+											visible="{detailView>/afterMaterialFound}" alternateRowColors="true">
 											<headerToolbar>
 												<Toolbar>
 													<Label id="idToolbarLabel" text="{i18n>FORWARD_SUPER_SESSION}"/>
@@ -179,11 +193,11 @@
 														<Text id="idPartDescriptions" text="{i18n>PART_DESCRIPTION}"/>
 													</header>
 												</Column>
-	             						<Column demandPopin="true" hAlign="Center" id="idTypeCol" minScreenWidth="Tablet" >
+												<Column demandPopin="true" hAlign="Center" id="idTypeCol" minScreenWidth="Tablet">
 													<header>
 														<Text id="idType" text="{i18n>TYPE}"/>
 													</header>
-												</Column>				
+												</Column>
 												<Column demandPopin="true" hAlign="Center" id="idDealerNet" minScreenWidth="Tablet" popinDisplay="Inline"
 													visible="{superSessionModel>/CurrentStockVisible}">
 													<header>
@@ -218,20 +232,20 @@
 											<items>
 												<ColumnListItem type="Active" press="onPressSuperSession" id="supersessionData">
 													<cells>
-														<!--<Text text="{superSessionModel>MatnrSuper}" width="100%"/>-->
-														<ObjectIdentifier title="{superSessionModel>MatnrSuper}" text="{Description}" titleActive="true" titlePress="handleMatnrSuperPress"
-															/>
-														<Text text="{superSessionModel>PartDesc}"  />
-														<Text text="{superSessionModel>Type}" />
-														<Text text="{superSessionModel>DealerNet}" />
-														<!--<Text text="{superSessionModel>QtyReqd}"/>-->
-														<Text text="{ path:'superSessionModel>QtyReqd', formatter:'.formatter.quantity' }" />
-														<!--<Text text="{superSessionModel>QtyAvail}"/>-->
-														<Text text="{ path:'superSessionModel>QtyAvail', formatter:'.formatter.quantity' }" />
-														<Text text="{superSessionModel>HasForwSuper}" />
+														<!--
+<Text text="{superSessionModel>MatnrSuper}" width="100%"/>
+-->
+														<ObjectIdentifier title="{superSessionModel>MatnrSuper}" text="{Description}" titleActive="true" titlePress="handleMatnrSuperPress"/>
+														<Text text="{superSessionModel>PartDesc}"/>
+														<Text text="{superSessionModel>Type}"/>
+														<Text text="{superSessionModel>DealerNet}"/>
+														<!-- <Text text="{superSessionModel>QtyReqd}"/> -->
+														<Text text="{ path:'superSessionModel>QtyReqd', formatter:'.formatter.quantity' }"/>
+														<!-- <Text text="{superSessionModel>QtyAvail}"/> -->
+														<Text text="{ path:'superSessionModel>QtyAvail', formatter:'.formatter.quantity' }"/>
+														<Text text="{superSessionModel>HasForwSuper}"/>
 														<Text
-															text="{ path: 'superSessionModel>LastUpdDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd', strictParsing: true , UTC: true } }"
-															/>
+															text="{ path: 'superSessionModel>LastUpdDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd', strictParsing: true , UTC: true } }"/>
 													</cells>
 												</ColumnListItem>
 											</items>
