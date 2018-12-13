@@ -104,6 +104,7 @@ sap.ui.define([
 			}
 
 			this.nodeJsUrl = this.sPrefix + "/node";
+ 
 
 			$.ajax({
 				url: this.sPrefix + "/userDetails/attributes",
@@ -129,7 +130,6 @@ sap.ui.define([
 					that.getView().setModel(new sap.ui.model.json.JSONModel(BpDealer), "BpDealerModel");
 					// read the saml attachments the same way 
 					$.each(oData.samlAttributes, function (i, item) {
-
 						userAttributes.push({
 							"UserType": item.UserType[0],
 							"DealerCode": item.DealerCode[0],
@@ -148,6 +148,8 @@ sap.ui.define([
 					sap.ui.core.BusyIndicator.hide();
 				}
 			});
+
+			
 		},
 
 		_readTheAttributes: function () {
@@ -314,6 +316,25 @@ sap.ui.define([
 				}
 
 			}
+
+
+//  
+			// check if the url has the division and material sent,  then call the forPartsOrdering and then turn off the display for material. // TODO: 
+ 
+				var isPartNumberSent = window.location.search.match(/partNumber=([^&]*)/i);
+				if (isPartNumberSent) {
+				 var materialFromUrl = window.location.search.match(/partNumber=([^&]*)/i)[1];	
+							var upperCaseMaterial = materialFromUrl.toUpperCase();
+		                    	materialFromUrl = upperCaseMaterial;
+			   this.getView().byId("material_id").setValue(materialFromUrl);
+			   this.handlePartSearch();
+			   
+				}
+
+
+
+
+
 
 		},
 

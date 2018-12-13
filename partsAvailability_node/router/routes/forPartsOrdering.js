@@ -52,8 +52,15 @@ module.exports = function () {
 
 	// user Information to UI.
 	//Security Attributes received via UserAttributes via Passport
-	app.get("/attributes", (req, res) => {
-			console.log("attributes fetch started")
+	
+	
+	// app.get('/attributes/:id', function(req, res) {
+ //      res.send('user' + req.params.id);    
+ //     });
+
+	
+	app.get('/attributes/forPartsOrder', (req, res) => {
+			console.log("Parts Availability Aplication is being called from Parts Ordering with Dealer code", req.params.DealerCode)
 				//	res.type("application/json").status(200).send(JSON.stringify(req.authInfo.userAttributes));
 			var receivedData = {};
 
@@ -95,13 +102,18 @@ module.exports = function () {
 			
 // =========================================
 			var obj_data = JSON.parse(parsedData);
-			console.log('after json Parse', obj_data);
-            var userType = obj_data.UserType[0];
+			console.log('identify provider data received', obj_data);
+           // var userType = obj_data.UserType[0];
           
-            if (userType == 'Dealer' ) {
-			var legacyDealer = obj_data.DealerCode[0];
-            }
-			// var userType = obj_data.UserType[0];
+   //         if (userType == 'Dealer' ) {
+			// var legacyDealer = obj_data.DealerCode[0];
+   //         }
+			 
+		//	if (req.params.DealerCode) {
+		        var  userType = 'Dealer';  //make it a dealer type
+		          var legacyDealer = obj_data.DealerCode[0];	
+				
+		//	}
 
 			console.log('Dealer Number logged in and accessed parts Availability App', legacyDealer);
 
@@ -116,7 +128,7 @@ module.exports = function () {
 
 			} else {
 
-        	var url1 = "/API_BUSINESS_PARTNER/A_BusinessPartner/?$format=json&$expand=to_Customer&?sap-client=" + client + "&$filter=(BusinessPartnerType eq 'Z001' or BusinessPartnerType eq 'Z004' or BusinessPartnerType eq 'Z005') and zstatus ne 'X' &$orderby=BusinessPartner asc"	;		
+        	var url1 = "/API_BUSINESS_PARTNER/A_BusinessPartner/?$format=json&$expand=to_Customer&?sap-client=" + client + "&$filter=BusinessPartnerType eq 'Z001' or BusinessPartnerType eq 'Z004' or BusinessPartnerType eq 'Z005'  &$orderby=BusinessPartner asc"	;		
 
 			 }
 			console.log('Final url being fetched', url + url1);
@@ -140,10 +152,10 @@ module.exports = function () {
 					receivedData = {};
 
 					var BpLength = json.d.results[i].BusinessPartner.length;
-					receivedData.BusinessPartnerName = json.d.results[i].OrganizationBPName1;
-					receivedData.BusinessPartnerKey = json.d.results[i].BusinessPartner;
-					receivedData.BusinessPartner = json.d.results[i].BusinessPartner.substring(5, BpLength);
-					receivedData.BusinessPartnerType = json.d.results[i].BusinessPartnerType;
+					receivedData.BusinessPartnerName  = json.d.results[i].OrganizationBPName1;
+					receivedData.BusinessPartnerKey   = json.d.results[i].BusinessPartner;
+					receivedData.BusinessPartner      = json.d.results[i].BusinessPartner.substring(5, BpLength);
+					receivedData.BusinessPartnerType  = json.d.results[i].BusinessPartnerType;
 
 					let attributeFromSAP;
 					try {

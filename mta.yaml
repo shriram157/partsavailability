@@ -1,5 +1,5 @@
 ID: partsAvailability
-_schema-version: '2.1'
+_schema-version: '3.1'
 description: 'partsAvailability Application MTA '
 version: 0.0.1
 modules:
@@ -7,7 +7,7 @@ modules:
    type: nodejs
    path: partsAvailability_node
    parameters:
-      host: partsAvailability_node
+      host: qas_partsAvailability_node
       register-service-url: true
       service-name: partsAvailability_node
       service-url: '${default-url}'
@@ -15,6 +15,7 @@ modules:
       memory: 256MB
    provides:
     - name: partsAvailability_node_api
+      public: false
       properties:
          url: '${default-url}'
    requires:
@@ -25,7 +26,7 @@ modules:
    type: html5
    path: partsAvailability
    parameters:
-      host: partsAvailability
+      host: qas_partsAvailability
       register-service-url: true
       service-name: partsAvailability
       service-url: '${default-url}'
@@ -35,7 +36,7 @@ modules:
       builder: grunt
    requires:
     - name: uaa_partsAvailability
-    - name: dest_partsAvailability
+    - name: qas_dest_partsAvailability
     - name: partsAvailability_node_api
       group: destinations
       properties:
@@ -45,6 +46,7 @@ modules:
    
    provides:
     - name: partsAvailability
+
  
 resources:
  - name: uaa_partsAvailability
@@ -61,8 +63,8 @@ resources:
    properties:
      odata-call-service-name: '${service-name}'
 
- - name: dest_partsAvailability
+ - name: qas_dest_partsAvailability
    parameters:
       service-plan: lite
       service: destination
-   type: org.cloudfoundry.managed-service   
+   type: org.cloudfoundry.managed-service 
