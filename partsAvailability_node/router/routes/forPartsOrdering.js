@@ -91,13 +91,13 @@ module.exports = function () {
 			
 			
 			// ===================only for local testing - remove next deploy
-	// 					var obj_temp =
-	// 			{ Language: [ 'English', 'English' ],
-	// 			  UserType: [ 'Dealer', 'Dealer' ],
- //               DealerCode: [ '42120', '42120' ] };
-	// 		// console.log(req.authInfo.userAttributes);
-	// 		 var parsedData = JSON.stringify(obj_temp);
-	// //		 console.log('After Json Stringify', parsedData);
+						var obj_temp =
+				{ Language: [ 'English', 'English' ],
+				  UserType: [ 'Dealer', 'Dealer' ],
+                DealerCode: [ '42120', '42120' ] };
+			// console.log(req.authInfo.userAttributes);
+			 var parsedData = JSON.stringify(obj_temp);
+	//		 console.log('After Json Stringify', parsedData);
 
 			
 // =========================================
