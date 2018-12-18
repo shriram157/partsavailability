@@ -122,7 +122,8 @@ sap.ui.define([
 							"BusinessPartner": item.BusinessPartner, //.substring(5, BpLength),
 							"BusinessPartnerName": item.BusinessPartnerName, //item.OrganizationBPName1 //item.BusinessPartnerFullName
 							"Division": item.Division,
-							"BusinessPartnerType": item.BusinessPartnerType
+							"BusinessPartnerType": item.BusinessPartnerType,
+							"searchTermReceivedDealerName":item.SearchTerm2
 						});
 
 					});
@@ -190,7 +191,7 @@ sap.ui.define([
 				}
 
 				for (var i = 0; i < aDataBP.length; i++) {
-					if (aDataBP[i].BusinessPartner == userDetails[0].DealerCode) {
+					if (aDataBP[i].BusinessPartner == userDetails[0].DealerCode || aDataBP[i].searchTermReceivedDealerName == userDetails[0].DealerCode ) {
 						this.getView().byId("dealerID").setSelectedKey(aDataBP[i].BusinessPartnerKey);
 
 						//selectedDealerModel>/Dealer_Name

@@ -164,6 +164,7 @@ module.exports = function () {
 					receivedData.BusinessPartnerKey = json.d.results[i].BusinessPartner;
 					receivedData.BusinessPartner = json.d.results[i].BusinessPartner.substring(5, BpLength);
 					receivedData.BusinessPartnerType = json.d.results[i].BusinessPartnerType;
+					receivedData.SearchTerm2 = json.d.results[i].SearchTerm2;
 
 					let attributeFromSAP;
 					try {
@@ -200,7 +201,7 @@ module.exports = function () {
 
 					}
 
-					if ((receivedData.BusinessPartner == legacyDealer) && (userType == 'Dealer')) {
+				if ((receivedData.BusinessPartner == legacyDealer || receivedData.SearchTerm2 == legacyDealer)  && (userType == 'Dealer')) {
 						sendToUi.legacyDealer = receivedData.BusinessPartner,
 							sendToUi.legacyDealerName = receivedData.BusinessPartnerName
 						sendToUi.attributes.push(receivedData);
