@@ -97,7 +97,7 @@ sap.ui.define([
 			var sLocation_conf = sLocation.search("webide");
 
 			if (sLocation_conf == 0) {
-				this.sPrefix = "/partsAvailability_node";
+				this.sPrefix = "/partsAvailability_node_CLONING";
 			} else {
 				this.sPrefix = "";
 
@@ -122,14 +122,14 @@ sap.ui.define([
 							"BusinessPartner": item.BusinessPartner, //.substring(5, BpLength),
 							"BusinessPartnerName": item.BusinessPartnerName, //item.OrganizationBPName1 //item.BusinessPartnerFullName
 							"Division": item.Division,
-							"BusinessPartnerType": item.BusinessPartnerType
+							"BusinessPartnerType": item.BusinessPartnerType,
+							"searchTermReceivedDealerName":item.SearchTerm2
 						});
 
 					});
 					that.getView().setModel(new sap.ui.model.json.JSONModel(BpDealer), "BpDealerModel");
 					// read the saml attachments the same way 
 					$.each(oData.samlAttributes, function (i, item) {
-
 						userAttributes.push({
 							"UserType": item.UserType[0],
 							"DealerCode": item.DealerCode[0],
@@ -148,6 +148,7 @@ sap.ui.define([
 					sap.ui.core.BusyIndicator.hide();
 				}
 			});
+
 		},
 
 		_readTheAttributes: function () {
@@ -172,27 +173,25 @@ sap.ui.define([
 				oViewModel.setProperty("/editAllowed", true);
 			} else {
 				//he is  a dealer.
-				
+
 				//ets also set the division from the url here
-				
-			  var isDivisionSent = window.location.search.match(/Division=([^&]*)/i);
+
+				var isDivisionSent = window.location.search.match(/Division=([^&]*)/i);
 				if (isDivisionSent) {
 					this.sDivision = window.location.search.match(/Division=([^&]*)/i)[1];
 					if (this.sDivision == '10') // set the toyoto logo
-						{
-							var currentImageSource = this.getView().byId("idLexusLogo");
-							currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
+					{
+						var currentImageSource = this.getView().byId("idLexusLogo");
+						currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
 
-						} else { // set the lexus logo
-							var currentImageSource = this.getView().byId("idLexusLogo");
-							currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
-
-						}
+					} else { // set the lexus logo
+						var currentImageSource = this.getView().byId("idLexusLogo");
+						currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
+					}
 				}
 
-     
 				for (var i = 0; i < aDataBP.length; i++) {
-					if (aDataBP[i].BusinessPartner == userDetails[0].DealerCode) {
+					if (aDataBP[i].BusinessPartner == userDetails[0].DealerCode || aDataBP[i].searchTermReceivedDealerName == userDetails[0].DealerCode ) {
 						this.getView().byId("dealerID").setSelectedKey(aDataBP[i].BusinessPartnerKey);
 
 						//selectedDealerModel>/Dealer_Name
@@ -315,6 +314,19 @@ sap.ui.define([
 
 			}
 
+			//  
+			// check if the url has the division and material sent,  then call the forPartsOrdering and then turn off the display for material. // TODO: 
+
+			var isPartNumberSent = window.location.search.match(/partNumber=([^&]*)/i);
+			if (isPartNumberSent) {
+				var materialFromUrl = window.location.search.match(/partNumber=([^&]*)/i)[1];
+				var upperCaseMaterial = materialFromUrl.toUpperCase();
+				materialFromUrl = upperCaseMaterial;
+				this.getView().byId("material_id").setValue(materialFromUrl);
+				this.handlePartSearch();
+
+			}
+
 		},
 
 		handleRouteMatched: function (oEvent) {
@@ -429,46 +441,38 @@ sap.ui.define([
 		}, // end of handlepart search
 
 		_getTheDivision: function (Material) {
-			
+
 			// if he is a dual dealer and the url has no division it is gettin difficult for local testing.  so 
 			// lets put a popup dialog. 
-		
-			if (this.sDivision == "Dual" ||  this.sDivision_old == "Dual" ){
-					sap.ui.core.BusyIndicator.hide();
-		        var that = this;
-		       
-				   this.sDivision_old = "Dual";// TODO: will comment out before qc
-			  sap.m.MessageBox.confirm("Dealer Brand Selection for Dual Dealers", {
-					title: "The selecte dealer is of type Dual",
-					actions:["Toyota","Lexus"],
-					icon:"",
-				    onClose: function(action){
-				    	if(action=="Toyota"){
-				    	 	that.sDivision = "10";
-				    				sap.ui.core.BusyIndicator.show();
-				    	that._callSupplyingPlant();
-				    	}
-				    	else
-				    		{
-					    	
-					    	that.sDivision = "20";
-					    	sap.ui.core.BusyIndicator.show();
-					    		that._callSupplyingPlant();
-				    		}
-				    }
-				}); 
-			
-			}  else {// end of if for this.sDivision
-			
-			
-			
-			
 
-			this._callSupplyingPlant();
-			
-		 }
-			
-			
+			if (this.sDivision == "Dual" || this.sDivision_old == "Dual") {
+				sap.ui.core.BusyIndicator.hide();
+				var that = this;
+
+				this.sDivision_old = "Dual"; // TODO: will comment out before qc
+				sap.m.MessageBox.confirm("Dealer Brand Selection for Dual Dealers", {
+					title: "The selecte dealer is of type Dual",
+					actions: ["Toyota", "Lexus"],
+					icon: "",
+					onClose: function (action) {
+						if (action == "Toyota") {
+							that.sDivision = "10";
+							sap.ui.core.BusyIndicator.show();
+							that._callSupplyingPlant();
+						} else {
+
+							that.sDivision = "20";
+							sap.ui.core.BusyIndicator.show();
+							that._callSupplyingPlant();
+						}
+					}
+				});
+
+			} else { // end of if for this.sDivision
+
+				this._callSupplyingPlant();
+
+			}
 
 		},
 
@@ -541,7 +545,7 @@ sap.ui.define([
 			// var oDealerType = this.getView().getModel("selectedDealerModel").getProperty("/Dealer_type");
 			var dealerData = this.getView().getModel("selectedDealerModel").getData();
 			var oDealerType = dealerData.Dealer_Type;
-			
+
 			//	this._selectedDealerModel.setProperty("/Dealer_type", aDataBP[i].BusinessPartnerType);
 
 			ozMaterialDisplayModel.read("/zc_PriceSet" + priceSetUrl, {
@@ -910,7 +914,7 @@ sap.ui.define([
 					var oModelSuperSession = this.getView().getModel("inventoryModel");
 					oModelSuperSession.refresh();
 					if (this.doNotDisplayReceived != true) {
-					//c	this.getView().byId("messageStripError").setProperty("visible", false);
+						//c	this.getView().byId("messageStripError").setProperty("visible", false);
 					}
 
 				}, this),
