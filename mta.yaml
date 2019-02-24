@@ -7,7 +7,7 @@ modules:
    type: nodejs
    path: partsAvailability_node
    parameters:
-      host: partsAvailability_node
+      host: tci-dev-partsavailability-node
       register-service-url: true
       service-name: partsAvailability_node
       service-url: '${default-url}'
@@ -26,7 +26,7 @@ modules:
    type: html5
    path: partsAvailability
    parameters:
-      host: partsAvailability
+      host: tci-dev-partsavailability
       register-service-url: true
       service-name: partsAvailability
       service-url: '${default-url}'
