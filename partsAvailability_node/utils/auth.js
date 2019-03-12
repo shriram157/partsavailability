@@ -1,5 +1,8 @@
-/*eslint no-console: 0, no-undef: 0, no-unused-vars: 0, no-shadow: 0, quotes: 0, no-use-before-define: 0, new-cap:0 */
-'use strict';
+/*eslint new-cap: 0, no-console: 0, no-shadow: 0, no-unused-vars: 0*/
+/*eslint-env es6, node*/
+
+"use strict";
+
 var xsenv = require('@sap/xsenv');
 
 module.exports = {

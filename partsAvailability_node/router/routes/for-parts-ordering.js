@@ -1,9 +1,10 @@
-/*eslint no-console: 0, no-unused-vars: 0, no-shadow: 0, quotes: 0, no-use-before-define: 0, new-cap:0 */
+/*eslint new-cap: 0, no-console: 0, no-shadow: 0, no-unused-vars: 0*/
+/*eslint-env es6, node*/
+
 "use strict";
 
-module.exports = function () {
+module.exports = function (appContext) {
 
-	var async = require('async');
 	var express = require('express');
 	var request = require('request');
 	var xsenv = require("@sap/xsenv");
@@ -33,12 +34,6 @@ module.exports = function () {
 		"x-csrf-token": "Fetch"
 	};
 
-	app.use(function (req, res, next) {
-		res.header("Access-Control-Allow-Origin", "*");
-		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-		next();
-	});
-
 	// session information. 
 	app.get('/sessioninfo', function (req, res) {
 		res.writeHead(200, {
@@ -52,8 +47,13 @@ module.exports = function () {
 
 	// user Information to UI.
 	//Security Attributes received via UserAttributes via Passport
-	app.get("/attributes", (req, res) => {
-		console.log("attributes fetch started")
+
+	// app.get('/attributes/:id', function(req, res) {
+	//      res.send('user' + req.params.id);    
+	//     });
+
+	app.get('/attributes/forPartsOrder', (req, res) => {
+		console.log("Parts Availability Aplication is being called from Parts Ordering with Dealer code", req.params.DealerCode)
 			//	res.type("application/json").status(200).send(JSON.stringify(req.authInfo.userAttributes));
 		var receivedData = {};
 
@@ -74,54 +74,38 @@ module.exports = function () {
 
 		var obj = JSON.stringify(req.authInfo.userAttributes);
 		var obj_parsed = JSON.parse(obj);
-
+		sendToUi.samlAttributes.push(obj_parsed);
 		var csrfToken;
 		var samlData = parsedData;
 
-		console.log('saml data', samlData);
+		console.log(samlData);
 
 		console.log('send to ui data', sendToUi);
 
-		let checkSAMLDetails;
-		try {
-			checkSAMLDetails = obj_data.DealerCode[0];
-		} catch (e) {
-			console.log("No SAML Authentication happened Must be local Run")
-				// return;
-			var nosamlData = true;
-		}
-
-		// ==============================================================			
-		// if (nosamlData == true) {
-
-		// 	var obj_temp = {
-		// 		Language: ['English', 'English'],
-		// 		UserType: ['Dealer', 'Dealer'],
-		// 		DealerCode: ['42357', '42357']
-		// 	};
-		// 	// console.log(req.authInfo.userAttributes);
-		// 	var parsedData = JSON.stringify(obj_temp);
-		// 	//		 console.log('After Json Stringify', parsedData);
-		// 	var obj_parsed = JSON.parse(parsedData);
-
-		// 	console.log("this is the parsed local data", parsedData)
-		// 	sendToUi.samlAttributes.push(obj_parsed);
-
-		// } else {
-			sendToUi.samlAttributes.push(obj_parsed);
-	//	}
-
+		// ===================only for local testing - remove next deploy
+		var obj_temp = {
+			Language: ['English', 'English'],
+			UserType: ['Dealer', 'Dealer'],
+			DealerCode: ['42120', '42120']
+		};
+		// console.log(req.authInfo.userAttributes);
+		var parsedData = JSON.stringify(obj_temp);
 		//		 console.log('After Json Stringify', parsedData);
 
 		// =========================================
 		var obj_data = JSON.parse(parsedData);
-		console.log('after json Parse', obj_data);
-		var userType = obj_data.UserType[0];
-
-		if (userType == 'Dealer') {
-			var legacyDealer = obj_data.DealerCode[0];
-		}
+		console.log('identify provider data received', obj_data);
 		// var userType = obj_data.UserType[0];
+
+		//         if (userType == 'Dealer' ) {
+		// var legacyDealer = obj_data.DealerCode[0];
+		//         }
+
+		//	if (req.params.DealerCode) {
+		var userType = 'Dealer'; //make it a dealer type
+		var legacyDealer = obj_data.DealerCode[0];
+
+		//	}
 
 		console.log('Dealer Number logged in and accessed parts Availability App', legacyDealer);
 
@@ -133,12 +117,12 @@ module.exports = function () {
 		if (userType == 'Dealer') {
 
 			var url1 = "/API_BUSINESS_PARTNER/A_BusinessPartner/?$format=json&$filter=SearchTerm2 eq'" + legacyDealer +
-				"' &$expand=to_Customer&$format=json&?sap-client=" + client;
+				"'&$expand=to_Customer&$format=json&?sap-client=" + client;
 
 		} else {
 
 			var url1 = "/API_BUSINESS_PARTNER/A_BusinessPartner/?$format=json&$expand=to_Customer&?sap-client=" + client +
-				"&$filter=(BusinessPartnerType eq 'Z001' or BusinessPartnerType eq 'Z004' or BusinessPartnerType eq 'Z005') and zstatus ne 'X' &$orderby=BusinessPartner asc";
+				"&$filter=BusinessPartnerType eq 'Z001' or BusinessPartnerType eq 'Z004' or BusinessPartnerType eq 'Z005'  &$orderby=BusinessPartner asc";
 
 		}
 		console.log('Final url being fetched', url + url1);
@@ -164,7 +148,6 @@ module.exports = function () {
 					receivedData.BusinessPartnerKey = json.d.results[i].BusinessPartner;
 					receivedData.BusinessPartner = json.d.results[i].BusinessPartner.substring(5, BpLength);
 					receivedData.BusinessPartnerType = json.d.results[i].BusinessPartnerType;
-					receivedData.SearchTerm2 = json.d.results[i].SearchTerm2;
 
 					let attributeFromSAP;
 					try {
@@ -201,7 +184,7 @@ module.exports = function () {
 
 					}
 
-				if ((receivedData.BusinessPartner == legacyDealer || receivedData.SearchTerm2 == legacyDealer)  && (userType == 'Dealer')) {
+					if ((receivedData.BusinessPartner == legacyDealer) && (userType == 'Dealer')) {
 						sendToUi.legacyDealer = receivedData.BusinessPartner,
 							sendToUi.legacyDealerName = receivedData.BusinessPartnerName
 						sendToUi.attributes.push(receivedData);
