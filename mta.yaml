@@ -9,7 +9,7 @@ modules:
    path: partsAvailability_node
    parameters:
       host: tci-dev-partsavailability-node
-      disk-quota: 256M
+      disk-quota: 512M
       memory: 256M
    properties:
       XS_APP_LOG_LEVEL: info
@@ -31,7 +31,7 @@ modules:
    path: partsAvailability
    parameters:
       host: tci-dev-partsavailability
-      disk-quota: 256M
+      disk-quota: 512M
       memory: 512M
    properties:
       XS_APP_LOG_LEVEL: info
@@ -44,23 +44,23 @@ modules:
       group: destinations
       properties:
          name: parts-node-backend
+         url: ~{url}
          forwardAuthToken: true
          timeout: 60000
-         url: '~{url}'
 
 resources:
  - name: application-logs_partsAvailability
+   type: org.cloudfoundry.managed-service
    parameters:
       service: application-logs
       service-plan: lite
-   type: org.cloudfoundry.managed-service
 
  - name: uaa_partsAvailability
+   type: org.cloudfoundry.managed-service
    parameters:
-      path: ./xs-security.json
       service: xsuaa
       service-plan: application
-   type: org.cloudfoundry.managed-service
+      path: ./xs-security.json
 
  - name: PARTS_AVAILABILITY_APIM_CUPS
    type: org.cloudfoundry.existing-service
