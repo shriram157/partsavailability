@@ -29,18 +29,8 @@
 			],
 			"default": "$XSAPPNAME.DealerDisplay"
 		}
-
-	}, 
-		
-		{
+	}, {
 		"source": "/userDetails/(.*)",
 		"destination": "parts-node-backend"
-	},
-		{
-		"source": "/forPartsOrdering/(.*)",
-		"destination": "parts-node-backend"
-	}	
-
-
-	]
+	}]
 }

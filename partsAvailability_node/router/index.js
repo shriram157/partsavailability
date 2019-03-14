@@ -4,11 +4,9 @@
 "use strict";
 
 var apiProxy = require("./routes/api-proxy");
-var forPartsOrdering = require("./routes/for-parts-ordering");
 var userDetails = require("./routes/user-details");
 
 module.exports = (app, appContext) => {
 	app.use("/node", apiProxy(appContext));
-	app.use("/forPartsOrdering", forPartsOrdering(appContext));
 	app.use("/userDetails", userDetails(appContext));
 };
