@@ -128,14 +128,10 @@ sap.ui.define([
 
 					});
 					that.getView().setModel(new sap.ui.model.json.JSONModel(BpDealer), "BpDealerModel");
-					// read the saml attachments the same way 
-					$.each(oData.samlAttributes, function (i, item) {
-						userAttributes.push({
-							"UserType": item.UserType[0],
-							"DealerCode": item.DealerCode[0],
-							"Language": item.Language[0]
-						});
-
+					userAttributes.push({
+						"UserType": oData.samlAttributes.UserType[0],
+						"DealerCode": oData.samlAttributes.DealerCode ? oData.samlAttributes.DealerCode[0]: null,
+						"Language": oData.samlAttributes.Language[0]
 					});
 
 					that.getView().setModel(new sap.ui.model.json.JSONModel(userAttributes), "userAttributesModel");

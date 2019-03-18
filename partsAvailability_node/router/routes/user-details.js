@@ -4,222 +4,202 @@
 "use strict";
 
 module.exports = function (appContext) {
-
-	var express = require('express');
-	var request = require('request');
+	var express = require("express");
+	var request = require("request");
 	var xsenv = require("@sap/xsenv");
 
-	var auth64;
+	var router = express.Router();
+	var routerTracer = appContext.createLogContext().getTracer(__filename);
 
-	var app = express.Router();
+	// TODO: provide service name via environment variable instead
+	var apimServiceName = "PARTS_AVAILABILITY_APIM_CUPS";
 	var options = {};
 	options = Object.assign(options, xsenv.getServices({
-		api: {
-			name: "PARTS_AVAILABILITY_APIM_CUPS"
+		apim: {
+			name: apimServiceName
 		}
 	}));
+	routerTracer.debug("Properties of APIM user-provided service '%s' : %s", apimServiceName, JSON.stringify(options));
 
-	var uname = options.api.user,
-		pwd = options.api.password,
-		url = options.api.host,
-		APIKey = options.api.APIKey,
-		client = options.api.client;
+	var xsuaaService = xsenv.getServices({
+		xsuaa: {
+			tag: "xsuaa"
+		}
+	}).xsuaa;
 
-	auth64 = 'Basic ' + new Buffer(uname + ':' + pwd).toString('base64');
+	var url = options.apim.host;
+	var APIKey = options.apim.APIKey;
+	var s4Client = options.apim.client;
+	var s4User = options.apim.user;
+	var s4Password = options.apim.password;
 
-	var reqHeader = {
-		"Authorization": auth64,
-		"Content-Type": "application/json",
-		"APIKey": APIKey,
-		"x-csrf-token": "Fetch"
-	};
+	router.get("/attributes", (req, res) => {
+		var logger = req.loggingContext.getLogger("/Application/Route/UserDetails/Attributes");
+		var tracer = req.loggingContext.getTracer(__filename);
+		var userProfile = req.user;
+		var userAttributes = req.authInfo.userAttributes;
+		tracer.debug("User profile from JWT: %s", JSON.stringify(userProfile));
+		tracer.debug("User attributes from JWT: %s", JSON.stringify(userAttributes));
 
-	// session information. 
-	app.get('/sessioninfo', function (req, res) {
-		res.writeHead(200, {
-			'Content-Type': 'application/json'
-		});
-		res.end(JSON.stringify({
-			userEncoded: encodeURI(JSON.stringify(req.user))
-		}));
+		// If there is no user type, it is most probably a call from Neo, in which case we can fake the data as TCI user
+		if (!userAttributes.UserType) {
+			userAttributes = {
+				Language: ["English"],
+				UserType: ["National"]
+			};
+			tracer.debug("JWT likely refers to a development user from Neo, switch to mock user attributes: %s", JSON.stringify(userAttributes));
+		}
 
-	});
-
-	// user Information to UI.
-	//Security Attributes received via UserAttributes via Passport
-	app.get("/attributes", (req, res) => {
-		console.log("attributes fetch started")
-			//	res.type("application/json").status(200).send(JSON.stringify(req.authInfo.userAttributes));
-		var receivedData = {};
-
-		var sendToUi = {
+		var resBody = {
 			"attributes": [],
-			"samlAttributes": [],
+			"userProfile": userProfile,
+			"samlAttributes": userAttributes,
 			legacyDealer: "",
 			legacyDealerName: ""
-
-			// userType   = req.authInfo.userAttributes.UserType[0],
-			// DealerCode = req.authInfo.userAttributes.DealerCode[0],
-			// Language   =  req.authInfo.userAttributes.Language[0]
 		};
 
-		console.log(req.authInfo.userAttributes);
-		var parsedData = JSON.stringify(req.authInfo.userAttributes);
-		console.log('After Json Stringify', parsedData);
+		var userType = userAttributes.UserType[0];
+		var dealerCode = null;
+		var zone = null;
+		var bpZone = null;
+		var bpReqUrl = null;
 
-		var obj = JSON.stringify(req.authInfo.userAttributes);
-		var obj_parsed = JSON.parse(obj);
-
-		var csrfToken;
-		var samlData = parsedData;
-
-		console.log('saml data', samlData);
-
-		console.log('send to ui data', sendToUi);
-
-		let checkSAMLDetails;
-		try {
-			checkSAMLDetails = obj_data.DealerCode[0];
-		} catch (e) {
-			console.log("No SAML Authentication happened Must be local Run")
-				// return;
-			var nosamlData = true;
+		// Dealer user
+		if (userType === "Dealer") {
+			dealerCode = userAttributes.DealerCode[0];
+			bpReqUrl = url + "/API_BUSINESS_PARTNER/A_BusinessPartner?sap-client=" + s4Client + "&$format=json&$filter=SearchTerm2 eq '" +
+				dealerCode + "'&$expand=to_Customer";
 		}
 
-		// ==============================================================			
-		// if (nosamlData == true) {
+		// Zone user
+		else if (userType === "Zone") {
+			zone = userAttributes.Zone[0];
+			if (zone === "1") {
+				bpZone = "1000";
+			} else if (zone === "2") {
+				bpZone = "2000";
+			} else if (zone === "3") {
+				bpZone = "3000";
+			} else if (zone === "4") {
+				bpZone = "5000";
+			} else if (zone === "5") {
+				bpZone = "4000";
+			} else if (zone === "7") {
+				bpZone = "9000";
+			} else {
+				logger.warning("Unrecognized zone ID: %s", zone);
+				return res.type("plain/text").status(400).send("Unknown zone ID.");
+			}
 
-		// 	var obj_temp = {
-		// 		Language: ['English', 'English'],
-		// 		UserType: ['Dealer', 'Dealer'],
-		// 		DealerCode: ['42357', '42357']
-		// 	};
-		// 	// console.log(req.authInfo.userAttributes);
-		// 	var parsedData = JSON.stringify(obj_temp);
-		// 	//		 console.log('After Json Stringify', parsedData);
-		// 	var obj_parsed = JSON.parse(parsedData);
-
-		// 	console.log("this is the parsed local data", parsedData)
-		// 	sendToUi.samlAttributes.push(obj_parsed);
-
-		// } else {
-		sendToUi.samlAttributes.push(obj_parsed);
-		//	}
-
-		//		 console.log('After Json Stringify', parsedData);
-
-		// =========================================
-		var obj_data = JSON.parse(parsedData);
-		console.log('after json Parse', obj_data);
-		var userType = obj_data.UserType[0];
-
-		if (userType == 'Dealer') {
-			var legacyDealer = obj_data.DealerCode[0];
+			bpReqUrl = url + "/API_BUSINESS_PARTNER/A_BusinessPartner?sap-client=" + s4Client + "&$format=json" +
+				"&$expand=to_Customer/to_CustomerSalesArea&$filter=BusinessPartnerType eq 'Z001' and zstatus ne 'X'" +
+				"&$orderby=BusinessPartner asc";
 		}
-		// var userType = obj_data.UserType[0];
 
-		console.log('Dealer Number logged in and accessed parts Availability App', legacyDealer);
-
-		// var legacyDealer = '01050'; // local testing
-		// var userType = 'Dealer'
-
-		//	if  usertype eq dealer then just get the details for that dealer,  otherwise get everything else
-
-		if (userType == 'Dealer') {
-
-			var url1 = "/API_BUSINESS_PARTNER/A_BusinessPartner/?$format=json&$filter=SearchTerm2 eq'" + legacyDealer +
-				"' &$expand=to_Customer&$format=json&?sap-client=" + client;
-
-		} else {
-
-			var url1 = "/API_BUSINESS_PARTNER/A_BusinessPartner/?$format=json&$expand=to_Customer&?sap-client=" + client +
-				"&$filter=(BusinessPartnerType eq 'Z001' or BusinessPartnerType eq 'Z004' or BusinessPartnerType eq 'Z005') and zstatus ne 'X' &$orderby=BusinessPartner asc";
-
+		// National user (TCI user)
+		else {
+			bpReqUrl = url + "/API_BUSINESS_PARTNER/A_BusinessPartner?sap-client=" + s4Client + "&$format=json" +
+				"&$expand=to_Customer&$filter=BusinessPartnerType eq 'Z001' and zstatus ne 'X'&$orderby=BusinessPartner asc";
 		}
-		console.log('Final url being fetched', url + url1);
+
+		tracer.debug("BP URL: %s", bpReqUrl);
+		var bpReqHeaders = {
+			"APIKey": APIKey,
+			"Authorization": "Basic " + new Buffer(s4User + ":" + s4Password).toString("base64"),
+			"Content-Type": "application/json"
+		};
 		request({
-			url: url + url1,
-			headers: reqHeader
+			url: bpReqUrl,
+			headers: bpReqHeaders
+		}, function (bpErr, bpRes, bpResBodyStr) {
+			var toCustomerAttr1 = null;
+			var bpAttributes = null;
 
-		}, function (error, response, body) {
+			tracer.debug("Response body from proxied BP call: %s", bpResBodyStr);
 
-			var attributeFromSAP;
-			if (!error && response.statusCode == 200) {
-				csrfToken = response.headers['x-csrf-token'];
+			if (!bpErr && bpRes.statusCode === 200) {
+				var bpResBody = JSON.parse(bpResBodyStr);
+				var bpResults = bpResBody.d.results;
 
-				var json = JSON.parse(body);
-				// console.log(json);  // // TODO: delete it Guna
-
-				for (var i = 0; i < json.d.results.length; i++) {
-
-					receivedData = {};
-
-					var BpLength = json.d.results[i].BusinessPartner.length;
-					receivedData.BusinessPartnerName = json.d.results[i].OrganizationBPName1;
-					receivedData.BusinessPartnerKey = json.d.results[i].BusinessPartner;
-					receivedData.BusinessPartner = json.d.results[i].BusinessPartner.substring(5, BpLength);
-					receivedData.BusinessPartnerType = json.d.results[i].BusinessPartnerType;
-					receivedData.SearchTerm2 = json.d.results[i].SearchTerm2;
-
-					let attributeFromSAP;
-					try {
-						attributeFromSAP = json.d.results[i].to_Customer.Attribute1;
-					} catch (e) {
-						console.log("The Data is sent without Attribute value for the BP", json.d.results[i].BusinessPartner)
-							// return;
-					}
-
-					switch (attributeFromSAP) {
-					case "01":
-						receivedData.Division = "10";
-						receivedData.Attribute = "01"
-						break;
-					case "02":
-						receivedData.Division = "20";
-						receivedData.Attribute = "02"
-						break;
-					case "03":
-						receivedData.Division = "Dual";
-						receivedData.Attribute = "03"
-						break;
-					case "04":
-						receivedData.Division = "10";
-						receivedData.Attribute = "04"
-						break;
-					case "05":
-						receivedData.Division = "Dual";
-						receivedData.Attribute = "05"
-						break;
-					default:
-						receivedData.Division = "10"; //  lets put that as a toyota dealer
-						receivedData.Attribute = "01"
-
-					}
-
-					if ((receivedData.BusinessPartner == legacyDealer || receivedData.SearchTerm2 == legacyDealer) && (userType == 'Dealer')) {
-						sendToUi.legacyDealer = receivedData.BusinessPartner,
-							sendToUi.legacyDealerName = receivedData.BusinessPartnerName
-						sendToUi.attributes.push(receivedData);
-						break;
-					}
-
-					if (userType == 'Dealer') {
-						continue;
-					} else {
-						sendToUi.attributes.push(receivedData);
-					}
+				// Filter BP results by sales area for zone user
+				if (userType === "Zone") {
+					bpResults = bpResults.filter(o => {
+						if (!o.to_Customer) {
+							return false;
+						}
+						var customerSalesArea = o.to_Customer.to_CustomerSalesArea;
+						if (!customerSalesArea) {
+							return false;
+						}
+						for (var i = 0; i < customerSalesArea.results.length; i++) {
+							if (customerSalesArea.results[i].SalesOffice === bpZone) {
+								return true;
+							}
+						}
+						return false;
+					});
 				}
 
-				res.type("application/json").status(200).send(sendToUi);
-				console.log('Results sent successfully');
-			} else {
+				for (var i = 0; i < bpResults.length; i++) {
+					var bpLength = bpResults[i].BusinessPartner.length;
+					bpAttributes = {
+						BusinessPartnerName: bpResults[i].OrganizationBPName1,
+						BusinessPartnerKey: bpResults[i].BusinessPartner,
+						BusinessPartner: bpResults[i].BusinessPartner.substring(5, bpLength),
+						BusinessPartnerType: bpResults[i].BusinessPartnerType,
+						SearchTerm2: bpResults[i].SearchTerm2
+					};
+					try {
+						toCustomerAttr1 = bpResults[i].to_Customer.Attribute1;
+					} catch (e) {
+						logger.error("The Data is sent without Attribute value for the BP: %s", bpResults[i].BusinessPartner);
+					}
 
-				var result = JSON.stringify(body);
-				res.type('application/json').status(400).send(result);
+					if (toCustomerAttr1 === "01") {
+						// Toyota dealer
+						bpAttributes.Division = "10";
+						bpAttributes.Attribute = "01";
+					} else if (toCustomerAttr1 === "02") {
+						// Lexus dealer
+						bpAttributes.Division = "20";
+						bpAttributes.Attribute = "02";
+					} else if (toCustomerAttr1 === "03") {
+						// Dual (Toyota + Lexus) dealer
+						bpAttributes.Division = "Dual";
+						bpAttributes.Attribute = "03";
+					} else if (toCustomerAttr1 === "04") {
+						bpAttributes.Division = "10";
+						bpAttributes.Attribute = "04";
+					} else if (toCustomerAttr1 === "05") {
+						bpAttributes.Division = "Dual";
+						bpAttributes.Attribute = "05";
+					} else {
+						// Set as Toyota dealer as fallback
+						bpAttributes.Division = "10";
+						bpAttributes.Attribute = "01";
+					}
+
+					if (userType === "Dealer") {
+						if (bpAttributes.BusinessPartner === dealerCode || bpAttributes.SearchTerm2 === dealerCode) {
+							resBody.legacyDealer = bpAttributes.BusinessPartner;
+							resBody.legacyDealerName = bpAttributes.BusinessPartnerName;
+							resBody.attributes.push(bpAttributes);
+
+							// Dealer should only return one BP result anyway, but break here just in case
+							break;
+						}
+					} else {
+						resBody.attributes.push(bpAttributes);
+					}
+				}
+				tracer.debug("Response body: %s", JSON.stringify(resBody));
+				return res.type("application/json").status(200).send(resBody);
+			} else {
+				logger.error("Proxied BP call %s FAILED: %s", bpReqUrl, bpErr);
+				return res.type("application/json").status(400).send(bpResBody);
 			}
 		});
-
 	});
 
-	return app;
+	return router;
 };
