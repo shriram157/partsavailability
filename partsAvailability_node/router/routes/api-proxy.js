@@ -3,77 +3,72 @@
 
 "use strict";
 
-var express = require('express');
-var request = require('request');
-var xsenv = require("@sap/xsenv");
-
-// vehicle Locator Node Module. 
 module.exports = function (appContext) {
-	var app = express.Router();
+	var express = require("express");
+	var request = require("request");
+	var xsenv = require("@sap/xsenv");
 
-	// SAP Calls Start from here
+	var router = express.Router();
+	var routerTracer = appContext.createLogContext().getTracer(__filename);
+
+	// TODO: provide service name via environment variable instead
+	var apimServiceName = "PARTS_AVAILABILITY_APIM_CUPS";
 	var options = {};
 	options = Object.assign(options, xsenv.getServices({
-		api: {
-			name: "PARTS_AVAILABILITY_APIM_CUPS"
+		apim: {
+			name: apimServiceName
 		}
 	}));
+	routerTracer.debug("Properties of APIM user-provided service '%s' : %s", apimServiceName, JSON.stringify(options));
 
-	var uname = options.api.user,
-		pwd = options.api.password,
-		url = options.api.host,
-		APIKey = options.api.APIKey,
-		client = options.api.client;
-	console.log('The API Management URL', url);
+	var url = options.apim.host;
+	if (url.endsWith("/")) {
+		url = url.slice(0, -1);
+	}
+	var APIKey = options.apim.APIKey;
+	var s4Client = options.apim.client;
+	var s4User = options.apim.user;
+	var s4Password = options.apim.password;
 
-	var auth64 = 'Basic ' + new Buffer(uname + ':' + pwd).toString('base64');
+	router.all("/*", function (req, res, next) {
+		var logger = req.loggingContext.getLogger("/Application/Route/APIProxy");
+		var tracer = req.loggingContext.getTracer(__filename);
+		var proxiedMethod = req.method;
+		var proxiedReqHeaders = {
+			"APIKey": APIKey,
+			"Content-Type": req.get("Content-Type")
+		};
+		var proxiedUrl = url + req.url;
 
-	var reqHeader = {
-		"Authorization": auth64,
-		"Content-Type": "application/json",
-		"APIKey": APIKey,
-		"x-csrf-token": "Fetch"
-	};
+		// Proxied call is to S4/HANA
+		proxiedReqHeaders.Authorization = "Basic " + new Buffer(s4User + ":" + s4Password).toString("base64");
 
-	var csrfToken;
-	// simple version of bridge call
-	app.all('/*', function (req, res, next) {
+		// Pass through x-csrf-token from request to proxied request to S4/HANA
+		// This requires manual handling of CSRF tokens from the front-end
+		// Note: req.get() will get header in a case-insensitive manner 
+		var csrfTokenHeaderValue = req.get("X-Csrf-Token");
+		proxiedReqHeaders["X-Csrf-Token"] = csrfTokenHeaderValue;
 
-		let headOptions = {};
+		tracer.debug("Proxied Method: %s", proxiedMethod);
+		tracer.debug("Proxied request headers: %s", JSON.stringify(proxiedReqHeaders));
+		tracer.debug("Proxied URL: %s", proxiedUrl);
 
-		// prepare the magic reverse proxy header for odata service to work. 
-		// let originalHost = req.hostname;
-		// if (!!req.headers.host){
-		//     headOptions.host = req.headers.host;
-		// }
+		let proxiedReq = request({
+			headers: proxiedReqHeaders,
+			method: proxiedMethod,
+			url: proxiedUrl
+		});
+		req.pipe(proxiedReq);
+		proxiedReq.on("response", proxiedRes => {
+			tracer.info("Proxied call %s %s successful.", proxiedMethod, proxiedUrl);
+			delete proxiedRes.headers.cookie;
 
-		//only support the basic auth
-		headOptions.Authorization = auth64;
-
-		let method = req.method;
-		let xurl = url + req.url;
-		console.log('Method', method);
-		console.log('Incoming Url', xurl);
-
-		//  if the method = post you need a csrf token.         
-
-		let xRequest =
-			request({
-				method: method,
-				url: xurl,
-				headers: reqHeader
-			});
-
-		req.pipe(xRequest);
-
-		xRequest.on('response', (response) => {
-			// delete response.headers['set-cookie'];
-			csrfToken = response.headers['x-csrf-token'];
-			xRequest.pipe(res);
-		}).on('error', (error) => {
+			proxiedReq.pipe(res);
+		}).on("error", error => {
+			logger.error("Proxied call %s %s FAILED: %s", proxiedMethod, proxiedUrl, error);
 			next(error);
 		});
 	});
 
-	return app;
+	return router;
 };
