@@ -8,7 +8,6 @@ modules:
    type: nodejs
    path: partsAvailability_node
    parameters:
-      host: tci-dev-partsavailability-node
       disk-quota: 512M
       memory: 256M
    properties:
@@ -31,13 +30,13 @@ modules:
    type: html5
    path: partsAvailability
    parameters:
-      host: tci-dev-partsavailability
       disk-quota: 512M
       memory: 256M
    properties:
       XS_APP_LOG_LEVEL: info
    build-parameters:
       builder: grunt
+      build-result: dist
    requires:
     - name: application-logs_partsAvailability
     - name: uaa_partsAvailability
