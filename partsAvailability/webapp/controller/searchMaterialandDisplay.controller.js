@@ -40,7 +40,7 @@ sap.ui.define([
 				this.getView().setModel(i18nModel, "i18n");
 				this.sCurrentLocale = 'FR';
 				// set the right image for logo	 - french		
-				/*				var currentImageSource = this.getView().byId("idLexusLogo");
+				/*				var currentImageSource = this.getView().byId("idLogo");
 								currentImageSource.setProperty("src", "images/Lexus_FR.png");*/
 
 			} else {
@@ -52,7 +52,7 @@ sap.ui.define([
 				this.getView().setModel(i18nModel, "i18n");
 				this.sCurrentLocale = 'EN';
 				// set the right image for logo			
-				/*				var currentImageSource = this.getView().byId("idLexusLogo");
+				/*				var currentImageSource = this.getView().byId("idLogo");
 								currentImageSource.setProperty("src", "images/Lexus_EN.png");*/
 
 			}
@@ -163,8 +163,8 @@ sap.ui.define([
 				// he is a not dealer
 
 				if (!this.sDivision) {
-					var currentImageSource = this.getView().byId("idLexusLogo");
-					currentImageSource.setProperty("src", "images/toyotoLexus.png");
+					var currentImageSource = this.getView().byId("idLogo");
+					currentImageSource.setProperty("src", "images/toyotaLexus.png");
 				}
 				oViewModel.setProperty("/editAllowed", true);
 			} else {
@@ -175,13 +175,13 @@ sap.ui.define([
 				var isDivisionSent = window.location.search.match(/Division=([^&]*)/i);
 				if (isDivisionSent) {
 					this.sDivision = window.location.search.match(/Division=([^&]*)/i)[1];
-					if (this.sDivision == '10') // set the toyoto logo
+					if (this.sDivision == '10') // set the toyota logo
 					{
-						var currentImageSource = this.getView().byId("idLexusLogo");
+						var currentImageSource = this.getView().byId("idLogo");
 						currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
 
 					} else { // set the lexus logo
-						var currentImageSource = this.getView().byId("idLexusLogo");
+						var currentImageSource = this.getView().byId("idLogo");
 						currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
 					}
 				}
@@ -238,13 +238,13 @@ sap.ui.define([
 
 						this.getView().byId("messageStripError").setProperty("visible", false);
 
-						if (this.sDivision == '10') // set the toyoto logo
+						if (this.sDivision == '10') // set the toyota logo
 						{
-							var currentImageSource = this.getView().byId("idLexusLogo");
+							var currentImageSource = this.getView().byId("idLogo");
 							currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
 
 						} else { // set the lexus logo
-							var currentImageSource = this.getView().byId("idLexusLogo");
+							var currentImageSource = this.getView().byId("idLogo");
 							currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
 
 						}
@@ -271,13 +271,13 @@ sap.ui.define([
 
 					this.sDivision = aDataBP[0].Division;
 
-					if (this.sDivision == '10') // set the toyoto logo
+					if (this.sDivision == '10') // set the toyota logo
 					{
-						var currentImageSource = this.getView().byId("idLexusLogo");
+						var currentImageSource = this.getView().byId("idLogo");
 						currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
 
 					} else { // set the lexus logo
-						var currentImageSource = this.getView().byId("idLexusLogo");
+						var currentImageSource = this.getView().byId("idLogo");
 						currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
 
 					}
@@ -290,21 +290,21 @@ sap.ui.define([
 				if (isDivisionSent) {
 					this.sDivision = window.location.search.match(/Division=([^&]*)/i)[1];
 
-					if (this.sDivision == '10') // set the toyoto logo
+					if (this.sDivision == '10') // set the toyota logo
 					{
-						var currentImageSource = this.getView().byId("idLexusLogo");
+						var currentImageSource = this.getView().byId("idLogo");
 						currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
 
 					} else { // set the lexus logo
-						var currentImageSource = this.getView().byId("idLexusLogo");
+						var currentImageSource = this.getView().byId("idLogo");
 						currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
 
 					}
 
 				} else {
 					// just set a both logo
-					var currentImageSource = this.getView().byId("idLexusLogo");
-					currentImageSource.setProperty("src", "images/toyotoLexus.png");
+					var currentImageSource = this.getView().byId("idLogo");
+					currentImageSource.setProperty("src", "images/toyotaLexus.png");
 
 				}
 
@@ -1011,9 +1011,9 @@ sap.ui.define([
 					// set the Division  				    
 					this.sDivision = aDataBP[i].Division;
 
-					if (this.sDivision == '10') // set the toyoto logo
+					if (this.sDivision == '10') // set the toyota logo
 					{
-						var currentImageSource = this.getView().byId("idLexusLogo");
+						var currentImageSource = this.getView().byId("idLogo");
 						currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
 
 					} else { // set the lexus logo
@@ -1023,19 +1023,19 @@ sap.ui.define([
 							if (isDivisionSent) {
 								this.sDivision = window.location.search.match(/Division=([^&]*)/i)[1];
 								if (this.sDivision == 10) {
-									var currentImageSource = this.getView().byId("idLexusLogo");
+									var currentImageSource = this.getView().byId("idLogo");
 									currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
 								} else {
-									var currentImageSource = this.getView().byId("idLexusLogo");
+									var currentImageSource = this.getView().byId("idLogo");
 									currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
 								}
 							} else { // for default behaviour we use toyota. 
 								this.sDivision = "10";
-								var currentImageSource = this.getView().byId("idLexusLogo");
+								var currentImageSource = this.getView().byId("idLogo");
 								currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
 							}
 						} else { // it is lexus
-							var currentImageSource = this.getView().byId("idLexusLogo");
+							var currentImageSource = this.getView().byId("idLogo");
 							currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
 
 						}
