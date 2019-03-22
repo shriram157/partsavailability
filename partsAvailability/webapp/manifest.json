@@ -25,12 +25,12 @@
 					
 				}
 			},
-			"ZMD_PRODUCT_FS_SRV": {
-				"uri": "/node/ZMD_PRODUCT_FS_SRV/",
+			"ZMD_PRODUCT_FS_V2_SRV": {
+				"uri": "/node/ZMD_PRODUCT_FS_V2_SRV/",
 				"type": "OData",
 				"settings": {
 					"odataVersion": "2.0",
-					"localUri": "localService/ZMD_PRODUCT_FS_SRV/metadata.xml"
+					"localUri": "localService/ZMD_PRODUCT_FS_V2_SRV/metadata.xml"
 				}
 			},
 				"API_BUSINESS_PARTNER": {
@@ -109,7 +109,7 @@
 				"preload": true
 			},
 			"zMaterialDisplayModel": {
-				"uri": "/node/ZMD_PRODUCT_FS_SRV/",
+				"uri": "/node/ZMD_PRODUCT_FS_V2_SRV/",
 				"type": "sap.ui.model.odata.v2.ODataModel",
 				"settings": {
 					"defaultOperationMode": "Server",
@@ -119,7 +119,7 @@
                        "sap-client": "200"
                    }
 				},
-				"dataSource": "ZMD_PRODUCT_FS_SRV",
+				"dataSource": "ZMD_PRODUCT_FS_V2_SRV",
 				"preload": true
 			},
 						"aPiBusinessPartner": {
