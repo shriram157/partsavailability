@@ -645,11 +645,11 @@ sap.ui.define([
 			// var selectedCustomer = "24000" + selectedCustomerT;
 			var selectedMaterial = this.getView().byId("material_id").getValue();
 
-			// var sUrlforBackSuperSet = this.nodeJsUrl + "/ZMD_PRODUCT_FS_SRV/zc_BackSuperSet2?Customer=" + (
+			// var sUrlforBackSuperSet = this.nodeJsUrl + "/ZMD_PRODUCT_FS_V2_SRV/zc_BackSuperSet2?Customer=" + (
 			// 		selectedCustomer) + "&Matnr=" + (selectedMaterial) + "&LanguageKey=" + (sCurrentLocale) + "&Plant=" + (supplyingPlant) +
 			// 	"&Division=" + (this.sDivision);
 
-			// var sUrlForBackSuperSet = "/ZMD_PRODUCT_FS_SRV/zc_BackSuperSet(Customer=" + "'" + (selectedCustomer) +
+			// var sUrlForBackSuperSet = "/ZMD_PRODUCT_FS_V2_SRV/zc_BackSuperSet(Customer=" + "'" + (selectedCustomer) +
 			// 	"'," + "DisChannel" + "='" + "10" + "'," + "Division" + "='" + (division) + "'," + "Matnr" + "='" + (selectedMaterial) + "'," +
 			// 	"SalesDocType" + "='" + "ZAF" + "'," + "SalesOrg" + "='" + "7000" + "'," + "LanguageKey" + "='" + (sCurrentLocale) + "'," +
 			// 	"Plant" + "='" + (supplyingPlant) + "')" + "?$format=json&$expand=toForwSuper&?sap-client=" + client; 
@@ -835,7 +835,7 @@ sap.ui.define([
 
 		_callTheQuanity_service: function (selectedMaterial) {
 
-			var sUrlforQuantitySet = this.nodeJsUrl + "/ZMD_PRODUCT_FS_SRV/zc_QuantitySet?Matnr=" + (selectedMaterial);
+			var sUrlforQuantitySet = this.nodeJsUrl + "/ZMD_PRODUCT_FS_V2_SRV/zc_QuantitySet?Matnr=" + (selectedMaterial);
 
 			var sStopSaleFlag = this.getView().getModel("materialDisplayModel").getProperty("/stopSalesFlag"),
 				sinvQtyReceived = this.getView().getModel("materialDisplayModel").getProperty("/invQtyReceived"),
@@ -871,7 +871,7 @@ sap.ui.define([
 				"Z3plqtyavail": sZ3plqtyavail
 			});
 
-			// var sUrlforQuantity = "/ZMD_PRODUCT_FS_SRV/zc_QuantitySet?$filter=Matnr eq" + "'" + (selectedMaterial) + "'" +
+			// var sUrlforQuantity = "/ZMD_PRODUCT_FS_V2_SRV/zc_QuantitySet?$filter=Matnr eq" + "'" + (selectedMaterial) + "'" +
 			// 	"&$format=json";
 
 			var oZMaterialDisplayModel = this.getModel("zMaterialDisplayModel");
