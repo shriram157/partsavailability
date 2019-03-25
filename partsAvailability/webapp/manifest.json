@@ -100,10 +100,8 @@
 				"settings": {
 					"defaultOperationMode": "Server",
 					"defaultBindingMode": "OneWay",
-					"defaultCountMode": "Request",
-					  "serviceUrlParams": {
-                       "sap-client": "200"
-                   }
+					"defaultCountMode": "Request"
+					 
 				},
 				"dataSource": "MD_PRODUCT_FS_SRV",
 				"preload": true
@@ -114,10 +112,8 @@
 				"settings": {
 					"defaultOperationMode": "Server",
 					"defaultBindingMode": "OneWay",
-					"defaultCountMode": "Request",
-					  "serviceUrlParams": {
-                       "sap-client": "200"
-                   }
+					"defaultCountMode": "Request"
+				
 				},
 				"dataSource": "ZMD_PRODUCT_FS_V2_SRV",
 				"preload": true
@@ -128,10 +124,8 @@
 				"settings": {
 					"defaultOperationMode": "Server",
 					"defaultBindingMode": "OneWay",
-					"defaultCountMode": "Request",
-					  "serviceUrlParams": {
-                       "sap-client": "200"
-                   }
+					"defaultCountMode": "Request"
+					 
 				},
 				"dataSource": "API_BUSINESS_PARTNER",
 				"preload": true
