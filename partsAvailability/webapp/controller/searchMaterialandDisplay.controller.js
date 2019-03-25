@@ -533,7 +533,7 @@ sap.ui.define([
 			var priceSetUrl = "(Customer=" + "'" + (selectedCustomer) + "'," + "DisChannel" + "='" + "10" + "'," + "Division" + "='" + (this.sDivision) +
 				"'," + "Matnr" + "='" + (selectedMaterial) + "'," + "SalesDocType" + "='" + "ZAF" + "'," + "SalesOrg" + "='" + "7000" + "'," +
 				"AddlData" + "=" + true + "," + "LanguageKey" + "='" +
-				(sCurrentLocale) + "'," + "Plant" + "='" + (supplyingPlant) + "')" + "?sap-client=" + client;
+				(sCurrentLocale) + "'," + "Plant" + "='" + (supplyingPlant) + "')" ;
 
 			var that = this;
 
@@ -661,7 +661,7 @@ sap.ui.define([
 					this.sDivision) +
 				"'," + "Matnr" + "='" + (selectedMaterial) + "'," +
 				"SalesDocType" + "='" + "ZAF" + "'," + "SalesOrg" + "='" + "7000" + "'," + "LanguageKey" + "='" + (sCurrentLocale) + "'," +
-				"Plant" + "='" + (supplyingPlant) + "')" + "?sap-client=" + client;
+				"Plant" + "='" + (supplyingPlant) + "')";   // + "?sap-client=" + client;
 			var that = this;
 			oZMaterialDisplayModel.read("/zc_BackSuperSet" + urlForBackSuperSet, {
 				urlParameters: {
