@@ -395,7 +395,6 @@ sap.ui.define([
 
 			var oMaterialDisplayModel = this.getModel("materialDisplayModeloData");
 			//	var oMaterialDisplayModel = [];
-			var client = 200;
 
 			// /MD_PRODUCT_FS_SRV/I_MaterialText(Material='4261A53341',Language='EN')?$select=MaterialName
 			//this._oODataModel.read("/TReqHdrSet('" + AttReqno + "')/FileSet"
@@ -528,7 +527,6 @@ sap.ui.define([
 			var sCurrentLocale = this.sCurrentLocale;
 			var selectedCustomer = this.sSelectedDealer;
 			var selectedMaterial = this.getView().byId("material_id").getValue();
-			var client = 200;
 			var ozMaterialDisplayModel = this.getModel("zMaterialDisplayModel");
 			var priceSetUrl = "(Customer=" + "'" + (selectedCustomer) + "'," + "DisChannel" + "='" + "10" + "'," + "Division" + "='" + (this.sDivision) +
 				"'," + "Matnr" + "='" + (selectedMaterial) + "'," + "SalesDocType" + "='" + "ZAF" + "'," + "SalesOrg" + "='" + "7000" + "'," +
@@ -652,16 +650,15 @@ sap.ui.define([
 			// var sUrlForBackSuperSet = "/ZMD_PRODUCT_FS_V2_SRV/zc_BackSuperSet(Customer=" + "'" + (selectedCustomer) +
 			// 	"'," + "DisChannel" + "='" + "10" + "'," + "Division" + "='" + (division) + "'," + "Matnr" + "='" + (selectedMaterial) + "'," +
 			// 	"SalesDocType" + "='" + "ZAF" + "'," + "SalesOrg" + "='" + "7000" + "'," + "LanguageKey" + "='" + (sCurrentLocale) + "'," +
-			// 	"Plant" + "='" + (supplyingPlant) + "')" + "?$format=json&$expand=toForwSuper&?sap-client=" + client; 
+			// 	"Plant" + "='" + (supplyingPlant) + "')" + "?$format=json&$expand=toForwSuper"; 
 
 			var oZMaterialDisplayModel = this.getModel("zMaterialDisplayModel");
 
-			var client = 200;
 			var urlForBackSuperSet = "(Customer=" + "'" + (selectedCustomer) + "'," + "DisChannel" + "='" + "10" + "'," + "Division" + "='" + (
 					this.sDivision) +
 				"'," + "Matnr" + "='" + (selectedMaterial) + "'," +
 				"SalesDocType" + "='" + "ZAF" + "'," + "SalesOrg" + "='" + "7000" + "'," + "LanguageKey" + "='" + (sCurrentLocale) + "'," +
-				"Plant" + "='" + (supplyingPlant) + "')";   // + "?sap-client=" + client;
+				"Plant" + "='" + (supplyingPlant) + "')";
 			var that = this;
 			oZMaterialDisplayModel.read("/zc_BackSuperSet" + urlForBackSuperSet, {
 				urlParameters: {
@@ -876,7 +873,6 @@ sap.ui.define([
 
 			var oZMaterialDisplayModel = this.getModel("zMaterialDisplayModel");
 
-			var client = 200;
 			var that = this;
 			oZMaterialDisplayModel.read("/zc_QuantitySet", {
 				urlParameters: {
