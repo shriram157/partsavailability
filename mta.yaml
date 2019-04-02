@@ -12,6 +12,7 @@ modules:
       disk-quota: 512M
       memory: 256M
    properties:
+      UPS_NAME: PARTS_AVAILABILITY_APIM_CUPS
       XS_APP_LOG_LEVEL: info
       XS_LOG_USER: true
       XS_LOG_REFERER: true
