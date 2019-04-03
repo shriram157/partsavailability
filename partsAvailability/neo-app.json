@@ -1,32 +1,30 @@
 {
-  "welcomeFile": "/webapp/index.html",
-  "routes": [
-    {
-      "path": "/resources",
-      "target": {
-        "type": "service",
-        "name": "sapui5",
-        "entryPath": "/resources"
-      },
-      "description": "SAPUI5 Resources"
-    },
-    {
-      "path": "/test-resources",
-      "target": {
-        "type": "service",
-        "name": "sapui5",
-        "entryPath": "/test-resources"
-      },
-      "description": "SAPUI5 Test Resources"
-    },
-    {
-    	"path": "partsAvailability_node_CLONING",
-        "target": {
-        	"type": "destination",
-        	"name": "partsAvailability_node_CLONING"
-        },
-        "description":"partsAvailability_node_CLONING"
-    }
-  ],
-  "sendWelcomeFileRedirect": true
+	"welcomeFile": "/webapp/index.html",
+	"routes": [{
+		"path": "/resources",
+		"target": {
+			"type": "service",
+			"name": "sapui5",
+			"entryPath": "/resources",
+			"version": "1.63.1"
+		},
+		"description": "SAPUI5 Resources"
+	}, {
+		"path": "/test-resources",
+		"target": {
+			"type": "service",
+			"name": "sapui5",
+			"entryPath": "/test-resources",
+			"version": "1.63.1"
+		},
+		"description": "SAPUI5 Test Resources"
+	}, {
+		"path": "partsAvailability_node_CLONING",
+		"target": {
+			"type": "destination",
+			"name": "partsAvailability_node_CLONING"
+		},
+		"description": "partsAvailability_node_CLONING"
+	}],
+	"sendWelcomeFileRedirect": true
 }
