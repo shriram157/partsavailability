@@ -19,7 +19,6 @@ module.exports = function (appContext) {
 			name: apimServiceName
 		}
 	}));
-	routerTracer.debug("Properties of APIM user-provided service '%s' : %s", apimServiceName, JSON.stringify(options));
 
 	var xsuaaService = xsenv.getServices({
 		xsuaa: {

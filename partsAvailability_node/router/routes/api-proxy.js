@@ -22,7 +22,6 @@ module.exports = function (appContext) {
 			name: apimServiceName
 		}
 	}));
-	routerTracer.debug("Properties of APIM user-provided service '%s' : %s", apimServiceName, JSON.stringify(options));
 
 	var apimUrl = options.apim.host;
 	if (apimUrl.endsWith("/")) {
@@ -53,12 +52,22 @@ module.exports = function (appContext) {
 
 		// Pass through x-csrf-token from request to proxied request to S4/HANA
 		// This requires manual handling of CSRF tokens from the front-end
-		// Note: req.get() will get header in a case-insensitive manner 
+		// Note: req.get() will get header in a case-insensitive manner
 		var csrfTokenHeaderValue = req.get("X-Csrf-Token");
 		proxiedReqHeaders["X-Csrf-Token"] = csrfTokenHeaderValue;
 
 		tracer.debug("Proxied Method: %s", proxiedMethod);
-		tracer.debug("Proxied request headers: %s", JSON.stringify(proxiedReqHeaders));
+
+		// Redact security-sensitive header values before writing to trace log
+		var debugProxiedReqHeaders = JSON.parse(JSON.stringify(proxiedReqHeaders));
+		var securitySensitiveHeaderNames = ["authorization", "apikey", "x-csrf-token"];
+		Object.keys(debugProxiedReqHeaders).forEach(key => {
+			if (securitySensitiveHeaderNames.includes(key.toLowerCase())) {
+				debugProxiedReqHeaders[key] = "redacted";
+			}
+		});
+		tracer.debug("Proxied request headers: %s", JSON.stringify(debugProxiedReqHeaders));
+
 		tracer.debug("Proxied URL: %s", proxiedUrl);
 
 		let proxiedReq = request({
