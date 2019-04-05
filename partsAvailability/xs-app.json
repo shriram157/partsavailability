@@ -5,32 +5,37 @@
 		"logoutEndpoint": "/do/logout"
 	},
 	"routes": [{
+		"source": "^/partsavailability/index.html$",
+		"target": "index.html",
+		"localDir": "webapp",
+		"cacheControl": "no-cache, no-store, must-revalidate",
+		"scope": [
+			"$XSAPPNAME.DealerDisplay",
+			"$XSAPPNAME.InternalUserDisplay"
+		]
+	}, {
 		"source": "^/partsavailability/(.*)$",
 		"target": "$1",
 		"localDir": "webapp",
-		"authenticationType": "xsuaa",
-		"scope": {
-			"GET": [
-				"$XSAPPNAME.InternalUserDisplay",
-				"$XSAPPNAME.DealerDisplay"
-			],
-			"default": "$XSAPPNAME.DealerDisplay"
-
-		}
+		"scope": [
+			"$XSAPPNAME.DealerDisplay",
+			"$XSAPPNAME.InternalUserDisplay"
+		]
 	}, {
 		"source": "/node(.*)",
 		"destination": "parts-node-backend",
-		"csrfProtection": true,
-		"authenticationType": "xsuaa",
-		"scope": {
-			"GET": [
-				"$XSAPPNAME.InternalUserDisplay",
-				"$XSAPPNAME.DealerDisplay"
-			],
-			"default": "$XSAPPNAME.DealerDisplay"
-		}
+		"csrfProtection": false,
+		"scope": [
+			"$XSAPPNAME.DealerDisplay",
+			"$XSAPPNAME.InternalUserDisplay"
+		]
 	}, {
 		"source": "/userDetails/(.*)",
-		"destination": "parts-node-backend"
+		"destination": "parts-node-backend",
+		"csrfProtection": false,
+		"scope": [
+			"$XSAPPNAME.DealerDisplay",
+			"$XSAPPNAME.InternalUserDisplay"
+		]
 	}]
 }
