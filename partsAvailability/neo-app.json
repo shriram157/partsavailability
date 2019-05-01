@@ -19,12 +19,12 @@
 		},
 		"description": "SAPUI5 Test Resources"
 	}, {
-		"path": "partsAvailability_node_CLONING",
+		"path": "partsavailability-node",
 		"target": {
 			"type": "destination",
-			"name": "partsAvailability_node_CLONING"
+			"name": "partsavailability-node"
 		},
-		"description": "partsAvailability_node_CLONING"
+		"description": "partsavailability-node"
 	}],
 	"sendWelcomeFileRedirect": true
 }

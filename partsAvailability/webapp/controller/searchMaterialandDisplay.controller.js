@@ -97,7 +97,7 @@ sap.ui.define([
 			var sLocation_conf = sLocation.search("webide");
 
 			if (sLocation_conf == 0) {
-				this.sPrefix = "/partsAvailability_node_CLONING";
+				this.sPrefix = "/partsavailability-node";
 			} else {
 				this.sPrefix = "";
 

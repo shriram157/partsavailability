@@ -35,7 +35,7 @@ sap.ui.define([
 			var sLocation = window.location.host;
 			var sLocation_conf = sLocation.search("webide");
 			if (sLocation_conf == 0) {
-				mConfig.uri = "/partsAvailability_node_CLONING" + mConfig.uri;
+				mConfig.uri = "/partsavailability-node" + mConfig.uri;
 			} else {
 			}
 			var oDataModel = new ODataModel(mConfig.uri, {
@@ -50,7 +50,7 @@ sap.ui.define([
 			var sLocation = window.location.host;
 			var sLocation_conf = sLocation.search("webide");
 			if (sLocation_conf == 0) {
-				mConfig.uri = "/partsAvailability_node_CLONING" + mConfig.uri;
+				mConfig.uri = "/partsavailability-node" + mConfig.uri;
 			} else {
 			}
 			var oDataModel = new ODataModel(mConfig.uri, {
@@ -65,7 +65,7 @@ sap.ui.define([
 			var sLocation = window.location.host;
 			var sLocation_conf = sLocation.search("webide");
 			if (sLocation_conf == 0) {
-				mConfig.uri = "/partsAvailability_node_CLONING" + mConfig.uri;
+				mConfig.uri = "/partsavailability-node" + mConfig.uri;
 			} else {
 			}
 			var oDataModel = new ODataModel(mConfig.uri, {
