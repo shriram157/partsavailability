@@ -95,23 +95,27 @@
 											<Text text="{materialDisplayModel>/Parttypedesc}"/>
 											<Label text="{i18n>OBSOLETE}"/>
 											<Text text="{materialDisplayModel>/Obsolete}"/>
+											<Label text="{i18n>DANGEROUS_GOODS}"/>
+											<Text text="{materialDisplayModel>/Dangerousgoods}" tooltip="{materialDisplayModel>/Dgtooltip}"/>
 											<core:Title/>
 											<Label text="{i18n>SELL_PACKAGE_QTY}" id="sellpackageqtyLabelId"/>
 											<!--
-<Label text="{path:'i18n>SELL_PACKAGE_QTY', formatter: '.getItsSpeakersName'}" />
+<Label text="{path:'i18n>SELL_PACKAGE_QTY', formatter: '.getItsSpeakersName'}" />			<Label text="{i18n>SUGGESTED_LIST_PRICE}"/>
+											<Text text="{materialDisplayModel>/Msrp}"/>
+											<Label text="{i18n>STOP_SALES_FLAG}"/>
+
 -->
 											<Text text="{path:'materialDisplayModel>/Roundingprofile', formatter:'.formatter.quantity'}"/>
 											<!--
 <Text text="{materialDisplayModel>/Roundingprofile}"/>
 -->
-											<Label text="{i18n>SUGGESTED_LIST_PRICE}"/>
-											<Text text="{materialDisplayModel>/Msrp}"/>
-											<Label text="{i18n>STOP_SALES_FLAG}"/>
-											<Text text="{materialDisplayModel>/stopSalesFlag}"/>
+																			<Text text="{materialDisplayModel>/stopSalesFlag}"/>
 											<Label text="{i18n>STOCKED}"/>
 											<Text text="{materialDisplayModel>/Partstocked}"/>
 											<Label text="{i18n>SHIPPED_VIA}"/>
 											<Text text="{materialDisplayModel>/Shippedvia}"/>
+											<Label text="{i18n>DIRECT_TO_DEALER}"/>
+											<Text text="{materialDisplayModel>/Dtd}"/>
 										</f:SimpleForm>
 									</uxap:blocks>
 									<uxap:blocks>

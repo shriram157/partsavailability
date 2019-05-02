@@ -558,6 +558,19 @@ sap.ui.define([
 						this._materialDisplayModel.setProperty("/invQtyReceived", oData.Item.Qtyavail);
 						this._materialDisplayModel.setProperty("/Dealernet", oData.Item.Dealernet);
 						this._materialDisplayModel.setProperty("/Roundingprofile", oData.Item.Roundingprofile);
+						if (oDate.Item.Dgind === "Yes") {
+							this._materialDisplayModel.setProperty("/Dangerousgoods", "Yes");
+							this._materialDisplayModel.setProperty("/Material")
+						} else {
+							this._materialDisplayModel.setProperty("/Dangerousgoods", "No");
+							this._materialDisplayModel.setProperty("/Dgtooltip", oDate.Item.MatGrp + " " + oDate.Item.MatGrpDesc + " " + oDate.Item.MatGrpDesc60);
+						}
+						if (oDate.Item.Itmcatgrp === "BANS") {
+							this._materialDisplayModel.setProperty("/Dtd", "Yes");
+						} else {
+							this._materialDisplayModel.setProperty("/Dtd", "No");
+						}
+						
 					} else {
 						this.doNotDisplayReceived = true;
 
