@@ -81,7 +81,7 @@
 									<uxap:blocks>
 										<f:SimpleForm id="materialData_id" class="myFormBorder" editable="false" layout="ResponsiveGridLayout" adjustLabelSpan="false"
 											visible="{detailView>/afterMaterialFound}" singleContainerFullSize="true" backgroundDesign="Solid">
-										<!--	<core:Title/>-->
+											<core:Title/>
 											<Label text="{i18n>PART_DESCRIPTION}"/>
 											<Text text="{materialDisplayModel>/MaterialText}"/>
 											<Label text="{i18n>DEALER_NET_PRICE}"/>
@@ -95,21 +95,12 @@
 											<Text text="{materialDisplayModel>/Parttypedesc}"/>
 											<Label text="{i18n>OBSOLETE}"/>
 											<Text text="{materialDisplayModel>/Obsolete}"/>
+											<core:Title/>
 											<Label text="{i18n>DANGEROUS_GOODS}"/>
 											<Text text="{materialDisplayModel>/Dangerousgoods}" tooltip="{materialDisplayModel>/Dgtooltip}"/>
-										<!--	<core:Title/>-->
 											<Label text="{i18n>SELL_PACKAGE_QTY}" id="sellpackageqtyLabelId"/>
-											<!--
-<Label text="{path:'i18n>SELL_PACKAGE_QTY', formatter: '.getItsSpeakersName'}" />			<Label text="{i18n>SUGGESTED_LIST_PRICE}"/>
-											<Text text="{materialDisplayModel>/Msrp}"/>
-											<Label text="{i18n>STOP_SALES_FLAG}"/>
-
--->
 											<Text text="{path:'materialDisplayModel>/Roundingprofile', formatter:'.formatter.quantity'}"/>
-											<!--
-<Text text="{materialDisplayModel>/Roundingprofile}"/>
--->
-																			<Text text="{materialDisplayModel>/stopSalesFlag}"/>
+											<Text text="{materialDisplayModel>/stopSalesFlag}"/>
 											<Label text="{i18n>STOCKED}"/>
 											<Text text="{materialDisplayModel>/Partstocked}"/>
 											<Label text="{i18n>SHIPPED_VIA}"/>
