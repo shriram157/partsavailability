@@ -96,7 +96,7 @@
 											<Label text="{i18n>OBSOLETE}"/>
 											<Text text="{materialDisplayModel>/Obsolete}"/>
 											<core:Title/>
-											<Label text="{i18n>DANGEROUS_GOODS}"/>
+											<Label text="{i18n>DANGEROUS_GOODS}" tooltip="{materialDisplayModel>/Dgtooltip}"/>
 											<Text text="{materialDisplayModel>/Dangerousgoods}" tooltip="{materialDisplayModel>/Dgtooltip}"/>
 											<Label text="{i18n>SELL_PACKAGE_QTY}" id="sellpackageqtyLabelId"/>
 										<!--	<Text text="{path:'materialDisplayModel>/Roundingprofile', formatter:'.formatter.quantity'}"/>-->
