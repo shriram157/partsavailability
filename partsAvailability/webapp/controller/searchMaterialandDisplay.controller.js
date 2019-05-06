@@ -560,10 +560,10 @@ sap.ui.define([
 						this._materialDisplayModel.setProperty("/Roundingprofile", oData.Item.Roundingprofile);
 						if (oData.Item.Dgind === "Yes") {
 							this._materialDisplayModel.setProperty("/Dangerousgoods", "Yes");
-							this._materialDisplayModel.setProperty("/Material")
+							this._materialDisplayModel.setProperty("/Dgtooltip", oData.Item.MatGrp + " " + oData.Item.MatGrpDesc + " " + oData.Item.MatGrpDesc60);
 						} else {
 							this._materialDisplayModel.setProperty("/Dangerousgoods", "No");
-							this._materialDisplayModel.setProperty("/Dgtooltip", oData.Item.MatGrp + " " + oData.Item.MatGrpDesc + " " + oData.Item.MatGrpDesc60);
+							this._materialDisplayModel.setProperty("/Dgtooltip", "");
 						}
 						if (oData.Item.Itmcatgrp === "BANS") {
 							this._materialDisplayModel.setProperty("/Dtd", "Yes");
