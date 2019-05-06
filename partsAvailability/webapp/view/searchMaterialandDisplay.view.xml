@@ -95,11 +95,14 @@
 											<Text text="{materialDisplayModel>/Parttypedesc}"/>
 											<Label text="{i18n>OBSOLETE}"/>
 											<Text text="{materialDisplayModel>/Obsolete}"/>
-											<core:Title/>
 											<Label text="{i18n>DANGEROUS_GOODS}" tooltip="{materialDisplayModel>/Dgtooltip}"/>
 											<Text text="{materialDisplayModel>/Dangerousgoods}" tooltip="{materialDisplayModel>/Dgtooltip}"/>
+											<core:Title/>
+											<Label text="{i18n>SUGGESTED_LIST_PRICE}"/>
+											<Text text="{materialDisplayModel>/Msrp}"/>
 											<Label text="{i18n>SELL_PACKAGE_QTY}" id="sellpackageqtyLabelId"/>
-										<!--	<Text text="{path:'materialDisplayModel>/Roundingprofile', formatter:'.formatter.quantity'}"/>-->
+											<Text text="{path:'materialDisplayModel>/Roundingprofile', formatter:'.formatter.quantity'}"/>
+											<Label text="{i18n>STOP_SALES_FLAG}"/>
 											<Text text="{materialDisplayModel>/stopSalesFlag}"/>
 											<Label text="{i18n>STOCKED}"/>
 											<Text text="{materialDisplayModel>/Partstocked}"/>
