@@ -6,6 +6,9 @@ modules:
  - name: partsAvailability_node
    parameters:
       host: tci-dev-partsavailability-node
+   properties:
+      MOCK_USER_MODE: true
+      MOCK_USER_ORIGIN: d36z7bqhz1-GSR-Neo-to-CF
  - name: partsAvailability
    parameters:
       host: tci-dev-partsavailability
