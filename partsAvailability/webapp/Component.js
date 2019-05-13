@@ -1,9 +1,12 @@
 sap.ui.define([
+	"sap/m/Dialog",
+	"sap/m/Text",
 	"sap/ui/core/UIComponent",
 	"sap/ui/Device",
 	"sap/ui/model/odata/v2/ODataModel",
+	"sap/ui/model/resource/ResourceModel",
 	"partsAvailability/model/models"
-], function (UIComponent, Device, ODataModel, models) {
+], function(Dialog, Text, UIComponent, Device, ODataModel, ResourceModel, models) {
 	"use strict";
 
 	return UIComponent.extend("partsAvailability.Component", {
@@ -27,6 +30,33 @@ sap.ui.define([
 			// set the device model
 			this.setModel(models.createDeviceModel(), "device");
 
+			// Get resource bundle
+			var bundle = new ResourceModel({
+				bundleName: "partsAvailability.i18n.i18n"
+			}).getResourceBundle();
+
+			// Attach XHR event handler to detect 401 error responses for handling as timeout
+			var sessionExpDialog = new Dialog({
+				title: bundle.getText('SESSION_EXP_TITLE'),
+				type: 'Message',
+				state: 'Warning',
+				content: new Text({
+					text: bundle.getText('SESSION_EXP_TEXT')
+				})
+			});
+			var origOpen = XMLHttpRequest.prototype.open;
+			XMLHttpRequest.prototype.open = function () {
+				this.addEventListener('load', function (event) {
+					// TODO Compare host name in URLs to ensure only app resources are checked
+					if (event.target.status === 401) {
+						if (!sessionExpDialog.isOpen()) {
+							sessionExpDialog.open();
+						}
+					}
+				});
+				origOpen.apply(this, arguments);
+			};
+
 			// ============================== md_product service==========================Begin
 			var mConfig = this.getMetadata().getManifestEntry("/sap.app/dataSources/MD_PRODUCT_FS_SRV");
 			//  if running on a local version,  use the destination otherwise use /node.			
@@ -34,7 +64,7 @@ sap.ui.define([
 			var sLocation_conf = sLocation.search("webide");
 			if (sLocation_conf == 0) {
 				mConfig.uri = "/partsavailability-node" + mConfig.uri;
-			} else {}
+			}
 			var oDataModel = new ODataModel(mConfig.uri, {
 				useBatch: false,
 				json: true,
@@ -51,7 +81,7 @@ sap.ui.define([
 			var sLocation_conf = sLocation.search("webide");
 			if (sLocation_conf == 0) {
 				mConfig.uri = "/partsavailability-node" + mConfig.uri;
-			} else {}
+			}
 			var oDataModel = new ODataModel(mConfig.uri, {
 				useBatch: false,
 				json: true,
@@ -68,7 +98,7 @@ sap.ui.define([
 			var sLocation_conf = sLocation.search("webide");
 			if (sLocation_conf == 0) {
 				mConfig.uri = "/partsavailability-node" + mConfig.uri;
-			} else {}
+			}
 			var oDataModel = new ODataModel(mConfig.uri, {
 				useBatch: false,
 				json: true,
