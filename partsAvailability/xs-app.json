@@ -2,9 +2,14 @@
 	"welcomeFile": "/partsavailability/index.html",
 	"authenticationMethod": "route",
 	"logout": {
-		"logoutEndpoint": "/do/logout"
+		"logoutEndpoint": "/do/logout",
+		"logoutPage": "/logged-out.html"
 	},
 	"routes": [{
+		"source": "^/logged-out.html$",
+		"localDir": "webapp",
+		"authenticationType": "none"
+    }, {
 		"source": "^/partsavailability/index.html$",
 		"target": "index.html",
 		"localDir": "webapp",
