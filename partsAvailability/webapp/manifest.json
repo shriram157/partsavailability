@@ -22,7 +22,6 @@
 				"settings": {
 					"odataVersion": "2.0",
 					"localUri": "localService/MD_PRODUCT_FS_SRV/metadata.xml"
-					
 				}
 			},
 			"ZMD_PRODUCT_FS_V2_SRV": {
@@ -33,18 +32,16 @@
 					"localUri": "localService/ZMD_PRODUCT_FS_V2_SRV/metadata.xml"
 				}
 			},
-				"API_BUSINESS_PARTNER": {
+			"API_BUSINESS_PARTNER": {
 				"uri": "/node/API_BUSINESS_PARTNER/",
 				"type": "OData",
 				"settings": {
 					"odataVersion": "2.0",
 					"localUri": "localService/API_BUSINESS_PARTNER/metadata.xml"
 				}
-			}		
-
+			}
 		}
 	},
-
 	"sap.ui": {
 		"technology": "UI5",
 		"icons": {
@@ -65,7 +62,6 @@
 			"sap_bluecrystal"
 		]
 	},
-
 	"sap.ui5": {
 		"rootView": {
 			"viewName": "partsAvailability.view.searchMaterialandDisplay",
@@ -100,8 +96,10 @@
 				"settings": {
 					"defaultOperationMode": "Server",
 					"defaultBindingMode": "OneWay",
-					"defaultCountMode": "Request"
-					 
+					"defaultCountMode": "Request",
+					"headers": {
+						"X-Requested-With": "XMLHttpRequest"
+					}
 				},
 				"dataSource": "MD_PRODUCT_FS_SRV",
 				"preload": true
@@ -112,25 +110,28 @@
 				"settings": {
 					"defaultOperationMode": "Server",
 					"defaultBindingMode": "OneWay",
-					"defaultCountMode": "Request"
-				
+					"defaultCountMode": "Request",
+					"headers": {
+						"X-Requested-With": "XMLHttpRequest"
+					}
 				},
 				"dataSource": "ZMD_PRODUCT_FS_V2_SRV",
 				"preload": true
 			},
-						"aPiBusinessPartner": {
+			"aPiBusinessPartner": {
 				"uri": "/node/API_BUSINESS_PARTNER/",
 				"type": "sap.ui.model.odata.v2.ODataModel",
 				"settings": {
 					"defaultOperationMode": "Server",
 					"defaultBindingMode": "OneWay",
-					"defaultCountMode": "Request"
-					 
+					"defaultCountMode": "Request",
+					"headers": {
+						"X-Requested-With": "XMLHttpRequest"
+					}
 				},
 				"dataSource": "API_BUSINESS_PARTNER",
 				"preload": true
 			}
-
 		},
 		"resources": {
 			"css": [{
