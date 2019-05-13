@@ -10,7 +10,7 @@
 		"localDir": "webapp",
 		"authenticationType": "none"
     }, {
-		"source": "^/partsavailability/index.html$",
+		"source": "^/partsavailability/index.html",
 		"target": "index.html",
 		"localDir": "webapp",
 		"cacheControl": "no-cache, no-store, must-revalidate",
