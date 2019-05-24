@@ -4,9 +4,8 @@ sap.ui.define([
 	"sap/ui/core/UIComponent",
 	"sap/ui/Device",
 	"sap/ui/model/odata/v2/ODataModel",
-	"sap/ui/model/resource/ResourceModel",
 	"partsAvailability/model/models"
-], function(Dialog, Text, UIComponent, Device, ODataModel, ResourceModel, models) {
+], function(Dialog, Text, UIComponent, Device, ODataModel, models) {
 	"use strict";
 
 	return UIComponent.extend("partsAvailability.Component", {
@@ -31,9 +30,7 @@ sap.ui.define([
 			this.setModel(models.createDeviceModel(), "device");
 
 			// Get resource bundle
-			var bundle = new ResourceModel({
-				bundleName: "partsAvailability.i18n.i18n"
-			}).getResourceBundle();
+			var bundle = this.getModel('i18n').getResourceBundle();
 
 			// Attach XHR event handler to detect 401 error responses for handling as timeout
 			var sessionExpDialog = new Dialog({
