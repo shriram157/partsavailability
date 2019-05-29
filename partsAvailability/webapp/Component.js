@@ -1,11 +1,12 @@
 sap.ui.define([
+	"sap/base/i18n/ResourceBundle",
 	"sap/m/Dialog",
 	"sap/m/Text",
 	"sap/ui/core/UIComponent",
 	"sap/ui/Device",
 	"sap/ui/model/odata/v2/ODataModel",
 	"partsAvailability/model/models"
-], function(Dialog, Text, UIComponent, Device, ODataModel, models) {
+], function(ResourceBundle, Dialog, Text, UIComponent, Device, ODataModel, models) {
 	"use strict";
 
 	return UIComponent.extend("partsAvailability.Component", {
@@ -30,7 +31,13 @@ sap.ui.define([
 			this.setModel(models.createDeviceModel(), "device");
 
 			// Get resource bundle
-			var bundle = this.getModel('i18n').getResourceBundle();
+			var locale = jQuery.sap.getUriParameters().get('Language');
+			var bundle = !locale ? ResourceBundle.create({
+				url: './i18n/i18n.properties'
+			}): ResourceBundle.create({
+				url: './i18n/i18n.properties',
+				locale: locale
+			});
 
 			// Attach XHR event handler to detect 401 error responses for handling as timeout
 			var sessionExpDialog = new Dialog({
