@@ -745,7 +745,7 @@ sap.ui.define([
 							var itemMessage = that._oResourceBundle.getText("TYPEC");
 							//for header 
 							if (that.headerMessageSet == false) {
-								var headMessageHeader = that._oResourceBundle.getText("TYPEMHEAD"); //Multiple
+								var headMessageHeader = that._oResourceBundle.getText("TYPECHEAD"); //Multiple
 								that._materialDisplayModel.setProperty("/headerTypeDesc", headMessageHeader);
 								that.headerMessageSet = true;
 							}
@@ -761,28 +761,37 @@ sap.ui.define([
 							}
 							break;
 						case "A":
-							// var itemMessage = that._oResourceBundle.getText("TYPEA");
-							var itemMessage = "";
+							 var itemMessage = that._oResourceBundle.getText("TYPEA");
+							//var itemMessage = "";
 							if (that.headerMessageSet == false) {
 								var headMessageHeader = that._oResourceBundle.getText("TYPEAHEAD"); // elective
 								that._materialDisplayModel.setProperty("/headerTypeDesc", headMessageHeader);
 								that.headerMessageSet = true;
 							}
 							break;
-						case "I":
-							// var itemMessage = that._oResourceBundle.getText("TYPEI");
-							var itemMessage = "";
+						case "E":
+							var itemMessage = that._oResourceBundle.getText("TYPEE");
+							//var itemMessage = "";
 							if (that.headerMessageSet == false) {
-								var headMessageHeader = that._oResourceBundle.getText("TYPEI"); // elective
+								var headMessageHeader = that._oResourceBundle.getText("TYPEEHEAD"); // elective
+								that._materialDisplayModel.setProperty("/headerTypeDesc", headMessageHeader);
+								that.headerMessageSet = true;
+							}
+							break;	
+						case "I":
+							var itemMessage = that._oResourceBundle.getText("TYPEI");
+							//var itemMessage = "";
+							if (that.headerMessageSet == false) {
+								var headMessageHeader = that._oResourceBundle.getText("TYPEIHEAD"); // elective
 								that._materialDisplayModel.setProperty("/headerTypeDesc", headMessageHeader);
 								that.headerMessageSet = true;
 							}
 							break;
 						case "F":
-							// var itemMessage = that._oResourceBundle.getText("TYPEF");
-							var itemMessage = "";
+							var itemMessage = that._oResourceBundle.getText("TYPEF");
+							//var itemMessage = "";
 							if (that.headerMessageSet == false) {
-								var headMessageHeader = that._oResourceBundle.getText("TYPEF"); // elective
+								var headMessageHeader = that._oResourceBundle.getText("TYPEFHEAD"); // elective
 								that._materialDisplayModel.setProperty("/headerTypeDesc", headMessageHeader);
 								that.headerMessageSet = true;
 							}
