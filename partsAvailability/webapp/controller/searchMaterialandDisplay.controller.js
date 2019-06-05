@@ -339,6 +339,7 @@ sap.ui.define([
 				
 				materialFromScreen  = materialFromScreen.toString().replace(/-/g, ""); 
 				materialFromScreen = materialFromScreen.trim();
+				this.getView().byId("material_id").setValue(materialFromScreen);
 			}
 			var selectedCustomerT = this.getView().byId("dealerID").getValue();
 			this.getView().byId("messageStripError").setProperty("visible", false);
