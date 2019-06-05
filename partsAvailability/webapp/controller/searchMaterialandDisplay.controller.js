@@ -335,6 +335,9 @@ sap.ui.define([
 			var oViewModel = this.getView().getModel("detailView");
 
 			var materialFromScreen = this.getView().byId("material_id").getValue();
+			if (!!materialFromScreen && materialFromScreen !== "")  {
+				materialFromScreen  = materialFromScreen.toString().replace(/-/g, "");          
+			}
 			var selectedCustomerT = this.getView().byId("dealerID").getValue();
 			this.getView().byId("messageStripError").setProperty("visible", false);
 			if (!materialFromScreen || !selectedCustomerT) {
