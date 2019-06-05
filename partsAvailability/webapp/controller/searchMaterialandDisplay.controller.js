@@ -123,14 +123,14 @@ sap.ui.define([
 							"BusinessPartnerName": item.BusinessPartnerName, //item.OrganizationBPName1 //item.BusinessPartnerFullName
 							"Division": item.Division,
 							"BusinessPartnerType": item.BusinessPartnerType,
-							"searchTermReceivedDealerName":item.SearchTerm2
+							"searchTermReceivedDealerName": item.SearchTerm2
 						});
 
 					});
 					that.getView().setModel(new sap.ui.model.json.JSONModel(BpDealer), "BpDealerModel");
 					userAttributes.push({
 						"UserType": oData.samlAttributes.UserType[0],
-						"DealerCode": oData.samlAttributes.DealerCode ? oData.samlAttributes.DealerCode[0]: null,
+						"DealerCode": oData.samlAttributes.DealerCode ? oData.samlAttributes.DealerCode[0] : null,
 						"Language": oData.samlAttributes.Language[0]
 					});
 
@@ -187,7 +187,7 @@ sap.ui.define([
 				}
 
 				for (var i = 0; i < aDataBP.length; i++) {
-					if (aDataBP[i].BusinessPartner == userDetails[0].DealerCode || aDataBP[i].searchTermReceivedDealerName == userDetails[0].DealerCode ) {
+					if (aDataBP[i].BusinessPartner == userDetails[0].DealerCode || aDataBP[i].searchTermReceivedDealerName == userDetails[0].DealerCode) {
 						this.getView().byId("dealerID").setSelectedKey(aDataBP[i].BusinessPartnerKey);
 
 						//selectedDealerModel>/Dealer_Name
@@ -335,9 +335,9 @@ sap.ui.define([
 			var oViewModel = this.getView().getModel("detailView");
 
 			var materialFromScreen = this.getView().byId("material_id").getValue();
-			if (!!materialFromScreen && materialFromScreen !== "")  {
-				
-				materialFromScreen  = materialFromScreen.toString().replace(/-/g, ""); 
+			if (!!materialFromScreen && materialFromScreen !== "") {
+
+				materialFromScreen = materialFromScreen.toString().replace(/-/g, "");
 				materialFromScreen = materialFromScreen.trim();
 				this.getView().byId("material_id").setValue(materialFromScreen);
 			}
@@ -377,7 +377,12 @@ sap.ui.define([
 			this.dealerSearchError = false;
 			var materialFromScreen = this.getView().byId("material_id").getValue();
 			// convert to upper case. 
+			if (!!materialFromScreen && materialFromScreen !== "") {
 
+				materialFromScreen = materialFromScreen.toString().replace(/-/g, "");
+				materialFromScreen = materialFromScreen.trim();
+				this.getView().byId("material_id").setValue(materialFromScreen);
+			}
 			var upperCaseMaterial = materialFromScreen.toUpperCase();
 			materialFromScreen = upperCaseMaterial;
 
@@ -537,7 +542,7 @@ sap.ui.define([
 			var priceSetUrl = "(Customer=" + "'" + (selectedCustomer) + "'," + "DisChannel" + "='" + "10" + "'," + "Division" + "='" + (this.sDivision) +
 				"'," + "Matnr" + "='" + (selectedMaterial) + "'," + "SalesDocType" + "='" + "ZAF" + "'," + "SalesOrg" + "='" + "7000" + "'," +
 				"AddlData" + "=" + true + "," + "LanguageKey" + "='" +
-				(sCurrentLocale) + "'," + "Plant" + "='" + (supplyingPlant) + "')" ;
+				(sCurrentLocale) + "'," + "Plant" + "='" + (supplyingPlant) + "')";
 
 			var that = this;
 
@@ -576,7 +581,7 @@ sap.ui.define([
 						} else {
 							this._materialDisplayModel.setProperty("/Dtd", "No");
 						}
-						
+
 					} else {
 						this.doNotDisplayReceived = true;
 
@@ -767,7 +772,7 @@ sap.ui.define([
 							}
 							break;
 						case "A":
-							 var itemMessage = that._oResourceBundle.getText("TYPEA");
+							var itemMessage = that._oResourceBundle.getText("TYPEA");
 							//var itemMessage = "";
 							if (that.headerMessageSet == false) {
 								var headMessageHeader = that._oResourceBundle.getText("TYPEAHEAD"); // elective
@@ -783,7 +788,7 @@ sap.ui.define([
 								that._materialDisplayModel.setProperty("/headerTypeDesc", headMessageHeader);
 								that.headerMessageSet = true;
 							}
-							break;	
+							break;
 						case "I":
 							var itemMessage = that._oResourceBundle.getText("TYPEI");
 							//var itemMessage = "";
@@ -1084,6 +1089,12 @@ sap.ui.define([
 
 			var oSource = oEvent.getSource();
 			var sTerm = oEvent.getParameter("suggestValue");
+			if (!!sTerm && sTerm !== "") {
+
+				sTerm = sTerm.toString().replace(/-/g, "");
+				sTerm = sTerm.trim();
+
+			}
 
 			this._forhandleSuggestCallData(sTerm);
 
