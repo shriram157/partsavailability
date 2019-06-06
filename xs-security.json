@@ -10,20 +10,22 @@
 		"description": "Internal User display"
 	}],
 	"attributes": [{
-			"name": "DealerCode",
-			"description": "Dealer Code",
-			"valueType": "s"
-		}, {
-			"name": "Language",
-			"description": "Language",
-			"valueType": "s"
-		}, {
-			"name": "UserType",
-			"description": "UserType, identifies dealer or not",
-			"valueType": "s"
-		}
-
-	],
+		"name": "DealerCode",
+		"description": "Dealer Code",
+		"valueType": "s"
+	}, {
+		"name": "Language",
+		"description": "Language",
+		"valueType": "s"
+	}, {
+		"name": "UserType",
+		"description": "UserType, identifies dealer or not",
+		"valueType": "s"
+	}, {
+		"name": "Zone",
+		"description": "restrict based on Zone",
+		"valueType": "s"
+	}],
 	"role-templates": [{
 		"name": "Internal_TCI_User",
 		"description": "View any product for any division lexus or toyota",
@@ -45,7 +47,17 @@
 			"DealerCode",
 			"Language",
 			"UserType"
-
+		]
+	}, {
+		"name": "Zone_User",
+		"description": "Zone user",
+		"scope-references": [
+			"$XSAPPNAME.InternalUserDisplay"
+		],
+		"attribute-references": [
+			"Language",
+			"UserType",
+			"Zone"
 		]
 	}]
 }
