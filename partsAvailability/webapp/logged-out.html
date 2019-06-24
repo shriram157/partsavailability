@@ -3,7 +3,7 @@
    <head>
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
       <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
-      <title>Logged Out</title>
+      <title>Logged Out / Déconnecté</title>
       <script id="sap-ui-bootstrap"
          src="https://sapui5.hana.ondemand.com/resources/sap-ui-core.js"
          data-sap-ui-theme="sap_bluecrystal"
@@ -15,10 +15,10 @@
 			}).placeAt('uiArea');
 
          	var loggedOutDialog = new sap.m.Dialog({
-         		title: 'Logged Out',
+         		title: 'Logged Out / Déconnecté',
          		type: 'Message',
          		content: new sap.m.Text({
-         			text: 'You have successfully been logged out. You may close this window now.'
+         			text: 'You have successfully been logged out. You may close this window now.\n\nVous vous êtes déconnecté avec succès. Vous pouvez fermer cette fenêtre maintenant.'
          		})
          	});
          	loggedOutDialog.open();

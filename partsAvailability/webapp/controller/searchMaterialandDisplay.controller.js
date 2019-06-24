@@ -1184,7 +1184,7 @@ sap.ui.define([
 			return this.getOwnerComponent().getModel(sName);
 		},
 		onLogOutBtnPress: function (event) {
-			window.location.replace('/do/logout');
+			window.location.replace('/custom/do/logout');
 		}
 	});
 });

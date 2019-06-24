@@ -11,9 +11,9 @@
 							<Text text="|" class="sapUiTinyMarginBeginEnd"/>
 							<Text class="clCustomFont" text="{i18n>title}"/>
 						</contentLeft>
-						<!--<contentRight>
+						<contentRight>
 							<Button text="{i18n>LOG_OUT_BTN_TEXT}" press="onLogOutBtnPress" />
-						</contentRight>-->
+						</contentRight>
 					</Bar>
 				</customHeader>
 				<uxap:ObjectPageLayout enableLazyLoading="true" id="ObjectPageLayout">
