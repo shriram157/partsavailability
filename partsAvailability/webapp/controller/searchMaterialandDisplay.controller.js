@@ -569,6 +569,8 @@ sap.ui.define([
 						this._materialDisplayModel.setProperty("/invQtyReceived", oData.Item.Qtyavail);
 						this._materialDisplayModel.setProperty("/Dealernet", oData.Item.Dealernet);
 						this._materialDisplayModel.setProperty("/Roundingprofile", oData.Item.Roundingprofile);
+					//26-06
+								this._materialDisplayModel.setProperty("/Onpostock", oData.Item.Onpostock);			
 						if (oData.Item.Dgind === "Yes") {
 							this._materialDisplayModel.setProperty("/Dangerousgoods", "Yes");
 							this._materialDisplayModel.setProperty("/Dgtooltip", oData.Item.MatGrp + " " + oData.Item.MatGrpDesc + " " + oData.Item.MatGrpDesc60);
@@ -596,6 +598,7 @@ sap.ui.define([
 						this._materialDisplayModel.setProperty("/invQtyReceived", "");
 						this._materialDisplayModel.setProperty("/Dealernet", "");
 						this._materialDisplayModel.setProperty("/Roundingprofile", "");
+						this._materialDisplayModel.setProperty("/Onpostock", "");
 					}
 
 					this._materialDisplayModel.setProperty("/Partreturnable", oData.Item.Partreturnable);
@@ -613,8 +616,7 @@ sap.ui.define([
 					this._materialDisplayModel.setProperty("/Obsolete", oData.Item.Obsolete);
 
 					/// if the stop sales Flag = Yes then populate the warning message. 
-					//26-06
-								this._materialDisplayModel.setProperty("/Onpostock", oData.Item.Onpostock);
+			
 					
 
 					if ((oData.Item.Stopsalesdesc == "Yes" || oData.Item.Stopsalesdesc == "Oui") && !(this.doNotDisplayReceived == true)) {
