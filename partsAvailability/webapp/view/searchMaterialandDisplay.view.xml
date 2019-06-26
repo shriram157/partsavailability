@@ -130,6 +130,14 @@
 														<Text id="idQtyAvail" text="{i18n>QTY_AVAILABLE}"/>
 													</header>
 												</Column>
+												
+												<Column demandPopin="true" hAlign="Center" id="idOnpostock" minScreenWidth="Tablet">
+													<header>
+														<Text id="idOnpostockt" text="{i18n>PO_STOCK}"/>
+													</header>
+												</Column>
+				
+												
 												<Column demandPopin="true" id="idQtyBO" hAlign="Center" minScreenWidth="Tablet" popinDisplay="Inline">
 													<header>
 														<Text id="idQtyBackOrd" text="{i18n>QTY_BACK_ORDERED}"/>
@@ -161,6 +169,7 @@
 <Text text="{inventoryModel>MatlWrhsStkQtyInMatlBaseUnit}"/>
 -->
 														<Text text="{ path:'inventoryModel>MatlWrhsStkQtyInMatlBaseUnit', formatter:'.formatter.quantity' }"/>
+													<Text text="{ path:'inventoryModel>Onpostock', formatter:'.formatter.quantity' }"/>
 														<Text text="{ path:'inventoryModel>Qtybackorder', formatter:'.formatter.quantity' }"/>
 														<!-- <Text text="{inventoryModel>Qtybackorder}"/> -->
 														<!-- <Text text="{inventoryModel>stopSalesFlag}"/> -->

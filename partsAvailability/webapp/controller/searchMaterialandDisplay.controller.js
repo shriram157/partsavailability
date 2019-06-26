@@ -613,6 +613,9 @@ sap.ui.define([
 					this._materialDisplayModel.setProperty("/Obsolete", oData.Item.Obsolete);
 
 					/// if the stop sales Flag = Yes then populate the warning message. 
+					//26-06
+								this._materialDisplayModel.setProperty("/Onpostock", oData.Item.Onpostock);
+					
 
 					if ((oData.Item.Stopsalesdesc == "Yes" || oData.Item.Stopsalesdesc == "Oui") && !(this.doNotDisplayReceived == true)) {
 
@@ -738,6 +741,13 @@ sap.ui.define([
 					var that = this;
 					this.headerMessageSet = false;
 					$.each(oData.toForwSuper.results, function (i, item) {
+						 
+						 //if (i == 0) {
+						 //var poStock = item.Onpostock;	
+						 //} else {
+						 //							 var poStock =  "";
+						 //}
+						
 
 						if (item.ValidFrom == null) {
 							item.ValidFrom = "";
@@ -873,7 +883,11 @@ sap.ui.define([
 				sqtyBackOrdered = this.getView().getModel("materialDisplayModel").getProperty("/Qtybackorder"),
 				sZ3plqtyavail = this.getView().getModel("materialDisplayModel").getProperty("/Z3plqtyavail"),
 				z3plPlant = this.getView().getModel("materialDisplayModel").getProperty("/z3plPlantReceived"),
-				sPlantDesc = this.getView().getModel("materialDisplayModel").getProperty("/Plantdesc");
+				sPlantDesc = this.getView().getModel("materialDisplayModel").getProperty("/Plantdesc"),
+				
+				sgetOnpostock = this.getView().getModel("materialDisplayModel").getProperty("/Onpostock");
+				
+				
 			if (z3plPlant) {
 				// show the ide id3Plqty
 				this.getView().byId("id3Plqty").setVisible(true);
@@ -898,7 +912,8 @@ sap.ui.define([
 				"MatlWrhsStkQtyInMatlBaseUnit": sinvQtyReceived,
 				"Qtybackorder": sqtyBackOrdered,
 				"stopSalesFlag": sStopSaleFlag,
-				"Z3plqtyavail": sZ3plqtyavail
+				"Z3plqtyavail": sZ3plqtyavail,
+				 "Onpostock": sgetOnpostock
 			});
 
 			// var sUrlforQuantity = "/ZMD_PRODUCT_FS_V2_SRV/zc_QuantitySet?$filter=Matnr eq" + "'" + (selectedMaterial) + "'" +
