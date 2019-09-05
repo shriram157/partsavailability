@@ -829,10 +829,10 @@ sap.ui.define([
 							item.DealerNet = "";
 							item.QtyReqd = "";
 							item.QtyAvail = "";
-						} else {
-
-							that.getView().byId("messageStripError").setProperty("visible", false);
-						};
+						} 
+						else {
+							// that.getView().byId("messageStripError").setProperty("visible", false);
+						}
 
 						superSession.push({
 							"MatnrSuper": item.MatnrSuper,
