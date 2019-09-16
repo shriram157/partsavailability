@@ -117,7 +117,7 @@
 									</uxap:blocks>
 									<uxap:blocks>
 										<Table id="idInventoryT" inset="false" items="{inventoryModel>/items}" mode="None" visible="{detailView>/afterMaterialFound}"
-											alternateRowColors="true">
+											alternateRowColors="true" noDataText="{i18n>NO_DATA}">
 											<headerToolbar/>
 											<columns>
 												<Column id="idLocation" hAlign="Center" minScreenWidth="Phone">
@@ -181,7 +181,7 @@
 										</Table>
 										<Table id="idForwardSupersession" class="myFormBorder" inset="false"
 											items="{ path: 'superSessionModel>/items', sorter: { path: 'Type', descending:true } }" mode="None"
-											visible="{detailView>/afterMaterialFound}" alternateRowColors="true">
+											visible="{detailView>/afterMaterialFound}" alternateRowColors="true" noDataText="{i18n>NO_DATA}">
 											<headerToolbar>
 												<Toolbar>
 													<Label id="idToolbarLabel" text="{i18n>FORWARD_SUPER_SESSION}"/>
