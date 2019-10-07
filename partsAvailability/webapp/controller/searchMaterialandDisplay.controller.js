@@ -695,6 +695,7 @@ sap.ui.define([
 				},
 
 				success: $.proxy(function (oData) {
+					sap.ui.core.BusyIndicator.hide(); //  this is where I end the busy indicator
 					if (oData.BackPartsSuper.MatnrSuper) {
 
 						this._materialDisplayModel.setProperty("/MatnrSuper", oData.BackPartsSuper.MatnrSuper);
@@ -931,7 +932,7 @@ sap.ui.define([
 
 				success: $.proxy(function (oData) {
 
-					sap.ui.core.BusyIndicator.hide(); //  this is where I end the busy indicator
+					// sap.ui.core.BusyIndicator.hide(); //  this is where I end the busy indicator
 					var that = this;
 					$.each(oData.results, function (i, item) {
 						if ((item.Location == "A") || (item.Location == "O")) {
