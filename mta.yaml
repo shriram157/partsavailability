@@ -1,7 +1,7 @@
 ID: partsAvailability
 _schema-version: '3.1'
 description: Parts availability consolidated app
-version: 1.0.0
+version: 2.0.0
 
 modules:
  - name: partsAvailability_node
