@@ -53,12 +53,12 @@
 														<layout:GridData span="L2 M12 S12"/>
 													</layoutData>
 												</Label>
-												<Input id="material_id" required="true" placeholder="{i18n>PART_NUMBER_PLACEHOLDER_TEXT}" name="materialNumberChange"
+												<Input id="material_id"  placeholder="{i18n>PART_NUMBER_PLACEHOLDER_TEXT}" name="materialNumberChange"
 													value="{ path: 'materialDisplayModel>/Material', type: 'sap.ui.model.odata.type.String' , constraints : { minLength: 1,maxLength: 20, nullable:false} }"
 													width="auto" type="Text" showSuggestion="true" liveChange="liveChangeDataEntered" suggestionItemSelected="matnrFromSuggestionSelectedChange"
-													valueLiveUpdate="false" change="CheckEnteredMatnrChange" valueHelpRequest="handleValueHelpForMaterial" suggest="handleSuggest"
+													valueLiveUpdate="false" change="liveChangeDataEntered" valueHelpRequest="handleValueHelpForMaterial" suggest="handleSuggest"
 													enabled="{detailView>/materialInputAllow}" startSuggestion="3" suggestionItems="{ path: 'materialSuggestionModel>/Matsuggestions' }"
-													fieldWidth="auto" maxSuggestionWidth="500px">
+													fieldWidth="auto" maxSuggestionWidth="500px" submit="handlePartSearch">
 													<suggestionItems>
 														<core:ListItem key="{materialSuggestionModel>Material}" text="{materialSuggestionModel>Material}"
 															additionalText="{materialSuggestionModel>MaterialName}"/>
@@ -67,11 +67,18 @@
 														<layout:GridData span="L2 M10 S12" linebreak="false" linebreakL="false" linebreakM="false" linebreakS="false" linebreakXL="false"/>
 													</layoutData>
 												</Input>
-												<Label design="Standard" id="idMaterialInputLabelD" text="{dummyText}" textAlign="Left">
+												<ToggleButton  id="idViewToggleButton1" press="togglePartSearch" width="auto" enabled="true" pressed="false"
+													 text="{i18n>TOGGLE}" >
+													<layoutData>
+														<layout:GridData span="L2 M12 S12"/>
+													</layoutData>
+												</ToggleButton>
+												<!--<Label design="Standard" id="idMaterialInputLabelD" text="{dummyText}" textAlign="Left">
 													<layoutData>
 														<layout:GridData span="L2 M12 S12"/>
 													</layoutData>
 												</Label>
+												-->
 												<Button icon="sap-icon://search" id="idViewSearchButtonl" press="handlePartSearch" width="auto"
 													enabled="{detailView>/enableMaterialEntered}" text="{i18n>SEARCH}" type="Emphasized">
 													<layoutData>
