@@ -147,13 +147,18 @@ sap.ui.define([
 
 		},
 		
-		togglePartSearch:function (oEvt) {
-				if (oEvt.getSource().getPressed()) {
+		toggleSuggestionSearch:function (oEvt) {
+			var oModeli18n = this.getView().getModel("i18n");
+			var _oResourceBundle = oModeli18n.getResourceBundle();
+
+			if (oEvt.getSource().getState()== true) {
 				this.toggleFlg=true;
+				MessageToast.show(_oResourceBundle.getText("TOGGLE_ON_MSG"));
 			}
 			else
 			{
 				this.toggleFlg=false;
+				MessageToast.show(_oResourceBundle.getText("TOGGLE_OFF_MSG"));
 				
 			}
 			
