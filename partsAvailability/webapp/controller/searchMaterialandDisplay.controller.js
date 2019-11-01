@@ -350,7 +350,7 @@ sap.ui.define([
 		liveChangeDataEntered: function (oEvent) {
 
 			//	var matnrEntered = this.getView().byId("material_id").getValue();
-			var oViewModel = this.getView().getModel("detailView");
+		
 			var materialFromScreen,obj;
 			materialFromScreen = this.getView().byId("material_id").getValue();
 			obj=this.getView().byId("material_id");
@@ -364,13 +364,17 @@ sap.ui.define([
 			this.getView().byId("messageStripError").setProperty("visible", false);
 			if (!materialFromScreen || !selectedCustomerT) {
 				//mandatory parameters not made
-				oViewModel.setProperty("/enableMaterialEntered", false);
-				oViewModel.setProperty("/afterMaterialFound", false);
+				this._oViewModel.setProperty("/enableMaterialEntered", false);
+				this._oViewModel.setProperty("/afterMaterialFound", false);
 			} else {
-				oViewModel.setProperty("/enableMaterialEntered", true);
+				this._oViewModel.setProperty("/enableMaterialEntered", true);
 				// 	   	oViewModel.setProperty("/afterMaterialFound", true);
 			}
+			//this._oViewModel.refresh("true");
 
+			this.getView().setModel(this._oViewModel,"detailView");
+			this.getView().getModel("detailView").refresh(true);
+			
 		},
 
 		handlePartSearch: function (oEvent) {
@@ -1134,10 +1138,7 @@ sap.ui.define([
 			this._materialSuggestionModel.setProperty("/Matsuggestions", Matsuggestions);
 			this.getView().setModel(this._materialSuggestionModel, "materialSuggestionModel");
 
-			var oViewModel = this.getView().getModel("detailView");
-			oViewModel.setProperty("/enableMaterialEntered", false);
-			oViewModel.setProperty("/afterMaterialFound", false);
-
+			
 			var oSource = oEvent.getSource();
 			var sTerm = oEvent.getParameter("suggestValue");
 			if (!!sTerm && sTerm !== "") {
@@ -1150,17 +1151,14 @@ sap.ui.define([
 			if(this.toggleFlg)
 			{
 			this._forhandleSuggestCallData(sTerm);
+			var s=[];
+			s.push(new Filter("Material",sap.ui.model.FilterOperator.StartsWith,sTerm));
+            oEvent.getSource().getBinding("suggestionItems").filter(s);
+				
 			}
-			//var sTerm = oEvent.getParameter("suggestValue");
-			var aFilters = [];
-
-			if (sTerm) {
-
-				aFilters.push(new Filter("Material", sap.ui.model.FilterOperator.StartsWith, sTerm));
-
-			}
-
-			oEvent.getSource().getBinding("suggestionItems").filter(aFilters);
+			
+			
+			
 
 		},
 
