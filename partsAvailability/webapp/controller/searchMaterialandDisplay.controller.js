@@ -15,7 +15,7 @@ sap.ui.define([
 	return Controller.extend("partsAvailability.controller.searchMaterialandDisplay", {
 		formatter: formatter,
 		onInit: function () {
-
+			this.toggleFlg=false;
 			var oI18nModel = new sap.ui.model.resource.ResourceModel({
 				bundleUrl: "i18n/i18n.properties"
 			});
@@ -146,7 +146,25 @@ sap.ui.define([
 			});
 
 		},
+		
+		toggleSuggestionSearch:function (oEvt) {
+			var oModeli18n = this.getView().getModel("i18n");
+			var _oResourceBundle = oModeli18n.getResourceBundle();
 
+			if (oEvt.getSource().getState()== true) {
+				this.toggleFlg=true;
+				MessageToast.show(_oResourceBundle.getText("TOGGLE_ON_MSG"));
+			}
+			else
+			{
+				this.toggleFlg=false;
+				MessageToast.show(_oResourceBundle.getText("TOGGLE_OFF_MSG"));
+				
+			}
+			
+		},
+		
+		
 		_readTheAttributes: function () {
 
 			//if the userAttributes has toyota user then we have to continue with 
@@ -332,26 +350,31 @@ sap.ui.define([
 		liveChangeDataEntered: function (oEvent) {
 
 			//	var matnrEntered = this.getView().byId("material_id").getValue();
-			var oViewModel = this.getView().getModel("detailView");
-
-			var materialFromScreen = this.getView().byId("material_id").getValue();
+		
+			var materialFromScreen,obj;
+			materialFromScreen = this.getView().byId("material_id").getValue();
+			obj=this.getView().byId("material_id");
 			if (!!materialFromScreen && materialFromScreen !== "") {
 
 				materialFromScreen = materialFromScreen.toString().replace(/-/g, "");
 				materialFromScreen = materialFromScreen.trim();
-				this.getView().byId("material_id").setValue(materialFromScreen);
+				obj.setValue(materialFromScreen);
 			}
 			var selectedCustomerT = this.getView().byId("dealerID").getValue();
 			this.getView().byId("messageStripError").setProperty("visible", false);
 			if (!materialFromScreen || !selectedCustomerT) {
 				//mandatory parameters not made
-				oViewModel.setProperty("/enableMaterialEntered", false);
-				oViewModel.setProperty("/afterMaterialFound", false);
+				this._oViewModel.setProperty("/enableMaterialEntered", false);
+				this._oViewModel.setProperty("/afterMaterialFound", false);
 			} else {
-				oViewModel.setProperty("/enableMaterialEntered", true);
+				this._oViewModel.setProperty("/enableMaterialEntered", true);
 				// 	   	oViewModel.setProperty("/afterMaterialFound", true);
 			}
+			//this._oViewModel.refresh("true");
 
+			this.getView().setModel(this._oViewModel,"detailView");
+			this.getView().getModel("detailView").refresh(true);
+			
 		},
 
 		handlePartSearch: function (oEvent) {
@@ -375,18 +398,21 @@ sap.ui.define([
 
 			var that = this;
 			this.dealerSearchError = false;
-			var materialFromScreen = this.getView().byId("material_id").getValue();
+				var materialFromScreen,obj;
+			materialFromScreen = this.getView().byId("material_id").getValue();
+			obj=this.getView().byId("material_id");
+			
 			// convert to upper case. 
 			if (!!materialFromScreen && materialFromScreen !== "") {
 
 				materialFromScreen = materialFromScreen.toString().replace(/-/g, "");
 				materialFromScreen = materialFromScreen.trim();
-				this.getView().byId("material_id").setValue(materialFromScreen);
+				obj.setValue(materialFromScreen);
 			}
 			var upperCaseMaterial = materialFromScreen.toUpperCase();
 			materialFromScreen = upperCaseMaterial;
 
-			var toUpperCase = this.getView().byId("material_id").setValue(materialFromScreen);
+			var toUpperCase = obj.setValue(materialFromScreen);
 
 			var selectedCustomerT = this.getView().byId("dealerID").getValue();
 
@@ -483,8 +509,11 @@ sap.ui.define([
 		},
 
 		_callSupplyingPlant: function () {
+				var selectedMaterial;
+			selectedMaterial = this.getView().byId("material_id").getValue();
+			
 
-			var selectedMaterial = this.getView().byId("material_id").getValue();
+		//	var selectedMaterial = this.getView().byId("material_id").getValue();
 			var selectedCustomer = this.sSelectedDealer;
 
 			var that = this;
@@ -537,7 +566,9 @@ sap.ui.define([
 
 			var sCurrentLocale = this.sCurrentLocale;
 			var selectedCustomer = this.sSelectedDealer;
-			var selectedMaterial = this.getView().byId("material_id").getValue();
+				var selectedMaterial;
+			selectedMaterial = this.getView().byId("material_id").getValue();
+			
 			var ozMaterialDisplayModel = this.getModel("zMaterialDisplayModel");
 			var priceSetUrl = "(Customer=" + "'" + (selectedCustomer) + "'," + "DisChannel" + "='" + "10" + "'," + "Division" + "='" + (this.sDivision) +
 				"'," + "Matnr" + "='" + (selectedMaterial) + "'," + "SalesDocType" + "='" + "ZAF" + "'," + "SalesOrg" + "='" + "7000" + "'," +
@@ -666,11 +697,14 @@ sap.ui.define([
 			// sCurrentLocale = "EN";
 			var sCurrentLocale = this.sCurrentLocale;
 			var selectedCustomerT = this.getView().byId("dealerID").getValue();
-			var selectedMaterial = this.getView().byId("material_id").getValue();
+					var selectedMaterial;
+			selectedMaterial = this.getView().byId("material_id").getValue();
+		
+			//var selectedMaterial = this.getView().byId("material_id").getValue();
 			var selectedCustomer = this.sSelectedDealer;
 
 			// var selectedCustomer = "24000" + selectedCustomerT;
-			var selectedMaterial = this.getView().byId("material_id").getValue();
+			//var selectedMaterial = this.getView().byId("material_id").getValue();
 
 			// var sUrlforBackSuperSet = this.nodeJsUrl + "/ZMD_PRODUCT_FS_V2_SRV/zc_BackSuperSet2?Customer=" + (
 			// 		selectedCustomer) + "&Matnr=" + (selectedMaterial) + "&LanguageKey=" + (sCurrentLocale) + "&Plant=" + (supplyingPlant) +
@@ -996,7 +1030,7 @@ sap.ui.define([
 			this._superSessionModel = new sap.ui.model.json.JSONModel();
 			this._materialInventory = new sap.ui.model.json.JSONModel();
 
-			var materialFromScreen = this.getView().byId("material_id").setValue(clickedMaterial);
+			this.getView().byId("material_id").setValue(clickedMaterial);
 
 			// clicked the other material, lets instantiate the models to the initial state. 
 
@@ -1024,7 +1058,10 @@ sap.ui.define([
 
 			oViewModel.setProperty("/afterMaterialFound", false);
 
-			var materialFromScreen = this.getView().byId("material_id").getValue();
+			//var materialFromScreen = this.getView().byId("material_id").getValue();
+				var materialFromScreen,obj;
+			materialFromScreen = this.getView().byId("material_id").getValue();
+		
 			var selectedCustomerT = this.getView().byId("dealerID").getValue();
 
 			if (!materialFromScreen || !selectedCustomerT) {
@@ -1101,10 +1138,7 @@ sap.ui.define([
 			this._materialSuggestionModel.setProperty("/Matsuggestions", Matsuggestions);
 			this.getView().setModel(this._materialSuggestionModel, "materialSuggestionModel");
 
-			var oViewModel = this.getView().getModel("detailView");
-			oViewModel.setProperty("/enableMaterialEntered", false);
-			oViewModel.setProperty("/afterMaterialFound", false);
-
+			
 			var oSource = oEvent.getSource();
 			var sTerm = oEvent.getParameter("suggestValue");
 			if (!!sTerm && sTerm !== "") {
@@ -1113,19 +1147,18 @@ sap.ui.define([
 				sTerm = sTerm.trim();
 
 			}
-
+			
+			if(this.toggleFlg)
+			{
 			this._forhandleSuggestCallData(sTerm);
-
-			var sTerm = oEvent.getParameter("suggestValue");
-			var aFilters = [];
-
-			if (sTerm) {
-
-				aFilters.push(new Filter("Material", sap.ui.model.FilterOperator.StartsWith, sTerm));
-
+			var s=[];
+			s.push(new Filter("Material",sap.ui.model.FilterOperator.StartsWith,sTerm));
+            oEvent.getSource().getBinding("suggestionItems").filter(s);
+				
 			}
-
-			oEvent.getSource().getBinding("suggestionItems").filter(aFilters);
+			
+			
+			
 
 		},
 

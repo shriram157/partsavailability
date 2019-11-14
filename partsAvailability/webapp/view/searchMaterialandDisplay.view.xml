@@ -12,7 +12,7 @@
 							<Text class="clCustomFont" text="{i18n>title}"/>
 						</contentLeft>
 						<contentRight>
-							<Button text="{i18n>LOG_OUT_BTN_TEXT}" press="onLogOutBtnPress" />
+							<Button text="{i18n>LOG_OUT_BTN_TEXT}" press="onLogOutBtnPress"/>
 						</contentRight>
 					</Bar>
 				</customHeader>
@@ -27,13 +27,14 @@
 											visible="{detailView>/materialFormError}"/>
 									</uxap:blocks>
 									<uxap:blocks>
-										<f:SimpleForm columnsL="1" columnsM="1" editable="true" emptySpanL="0" emptySpanM="0" id="idSimpleFormHeader" labelSpanL="3" labelSpanM="3"
+										<f:SimpleForm columnsL="4" columnsM="1" editable="true" emptySpanL="0" emptySpanM="0" id="idSimpleFormHeader" labelSpanL="3" labelSpanM="3"
 											layout="ResponsiveGridLayout" maxContainerCols="2" minWidth="1024">
 											<f:content>
-												<!-- <core:Title width="10rem"/> -->
+												
+												 <core:Title />
 												<Label design="Standard" id="idDealerInputLabel" text="{i18n>DEALER_SEARCH_FIELD_LABEL}" textAlign="Left">
 													<layoutData>
-														<layout:GridData span="L2 M12 S12"/>
+														<layout:GridData span="L3 M6 S12"/>
 													</layoutData>
 												</Label>
 												<ComboBox showSecondaryValues="true" required="true" visible="{detailView>/visibleByDefault}" fieldGroupIds="requiredField"
@@ -44,38 +45,58 @@
 													<core:ListItem key="{BpDealerModel>BusinessPartnerKey}" text="{BpDealerModel>BusinessPartner}"
 														additionalText="{BpDealerModel>BusinessPartnerName}"/>
 													<layoutData>
-														<layout:GridData span="L2 M12 S12"/>
+														<layout:GridData span="L9 M6 S12"/>
 													</layoutData>
 												</ComboBox>
-												<!-- <core:Title/> -->
+												 <core:Title />
 												<Label design="Standard" id="idMaterialInputLabel" text="{i18n>PART_NUMBER}" textAlign="Left">
 													<layoutData>
-														<layout:GridData span="L2 M12 S12"/>
+														<layout:GridData span="L5 M6 S12"/>
 													</layoutData>
 												</Label>
-												<Input id="material_id" required="true" placeholder="{i18n>PART_NUMBER_PLACEHOLDER_TEXT}" name="materialNumberChange"
+												<Input id="material_id" placeholder="{i18n>PART_NUMBER_PLACEHOLDER_TEXT}" name="materialNumberChange"
 													value="{ path: 'materialDisplayModel>/Material', type: 'sap.ui.model.odata.type.String' , constraints : { minLength: 1,maxLength: 20, nullable:false} }"
 													width="auto" type="Text" showSuggestion="true" liveChange="liveChangeDataEntered" suggestionItemSelected="matnrFromSuggestionSelectedChange"
-													valueLiveUpdate="false" change="CheckEnteredMatnrChange" valueHelpRequest="handleValueHelpForMaterial" suggest="handleSuggest"
+													valueLiveUpdate="false" change="liveChangeDataEntered" valueHelpRequest="handleValueHelpForMaterial" suggest="handleSuggest"
 													enabled="{detailView>/materialInputAllow}" startSuggestion="3" suggestionItems="{ path: 'materialSuggestionModel>/Matsuggestions' }"
-													fieldWidth="auto" maxSuggestionWidth="500px">
+													fieldWidth="auto" maxSuggestionWidth="500px" submit="handlePartSearch">
 													<suggestionItems>
 														<core:ListItem key="{materialSuggestionModel>Material}" text="{materialSuggestionModel>Material}"
 															additionalText="{materialSuggestionModel>MaterialName}"/>
 													</suggestionItems>
 													<layoutData>
-														<layout:GridData span="L2 M10 S12" linebreak="false" linebreakL="false" linebreakM="false" linebreakS="false" linebreakXL="false"/>
+														<layout:GridData span="L7 M6 S12" linebreak="false" linebreakL="false" linebreakM="false" linebreakS="false" linebreakXL="false"/>
 													</layoutData>
 												</Input>
-												<Label design="Standard" id="idMaterialInputLabelD" text="{dummyText}" textAlign="Left">
+												<core:Title />
+												<!--<ToggleButton  id="idViewToggleButton1" press="togglePartSearch" width="auto" enabled="true" pressed="false"
+													 text="{i18n>TOGGLE}" >
+													<layoutData>
+														<layout:GridData span="L2 M12 S12"/>
+													</layoutData>
+												</ToggleButton>-->
+												<Label design="Standard" id="idSuggestionLabel" text="{i18n>TOGGLE}" textAlign="Left">
+													<layoutData>
+														<layout:GridData span="L6 M6 S12"/>
+													</layoutData>
+												</Label>
+												
+												<Switch type="AcceptReject" id="idViewToggleButton1" change="toggleSuggestionSearch" state="false" >
+													<layoutData>
+														<layout:GridData span="L4 M6 S12"/>
+													</layoutData>
+												</Switch>
+												<!--<Label design="Standard" id="idMaterialInputLabelD" text="{dummyText}" textAlign="Left">
 													<layoutData>
 														<layout:GridData span="L2 M12 S12"/>
 													</layoutData>
 												</Label>
+												-->
+												<core:Title />
 												<Button icon="sap-icon://search" id="idViewSearchButtonl" press="handlePartSearch" width="auto"
 													enabled="{detailView>/enableMaterialEntered}" text="{i18n>SEARCH}" type="Emphasized">
 													<layoutData>
-														<layout:GridData span="L2 M12 S12"/>
+														<layout:GridData span="L6 M12 S12"/>
 													</layoutData>
 												</Button>
 											</f:content>
@@ -130,14 +151,11 @@
 														<Text id="idQtyAvail" text="{i18n>QTY_AVAILABLE}"/>
 													</header>
 												</Column>
-												
 												<Column demandPopin="true" hAlign="Center" id="idOnpostock" minScreenWidth="Tablet">
 													<header>
 														<Text id="idOnpostockt" text="{i18n>PO_STOCK}"/>
 													</header>
 												</Column>
-				
-												
 												<Column demandPopin="true" id="idQtyBO" hAlign="Center" minScreenWidth="Tablet" popinDisplay="Inline">
 													<header>
 														<Text id="idQtyBackOrd" text="{i18n>QTY_BACK_ORDERED}"/>
@@ -169,7 +187,7 @@
 <Text text="{inventoryModel>MatlWrhsStkQtyInMatlBaseUnit}"/>
 -->
 														<Text text="{ path:'inventoryModel>MatlWrhsStkQtyInMatlBaseUnit', formatter:'.formatter.quantity' }"/>
-													<Text text="{ path:'inventoryModel>Onpostock', formatter:'.formatter.quantity' }"/>
+														<Text text="{ path:'inventoryModel>Onpostock', formatter:'.formatter.quantity' }"/>
 														<Text text="{ path:'inventoryModel>Qtybackorder', formatter:'.formatter.quantity' }"/>
 														<!-- <Text text="{inventoryModel>Qtybackorder}"/> -->
 														<!-- <Text text="{inventoryModel>stopSalesFlag}"/> -->
