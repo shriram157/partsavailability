@@ -1030,7 +1030,7 @@ sap.ui.define([
 			this._superSessionModel = new sap.ui.model.json.JSONModel();
 			this._materialInventory = new sap.ui.model.json.JSONModel();
 
-		//	var materialFromScreen = this.getView().byId("material_id").setValue(clickedMaterial);
+			this.getView().byId("material_id").setValue(clickedMaterial);
 
 			// clicked the other material, lets instantiate the models to the initial state. 
 
