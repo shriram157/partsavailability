@@ -184,7 +184,6 @@ sap.ui.define([
 				oViewModel.setProperty("/editAllowed", true);
 			} else {
 				//he is  a dealer.
-
 				//ets also set the division from the url here
 
 				var isDivisionSent = window.location.search.match(/Division=([^&]*)/i);
@@ -210,8 +209,9 @@ sap.ui.define([
 						this._selectedDealerModel.setProperty("/Dealer_No", aDataBP[i].BusinessPartnerKey);
 						this._selectedDealerModel.setProperty("/Dealer_Name", aDataBP[i].BusinessPartnerName);
 						this._selectedDealerModel.setProperty("/Dealer_Type", aDataBP[i].BusinessPartnerType);
-
 						oViewModel.setProperty("/editAllowed", false);
+						this.sDivisionNew=aDataBP[i].Division;
+				
 
 						break;
 					}
@@ -335,10 +335,7 @@ sap.ui.define([
 				var upperCaseMaterial = materialFromUrl.toUpperCase();
 				materialFromUrl = upperCaseMaterial;
 				this.getView().byId("material_id").setValue(materialFromUrl);
-				var isDivisionSent = window.location.search.match(/Division=([^&]*)/i);
-				if (isDivisionSent) {
-					this.sDivisionNew = window.location.search.match(/Division=([^&]*)/i)[1];
-				}
+			
 				this.handlePartSearch();
 
 			}
@@ -387,6 +384,7 @@ sap.ui.define([
 			// this._materialDisplayModel = new JSONModel();
 			// this.getView().setModel(this._materialDisplayModel, "materialDisplayModel");		
 			// reset the data. 
+				
 			this._materialDisplayModel.setProperty("/MatnrSuper", "");
 			this._materialDisplayModel.setProperty("/Dealernet", "");
 			this._materialDisplayModel.setProperty("/Msrp", "");
@@ -523,12 +521,7 @@ sap.ui.define([
 			// 	"&division=" + (this.sDivision) + "";
 
 			// var that = this;
-			if (this.sDivision == "Dual" && this.sDivisionNew == '10') {
-				this.sDivision = '10';
-			} else {
-				this.sDivision = '20';
-
-			}
+		
 			var oApiBusinessPartner = this.getModel("aPiBusinessPartner");
 
 			oApiBusinessPartner.read("/A_Customer('" + selectedCustomer + "')" + "/to_CustomerSalesArea(Customer='" + selectedCustomer +
@@ -597,6 +590,15 @@ sap.ui.define([
 				},
 
 				success: $.proxy(function (oData) {
+					if(this.sDivisionNew =="Dual" && this.sDivision== "10" && oData.Item.Parttypedesc.includes("Lexus"))
+					{
+						oData.Item.DoNotDisp = "X";
+					}
+					if(this.sDivisionNew =="Dual" && this.sDivision== "20" && oData.Item.Parttypedesc.includes("Toyota"))
+					{
+						oData.Item.DoNotDisp = "X";
+					}
+					
 
 					if (oData.Item.DoNotDisp !== "X" && !(oData.Item.PIOInd === '01' && oDealerType === 'Z001')) {
 						this.doNotDisplayReceived = false;
