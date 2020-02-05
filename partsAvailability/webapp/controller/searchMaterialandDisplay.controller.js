@@ -1224,7 +1224,7 @@ sap.ui.define([
 					MessageBox.error(that._oResourceBundle.getText("materialNotFound"));
 					this._oViewModel.setProperty("/afterMaterialFound", false);
 
-				}.bind(this),
+				}.bind(this)
 			});
 
 		},
