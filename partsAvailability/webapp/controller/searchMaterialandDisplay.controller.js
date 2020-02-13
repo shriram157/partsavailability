@@ -457,20 +457,22 @@ sap.ui.define([
 
 				this.sDivision_old = "Dual"; // TODO: will comment out before qc
 				sap.m.MessageBox.confirm("Dealer Brand Selection for Dual Dealers", {
-					title: "The selecte dealer is of type Dual",
-					actions: ["Toyota", "Lexus"],
+					// title: "The selecte dealer is of type Dual",
+					actions: ["OK"], //["Toyota", "Lexus"],
 					icon: "",
 					onClose: function (action) {
-						if (action == "Toyota") {
-							that.sDivision = "10";
-							sap.ui.core.BusyIndicator.show();
-							that._callSupplyingPlant();
-						} else {
+						// if (action == "Toyota") {
+						// 	that.sDivision = "10";
+						// 	sap.ui.core.BusyIndicator.show();
+						// 	that._callSupplyingPlant();
+						// } else {
 
-							that.sDivision = "20";
-							sap.ui.core.BusyIndicator.show();
-							that._callSupplyingPlant();
-						}
+						// 	that.sDivision = "20";
+						// 	sap.ui.core.BusyIndicator.show();
+						// 	that._callSupplyingPlant();
+						// }
+						sap.ui.core.BusyIndicator.show();
+						that._callSupplyingPlant();
 					}
 				});
 
