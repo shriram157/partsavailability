@@ -485,11 +485,11 @@ sap.ui.define([
 
 				this.sDivision_old = "Dual"; // TODO: will comment out before qc
 				sap.m.MessageBox.confirm("Dealer Brand Selection for Dual Dealers", {
-					title: "The selecte dealer is of type Dual",
-					actions: ["Toyota", "Lexus"],
+					title: "The selected dealer is of type Dual",
+					actions: ["OK"],
 					icon: "",
 					onClose: function (action) {
-						if (action == "Toyota") {
+						/*if (action == "Toyota") {
 							that.sDivision = "10";
 							sap.ui.core.BusyIndicator.show();
 							that._callSupplyingPlant();
@@ -498,7 +498,9 @@ sap.ui.define([
 							that.sDivision = "20";
 							sap.ui.core.BusyIndicator.show();
 							that._callSupplyingPlant();
-						}
+						}*/
+							sap.ui.core.BusyIndicator.show();
+							that._callSupplyingPlant();
 					}
 				});
 
@@ -597,6 +599,16 @@ sap.ui.define([
 				},
 
 				success: $.proxy(function (oData) {
+
+					if(this.sDivisionNew =="Dual" && this.sDivision== "10" && !oData.Item.PartsDispInd.includes("T") )
+					{
+						oData.Item.DoNotDisp = "X";
+					}
+					if(this.sDivisionNew =="Dual" && this.sDivision== "20" && !oData.Item.PartsDispInd.includes("L")  )
+					{
+						oData.Item.DoNotDisp = "X";
+					}
+					
 
 					if (oData.Item.DoNotDisp !== "X" && !(oData.Item.PIOInd === '01' && oDealerType === 'Z001')) {
 						this.doNotDisplayReceived = false;
