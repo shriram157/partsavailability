@@ -1110,6 +1110,7 @@ sap.ui.define([
 
 					} else { // set the lexus logo
 						if (this.sDivision == "Dual") {
+							this.sDivisionNew="Dual";
 							// read the url division. default make it toyota
 							var isDivisionSent = window.location.search.match(/Division=([^&]*)/i);
 							if (isDivisionSent) {
