@@ -7,9 +7,11 @@
 		"grunt-shell": "^3.0.1"
 	},
 	"dependencies": {
-		"@sap/approuter": "5.13.0"
+		"@sap/approuter": "5.13.0",
+		"cross-env": "^7.0.0"
 	},
 	"scripts": {
+		"serve": "cross-env PORT=8080 node server.js",
 		"start": "node server.js"
 	},
 	"engines": {
