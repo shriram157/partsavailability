@@ -594,7 +594,7 @@ sap.ui.define([
 				},
 
 				success: $.proxy(function (oData) {
-					if(this.sDivisionNew =="Dual" && this.sDivision== "10" && !oData.Item.PartsDispInd.includes("T"))
+				/*	if(this.sDivisionNew =="Dual" && this.sDivision== "10" && !oData.Item.PartsDispInd.includes("T"))
 					{
 						oData.Item.DoNotDisp = "X";
 					}
@@ -602,7 +602,7 @@ sap.ui.define([
 					{
 						oData.Item.DoNotDisp = "X";
 					}
-					
+				*/	
 
 					if (oData.Item.DoNotDisp !== "X" && !(oData.Item.PIOInd === '01' && oDealerType === 'Z001')) {
 						this.doNotDisplayReceived = false;
