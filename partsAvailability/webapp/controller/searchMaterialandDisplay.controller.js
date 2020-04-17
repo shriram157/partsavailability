@@ -642,7 +642,7 @@ sap.ui.define([
 						this._materialDisplayModel.setProperty("/Roundingprofile", "");
 						this._materialDisplayModel.setProperty("/Onpostock", "");
 					}
-
+                    this._materialDisplayModel.setProperty("/Corevalue", oData.Item.Corevalue); // added new field for CR1050 
 					this._materialDisplayModel.setProperty("/Partreturnable", oData.Item.Partreturnable);
 					this._materialDisplayModel.setProperty("/Partstocked", oData.Item.Partstocked);
 					this._materialDisplayModel.setProperty("/Shippedvia", oData.Item.Shippedvia);
