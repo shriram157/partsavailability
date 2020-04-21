@@ -122,8 +122,8 @@
 											<core:Title/>
 											<Label text="{i18n>SUGGESTED_LIST_PRICE}"/>
 											<Text text="{materialDisplayModel>/Msrp}"/>
-											<!--Adding New Field Core value For CR1050-->
-											<Label text="{i18n>CoreValue}"/>
+											<!--Adding New Field Core Charge For CR1050-->
+											<Label text="{i18n>Core Charge}"/>
 											<Text text="{path:'materialDisplayModel>/Corevalue', formatter:'.formatter.Corevalue'}"/>
 											<!--End-->
 											<Label text="{i18n>SELL_PACKAGE_QTY}" id="sellpackageqtyLabelId"/>
