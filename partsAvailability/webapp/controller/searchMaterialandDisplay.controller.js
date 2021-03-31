@@ -473,6 +473,13 @@ sap.ui.define([
 
 			});
 
+			// #DMND0002972  start by Minakshi
+
+			this.getView().getModel("detailView").setProperty("/SimulateSet", []);
+			this.getView().getModel("detailView").setProperty("/ordQty", "");
+			this.getView().getModel("detailView").setProperty("/toggleVisibility", false);
+			// #DMND0002972  end by Minakshi
+
 		}, // end of handlepart search
 
 		_getTheDivision: function (Material) {
