@@ -65,9 +65,13 @@ sap.ui.define([
 				delay: 0,
 				enableMaterialEntered: false,
 				afterMaterialFound: false,
-				materialFormError: false
-
+				materialFormError: false,
+				ordQty: "",
+				ordTp: "",
+				toggleVisibility: false
 			});
+
+			// #DMND0002972  ordTp, toggleVisibility and ordQty added by Minakshi
 
 			this.getView().setModel(this._oViewModel, "detailView");
 
@@ -210,8 +214,7 @@ sap.ui.define([
 						this._selectedDealerModel.setProperty("/Dealer_Name", aDataBP[i].BusinessPartnerName);
 						this._selectedDealerModel.setProperty("/Dealer_Type", aDataBP[i].BusinessPartnerType);
 						oViewModel.setProperty("/editAllowed", false);
-						this.sDivisionNew=aDataBP[i].Division;
-				
+						this.sDivisionNew = aDataBP[i].Division;
 
 						break;
 					}
@@ -335,7 +338,7 @@ sap.ui.define([
 				var upperCaseMaterial = materialFromUrl.toUpperCase();
 				materialFromUrl = upperCaseMaterial;
 				this.getView().byId("material_id").setValue(materialFromUrl);
-			
+
 				this.handlePartSearch();
 
 			}
@@ -384,7 +387,7 @@ sap.ui.define([
 			// this._materialDisplayModel = new JSONModel();
 			// this.getView().setModel(this._materialDisplayModel, "materialDisplayModel");		
 			// reset the data. 
-				
+
 			this._materialDisplayModel.setProperty("/MatnrSuper", "");
 			this._materialDisplayModel.setProperty("/Dealernet", "");
 			this._materialDisplayModel.setProperty("/Msrp", "");
@@ -498,7 +501,6 @@ sap.ui.define([
 							that._callSupplyingPlant();
 						}
 
-
 					}
 				});
 
@@ -523,7 +525,7 @@ sap.ui.define([
 			// 	"&division=" + (this.sDivision) + "";
 
 			// var that = this;
-		
+
 			var oApiBusinessPartner = this.getModel("aPiBusinessPartner");
 
 			oApiBusinessPartner.read("/A_Customer('" + selectedCustomer + "')" + "/to_CustomerSalesArea(Customer='" + selectedCustomer +
@@ -592,15 +594,15 @@ sap.ui.define([
 				},
 
 				success: $.proxy(function (oData) {
-				/*	if(this.sDivisionNew =="Dual" && this.sDivision== "10" && !oData.Item.PartsDispInd.includes("T"))
-					{
-						oData.Item.DoNotDisp = "X";
-					}
-					if(this.sDivisionNew =="Dual" && this.sDivision== "20" && !oData.Item.PartsDispInd.includes("L"))
-					{
-						oData.Item.DoNotDisp = "X";
-					}
-				*/	
+					/*	if(this.sDivisionNew =="Dual" && this.sDivision== "10" && !oData.Item.PartsDispInd.includes("T"))
+						{
+							oData.Item.DoNotDisp = "X";
+						}
+						if(this.sDivisionNew =="Dual" && this.sDivision== "20" && !oData.Item.PartsDispInd.includes("L"))
+						{
+							oData.Item.DoNotDisp = "X";
+						}
+					*/
 
 					if (oData.Item.DoNotDisp !== "X" && !(oData.Item.PIOInd === '01' && oDealerType === 'Z001')) {
 						this.doNotDisplayReceived = false;
@@ -642,7 +644,7 @@ sap.ui.define([
 						this._materialDisplayModel.setProperty("/Roundingprofile", "");
 						this._materialDisplayModel.setProperty("/Onpostock", "");
 					}
-                    this._materialDisplayModel.setProperty("/Corevalue", oData.Item.Corevalue); // added new field for CR1050 
+					this._materialDisplayModel.setProperty("/Corevalue", oData.Item.Corevalue); // added new field for CR1050 
 					this._materialDisplayModel.setProperty("/Partreturnable", oData.Item.Partreturnable);
 					this._materialDisplayModel.setProperty("/Partstocked", oData.Item.Partstocked);
 					this._materialDisplayModel.setProperty("/Shippedvia", oData.Item.Shippedvia);
@@ -1044,12 +1046,20 @@ sap.ui.define([
 
 			this.handlePartSearch();
 
+			// #DMND0002972  start by Minakshi
+
+			this.getView().getModel("detailView").setProperty("/SimulateSet", []);
+			this.getView().getModel("detailView").setProperty("/ordQty", "");
+			this.getView().getModel("detailView").setProperty("/toggleVisibility", false);
+			// #DMND0002972  end by Minakshi
+
 		},
 
 		onBusinessPartnerSelected: function (oEvent) {
 
 			//  validate only to check the business partners from the screen.  do not allow anything else. 
 			var oViewModel = this.getView().getModel("detailView");
+			var currentImageSource;
 			if (oEvent.getParameter("\selectedItem") == null) {
 				this.getView().byId("dealerID").setValueState("Error");
 				oEvent.getSource().setValue("");
@@ -1097,43 +1107,41 @@ sap.ui.define([
 
 					// extract the business partner type to be validated for pio indicator. 
 
-					this._selectedDealerModel.setProperty("/Dealer_type", aDataBP[i].BusinessPartnerType);
+					this._selectedDealerModel.setProperty("/Dealer_Type", aDataBP[i].BusinessPartnerType);
 					// set the Division  				    
 					this.sDivision = aDataBP[i].Division;
 
 					if (this.sDivision == '10') // set the toyota logo
 					{
-						var currentImageSource = this.getView().byId("idLogo");
+						currentImageSource = this.getView().byId("idLogo");
 						currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
 
 					} else { // set the lexus logo
 						if (this.sDivision == "Dual") {
-							this.sDivisionNew="Dual";
+							this.sDivisionNew = "Dual";
 							// read the url division. default make it toyota
 							var isDivisionSent = window.location.search.match(/Division=([^&]*)/i);
 							if (isDivisionSent) {
 								this.sDivision = window.location.search.match(/Division=([^&]*)/i)[1];
 								if (this.sDivision == 10) {
-									var currentImageSource = this.getView().byId("idLogo");
+									currentImageSource = this.getView().byId("idLogo");
 									currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
 								} else {
-									var currentImageSource = this.getView().byId("idLogo");
+									currentImageSource = this.getView().byId("idLogo");
 									currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
 								}
 							} else { // for default behaviour we use toyota. 
 								this.sDivision = "10";
-								var currentImageSource = this.getView().byId("idLogo");
+								currentImageSource = this.getView().byId("idLogo");
 								currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
 							}
 						} else { // it is lexus
-							var currentImageSource = this.getView().byId("idLogo");
+							currentImageSource = this.getView().byId("idLogo");
 							currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
 
 						}
 
 					}
-
-					break;
 				}
 			}
 
@@ -1238,6 +1246,34 @@ sap.ui.define([
 		},
 		onLogOutBtnPress: function (event) {
 			window.location.replace('/custom/do/logout');
-		}
+		},
+		// #DMND0002972  start by Minakshi
+		onChangeSimulateVal: function (oEvent) {
+			this.getView().getModel("detailView").setProperty("/ordQty", oEvent.getSource().getValue());
+			if (oEvent.getSource().getValue() != "") {
+				this.getView().getModel("detailView").setProperty("/toggleVisibility", true);
+			} else {
+				this.getView().getModel("detailView").setProperty("/toggleVisibility", false);
+			}
+		},
+		onPressSimulate: function (oEvent) {
+				var selectedMaterial = this.getView().byId("material_id").getValue();
+				var OrdType = this.getView().byId("idOrdType").getSelectedKey();
+				var qty = parseInt(this.getView().getModel("detailView").getProperty("/ordQty"));
+				var ozMaterialDisplayModel = this.getModel("zMaterialDisplayModel");
+				ozMaterialDisplayModel.read("/ZC_SIMULATESet", {
+					urlParameters: {
+						"$filter": "Matnr eq '" + selectedMaterial + "'and PartnNum eq'" + this.sSelectedDealer + "'and Division eq '" + this.sDivision +
+							"'and SalesDocType eq '" + OrdType + "'and Qty eq " + qty + ""
+					},
+					success: $.proxy(function (data) {
+
+						this.getView().getModel("detailView").setProperty("/SimulateSet", data.results);
+					}, this),
+					error: function () {}
+				});
+
+			}
+			// #DMND0002972  end by Minakshi
 	});
 });
