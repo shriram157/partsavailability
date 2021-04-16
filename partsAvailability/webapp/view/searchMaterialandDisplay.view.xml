@@ -277,8 +277,8 @@
 									<Label text="{i18n>OrderType}" class="sapUiTinyMarginEnd"/>
 									<!--<Input value="{detailView>/ordTp}" width="10rem" change="onChangeSimulateVal" class="sapUiTinyMarginEnd"/>-->
 									<Select id="idOrdType" selectedKey="{detailView>/ordTp}" width="10rem" class="sapUiTinyMarginEnd">
-										<core:Item key="ZOR" text="{i18n>order.type.standard}"/>
-										<core:Item key="ZRO" text="{i18n>order.type.rush}"/>
+										<core:Item key="ZOR" text="{i18n>order.type.standard}" />
+										<core:Item key="ZRO" text="{i18n>order.type.rush}" enabled="{detailView>/rushVisible}"/>
 									</Select>
 									<Label text="{i18n>OrderQuantity}" class="sapUiTinyMarginEnd"/>
 									<Input type="Number" liveChange="onChangeSimulateVal" value="{detailView>/ordQty}"  width="10rem" class="sapUiTinyMarginEnd"/>

@@ -68,7 +68,8 @@ sap.ui.define([
 				materialFormError: false,
 				ordQty: "",
 				ordTp: "",
-				toggleVisibility: false
+				toggleVisibility: false,
+				rushVisible: true
 			});
 
 			// #DMND0002972  ordTp, toggleVisibility and ordQty added by Minakshi
@@ -478,6 +479,21 @@ sap.ui.define([
 			this.getView().getModel("detailView").setProperty("/SimulateSet", []);
 			this.getView().getModel("detailView").setProperty("/ordQty", "");
 			this.getView().getModel("detailView").setProperty("/toggleVisibility", false);
+
+			this.getModel("zMaterialDisplayModel").read("/zc_ordertypeSet(Dealer='" + this.sSelectedDealer + "')", {
+				success: $.proxy(function (data) {
+					if (data.RushOrder == "X") {
+						this.getView().getModel("detailView").setProperty("/rushVisible", true);
+					} else {
+						this.getView().getModel("detailView").setProperty("/rushVisible", false);
+					}
+				}, this),
+				error: function (err) {
+					console.log(err)
+				}
+
+			})
+
 			// #DMND0002972  end by Minakshi
 
 		}, // end of handlepart search
@@ -1274,8 +1290,15 @@ sap.ui.define([
 							"'and SalesDocType eq '" + OrdType + "'and Qty eq " + qty + ""
 					},
 					success: $.proxy(function (data) {
-
-						this.getView().getModel("detailView").setProperty("/SimulateSet", data.results);
+						if (data.results.findIndex(item => item.Flag == "N") > -1) {
+							MessageToast.show(data.results.filter(item => item.Flag == "N")[0].MEng, {
+								my: "center center",
+								at: "center center"
+							});
+							this.getView().getModel("detailView").setProperty("/SimulateSet", []);
+						} else {
+							this.getView().getModel("detailView").setProperty("/SimulateSet", data.results);
+						}
 					}, this),
 					error: function () {}
 				});
