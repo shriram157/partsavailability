@@ -60,12 +60,6 @@
 								</layoutData>
 							</Input>
 							<core:Title/>
-							<!--<ToggleButton  id="idViewToggleButton1" press="togglePartSearch" width="auto" enabled="true" pressed="false"
-													 text="{i18n>TOGGLE}" >
-													<layoutData>
-														<layout:GridData span="L2 M12 S12"/>
-													</layoutData>
-												</ToggleButton>-->
 							<Label design="Standard" id="idSuggestionLabel" text="{i18n>TOGGLE}" textAlign="Left">
 								<layoutData>
 									<layout:GridData span="L6 M6 S12"/>
