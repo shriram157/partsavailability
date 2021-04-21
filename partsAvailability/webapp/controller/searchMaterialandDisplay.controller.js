@@ -1289,9 +1289,7 @@ sap.ui.define([
 							} else {
 								this.getView().getModel("detailView").setProperty("/SimulateSet", data.results);
 							}
-
-							var filternoValue = data.results.filter(item => item.Qty == "0" && item.RqDate == "");
-
+							var filternoValue = data.results.filter(item => item.Qty == "0" && item.RqDate == "" && item.MEng == "" && item.MFrn == "");
 							if (
 								(this.getView().getModel("materialDisplayModel").getProperty("/Dealernet") == "0.00" || "") &&
 								filternoValue.length > 0
