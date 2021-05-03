@@ -15,6 +15,7 @@ sap.ui.define([
 	return Controller.extend("partsAvailability.controller.searchMaterialandDisplay", {
 		formatter: formatter,
 		onInit: function () {
+            alert("Hello world testing");
 			this.toggleFlg = false;
 			var oI18nModel = new sap.ui.model.resource.ResourceModel({
 				bundleUrl: "i18n/i18n.properties"
