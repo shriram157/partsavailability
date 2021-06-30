@@ -1280,13 +1280,20 @@ sap.ui.define([
 					},
 					success: $.proxy(function (data) {
 						if (data.results.length > 0) {
-							if (data.results.findIndex(item => item.Flag == "N") > -1) {
+							if (data.results.findIndex(item => item.Flag == "N" && item.MEng != "") > -1) {
 								MessageToast.show(data.results.filter(item => item.Flag == "N")[0].MEng, {
 									my: "center center",
 									at: "center center"
 								});
 								this.getView().getModel("detailView").setProperty("/SimulateSet", []);
+							}else if(data.results.findIndex(item => item.Flag == "N" && item.MEng == "" && item.Qty == "0") > -1){
+								MessageToast.show("Simulation not available for selected part.", {
+									my: "center center",
+									at: "center center"
+								});
+								this.getView().getModel("detailView").setProperty("/SimulateSet", []);
 							} else {
+							
 								this.getView().getModel("detailView").setProperty("/SimulateSet", data.results);
 							}
 							var filternoValue = data.results.filter(item => item.Qty == "0" && item.RqDate == "" && item.MEng == "" && item.MFrn == "");
