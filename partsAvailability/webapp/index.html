@@ -8,20 +8,16 @@
 		<title>Parts Availability</title>
 <!--DMND0003799 version update-->
 		<script id="sap-ui-bootstrap"
-			src=https://sapui5.hana.ondemand.com/1.71/resources/sap-ui-core.js
-			data-sap-ui-async="true"
+			src=https://sapui5.hana.ondemand.com/1.63.1/resources/sap-ui-core.js
 			data-sap-ui-libs="sap.m,sap.ui.layout,sap.ui.unified"
 			data-sap-ui-theme="sap_belize_plus"
 			data-sap-ui-compatVersion="edge"
-			data-sap-ui-xx-bindingSyntax="complex"
-			data-sap-ui-resourceroots='{"partsAvailability": ""}'
-			data-sap-ui-frameOptions="trusted"
-			data-sap-ui-oninit="module:sap/ui/core/ComponentSupport">
+			data-sap-ui-resourceroots='{"partsAvailability": ""}'>
 		</script>
 
 		<link rel="stylesheet" type="text/css" href="css/style.css">
 
-	<!--	<script>
+		<script>
 			sap.ui.getCore().attachInit(function() {
 				new sap.m.Shell({
 					app: new sap.ui.core.ComponentContainer({
@@ -31,17 +27,11 @@
 					appWidthLimited : false
 				}).placeAt("content");
 			});
-		</script>-->
+		</script>
 	</head>
 
 	<body class="sapUiBody" id="content">
-		<div data-sap-ui-component
-		data-name="partsAvailability"
-		data-height="100%"
-		data-id="container"
-		data-settings='{"id" : "partsAvailability"}'
-		style="height: 100%">
-	</div>
+		
 	</body>
 
 </html>
