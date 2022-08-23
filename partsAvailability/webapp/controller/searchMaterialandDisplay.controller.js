@@ -11,10 +11,12 @@ sap.ui.define([
 
 ], function (Controller, MessageBox, History, JSONModel, Filter, MessageToast, Fragment, formatter, models) {
 	"use strict";
-
+	var materialInventory = [];
 	return Controller.extend("partsAvailability.controller.searchMaterialandDisplay", {
 		formatter: formatter,
 		onInit: function () {
+			// instantiate here everytime
+
 			this.toggleFlg = false;
 			var oI18nModel = new sap.ui.model.resource.ResourceModel({
 				bundleUrl: "i18n/i18n.properties"
@@ -81,6 +83,9 @@ sap.ui.define([
 			// model instantiation for Supersession
 			this._superSessionModel = new sap.ui.model.json.JSONModel();
 			this._materialInventory = new sap.ui.model.json.JSONModel();
+
+			this._materialInventory.setProperty("/items", materialInventory);
+			this.getView().setModel(this._materialInventory, "inventoryModel");
 
 			var that = this;
 
@@ -587,8 +592,11 @@ sap.ui.define([
 			// 	"'," + "Matnr" + "='" + (selectedMaterial) + "'," + "SalesDocType" + "='" + "ZAF" + "'," + "SalesOrg" + "='" + "7000" + "'," +
 			// 	"AddlData" + "=" + true + "," + "LanguageKey" + "='" +
 			// 	(sCurrentLocale) + "'," + "Plant" + "='" + (supplyingPlant) + "')";
-				
-			var priceSetUrl = "Customer eq'"+ selectedCustomer +" ' and DisChannel eq '10' and Division eq '"+this.sDivision+"' and Matnr eq '"+selectedMaterial+"' and SalesDocType eq 'ZAF' and SalesOrg eq '7000' and AddlData eq true and LanguageKey eq '"+sCurrentLocale+"' and Plant eq '"+supplyingPlant+"'";
+
+			var priceSetUrl = "Customer eq'" + selectedCustomer + " ' and DisChannel eq '10' and Division eq '" + this.sDivision +
+				"' and Matnr eq '" + selectedMaterial +
+				"' and SalesDocType eq 'ZAF' and SalesOrg eq '7000' and AddlData eq true and LanguageKey eq '" + sCurrentLocale +
+				"' and Plant eq '" + supplyingPlant + "'";
 
 			var that = this;
 
@@ -601,94 +609,109 @@ sap.ui.define([
 
 			ozMaterialDisplayModel.read("/zc_PriceSet", {
 				urlParameters: {
-					$filter : priceSetUrl
+					$filter: priceSetUrl
 				},
 
 				success: $.proxy(function (oData) {
-					/*	if(this.sDivisionNew =="Dual" && this.sDivision== "10" && !oData.Item.PartsDispInd.includes("T"))
-						{
-							oData.Item.DoNotDisp = "X";
-						}
-						if(this.sDivisionNew =="Dual" && this.sDivision== "20" && !oData.Item.PartsDispInd.includes("L"))
-						{
-							oData.Item.DoNotDisp = "X";
-						}
-					*/
-					
-					for (var elm in oData.results){
-					// oData.results.forEach((elm) => {
+					for (var elm in oData.results) {
+						// oData.results.forEach((elm) => {
 						if (oData.results[elm].Item.DoNotDisp !== "X" && !(oData.results[elm].Item.PIOInd === '01' && oDealerType === 'Z001')) {
-						this.doNotDisplayReceived = false;
-						this.getView().byId("messageStripError").setProperty("visible", false); // if there are any old messages clear it. 
-						this._materialDisplayModel.setProperty("/Msrp", oData.results[elm].Item.Msrp);
-						this._materialDisplayModel.setProperty("/Qtybackorder", oData.results[elm].Item.Qtybackorder);
-						this._materialDisplayModel.setProperty("/Z3plqtyavail", oData.results[elm].Item.Z3plqtyavail);
-						this._materialDisplayModel.setProperty("/invQtyReceived", oData.results[elm].Item.Qtyavail);
-						this._materialDisplayModel.setProperty("/Dealernet", oData.results[elm].Item.Dealernet);
-						this._materialDisplayModel.setProperty("/Roundingprofile", oData.results[elm].Item.Roundingprofile);
-						//26-06
-						this._materialDisplayModel.setProperty("/Onpostock", oData.results[elm].Item.Onpostock);
-						if (oData.results[elm].Item.Dgind === "Yes") {
-							this._materialDisplayModel.setProperty("/Dangerousgoods", "Yes");
-							this._materialDisplayModel.setProperty("/Dgtooltip", oData.results[elm].Item.MatGrp + " " + oData.results[elm].Item.MatGrpDesc + " " + oData.results[elm].Item.MatGrpDesc60);
+							this.doNotDisplayReceived = false;
+							this.getView().byId("messageStripError").setProperty("visible", false); // if there are any old messages clear it. 
+							this._materialDisplayModel.setProperty("/Msrp", oData.results[elm].Item.Msrp);
+							this._materialDisplayModel.setProperty("/Qtybackorder", oData.results[elm].Item.Qtybackorder);
+							this._materialDisplayModel.setProperty("/Z3plqtyavail", oData.results[elm].Item.Z3plqtyavail);
+							this._materialDisplayModel.setProperty("/invQtyReceived", oData.results[elm].Item.Qtyavail);
+							this._materialDisplayModel.setProperty("/Dealernet", oData.results[elm].Item.Dealernet);
+							this._materialDisplayModel.setProperty("/Roundingprofile", oData.results[elm].Item.Roundingprofile);
+							//26-06
+							this._materialDisplayModel.setProperty("/Onpostock", oData.results[elm].Item.Onpostock);
+							if (oData.results[elm].Item.Dgind === "Yes") {
+								this._materialDisplayModel.setProperty("/Dangerousgoods", "Yes");
+								this._materialDisplayModel.setProperty("/Dgtooltip", oData.results[elm].Item.MatGrp + " " + oData.results[elm].Item.MatGrpDesc +
+									" " + oData.results[elm].Item.MatGrpDesc60);
+							} else {
+								this._materialDisplayModel.setProperty("/Dangerousgoods", "No");
+								this._materialDisplayModel.setProperty("/Dgtooltip", "");
+							}
+							if (oData.results[elm].Item.Itmcatgrp === "BANS") {
+								this._materialDisplayModel.setProperty("/Dtd", "Yes");
+							} else {
+								this._materialDisplayModel.setProperty("/Dtd", "No");
+							}
+
 						} else {
-							this._materialDisplayModel.setProperty("/Dangerousgoods", "No");
-							this._materialDisplayModel.setProperty("/Dgtooltip", "");
+							this.doNotDisplayReceived = true;
+
+							var warningMessage = this._oResourceBundle.getText("ParthasDoNotDisplay"); //Part Number has Do not display flag
+							this.getView().byId("messageStripError").setProperty("visible", true);
+							this.getView().byId("messageStripError").setText(warningMessage);
+							this.getView().byId("messageStripError").setType("Warning");
+
+							this._materialDisplayModel.setProperty("/Msrp", "");
+							this._materialDisplayModel.setProperty("/Qtybackorder", "");
+							this._materialDisplayModel.setProperty("/Z3plqtyavail", "");
+							this._materialDisplayModel.setProperty("/invQtyReceived", "");
+							this._materialDisplayModel.setProperty("/Dealernet", "");
+							this._materialDisplayModel.setProperty("/Roundingprofile", "");
+							this._materialDisplayModel.setProperty("/Onpostock", "");
 						}
-						if (oData.results[elm].Item.Itmcatgrp === "BANS") {
-							this._materialDisplayModel.setProperty("/Dtd", "Yes");
-						} else {
-							this._materialDisplayModel.setProperty("/Dtd", "No");
+						this._materialDisplayModel.setProperty("/Corevalue", oData.results[elm].Item.Corevalue); // added new field for CR1050 
+						this._materialDisplayModel.setProperty("/Partreturnable", oData.results[elm].Item.Partreturnable);
+						this._materialDisplayModel.setProperty("/Partstocked", oData.results[elm].Item.Partstocked);
+						this._materialDisplayModel.setProperty("/Shippedvia", oData.results[elm].Item.Shippedvia);
+						this._materialDisplayModel.setProperty("/Plantdesc", oData.results[elm].Item.Plantdesc);
+						// stop sales flag 
+						this._materialDisplayModel.setProperty("/stopSalesFlag", oData.results[elm].Item.Stopsalesdesc);
+
+						//	that.stopSalesFlag = oData.d.Item.Stopsalesdesc;
+						//	this._materialDisplayModel.setProperty("/invQtyReceived", oData.Item.Qtyavail);
+						this._materialDisplayModel.setProperty("/Parttypedesc", oData.results[elm].Item.Parttypedesc);
+						this._materialDisplayModel.setProperty("/plantReceived", supplyingPlant);
+						this._materialDisplayModel.setProperty("/z3plPlantReceived", oData.results[elm].Item.Z3plplant);
+						this._materialDisplayModel.setProperty("/Obsolete", oData.results[elm].Item.Obsolete);
+						this._callTheBackward_Supersession_(supplyingPlant);
+						this._callTheQuanity_service(selectedMaterial);
+
+						let indx = materialInventory.findIndex((itm) => itm.PlantDesc == oData.results[elm].Item.Plantdesc);
+
+						if (indx < 0) {
+							materialInventory.push({
+								"Plant": supplyingPlant,
+								"PlantDesc": oData.results[elm].Item.Plantdesc,
+								"MatlWrhsStkQtyInMatlBaseUnit": oData.results[elm].Item.Qtyavail,
+								"Qtybackorder": oData.results[elm].Item.Qtybackorder,
+								"stopSalesFlag": oData.results[elm].Item.Stopsalesdesc,
+								"Z3plqtyavail": oData.results[elm].Item.Z3plqtyavail,
+								"Onpostock": oData.results[elm].Item.Onpostock
+							});
 						}
 
-					} else {
-						this.doNotDisplayReceived = true;
+						// var sStopSaleFlag = this._materialDisplayModel.getProperty("/stopSalesFlag"),
+						// 	sinvQtyReceived = this._materialDisplayModel.getProperty("/invQtyReceived"),
+						// 	splantReceived = this._materialDisplayModel.getProperty("/plantReceived"),
+						// 	sqtyBackOrdered = this._materialDisplayModel.getProperty("/Qtybackorder"),
+						// 	sZ3plqtyavail = this._materialDisplayModel.getProperty("/Z3plqtyavail"),
+						// 	z3plPlant = this._materialDisplayModel.getProperty("/z3plPlantReceived"),
+						// 	sPlantDesc = this._materialDisplayModel.getProperty("/Plantdesc"),
 
-						var warningMessage = this._oResourceBundle.getText("ParthasDoNotDisplay"); //Part Number has Do not display flag
-						this.getView().byId("messageStripError").setProperty("visible", true);
-						this.getView().byId("messageStripError").setText(warningMessage);
-						this.getView().byId("messageStripError").setType("Warning");
+						// 	sgetOnpostock = this._materialDisplayModel.getProperty("/Onpostock");
 
-						this._materialDisplayModel.setProperty("/Msrp", "");
-						this._materialDisplayModel.setProperty("/Qtybackorder", "");
-						this._materialDisplayModel.setProperty("/Z3plqtyavail", "");
-						this._materialDisplayModel.setProperty("/invQtyReceived", "");
-						this._materialDisplayModel.setProperty("/Dealernet", "");
-						this._materialDisplayModel.setProperty("/Roundingprofile", "");
-						this._materialDisplayModel.setProperty("/Onpostock", "");
+						/// if the stop sales Flag = Yes then populate the warning message. 
+
+						if ((oData.results[elm].Item.Stopsalesdesc == "Yes" || oData.results[elm].Item.Stopsalesdesc == "Oui") && !(this.doNotDisplayReceived ==
+								true)) {
+
+							var warningMessage1 = this._oResourceBundle.getText("ParthasStopSales"); //Part Number has Stop Sales Flag as Yes
+							this.getView().byId("messageStripError").setProperty("visible", true);
+							this.getView().byId("messageStripError").setText(warningMessage1);
+							this.getView().byId("messageStripError").setType("Warning");
+						}
+
 					}
-					this._materialDisplayModel.setProperty("/Corevalue", oData.results[elm].Item.Corevalue); // added new field for CR1050 
-					this._materialDisplayModel.setProperty("/Partreturnable", oData.results[elm].Item.Partreturnable);
-					this._materialDisplayModel.setProperty("/Partstocked", oData.results[elm].Item.Partstocked);
-					this._materialDisplayModel.setProperty("/Shippedvia", oData.results[elm].Item.Shippedvia);
-					this._materialDisplayModel.setProperty("/Plantdesc", oData.results[elm].Item.Plantdesc);
-					// stop sales flag 
-					this._materialDisplayModel.setProperty("/stopSalesFlag", oData.results[elm].Item.Stopsalesdesc);
 
-					//	that.stopSalesFlag = oData.d.Item.Stopsalesdesc;
-					//	this._materialDisplayModel.setProperty("/invQtyReceived", oData.Item.Qtyavail);
-					this._materialDisplayModel.setProperty("/Parttypedesc", oData.results[elm].Item.Parttypedesc);
-					this._materialDisplayModel.setProperty("/plantReceived", supplyingPlant);
-					this._materialDisplayModel.setProperty("/z3plPlantReceived", oData.results[elm].Item.Z3plplant);
-					this._materialDisplayModel.setProperty("/Obsolete", oData.results[elm].Item.Obsolete);
-
-					/// if the stop sales Flag = Yes then populate the warning message. 
-
-					if ((oData.results[elm].Item.Stopsalesdesc == "Yes" || oData.results[elm].Item.Stopsalesdesc == "Oui") && !(this.doNotDisplayReceived == true)) {
-
-						var warningMessage1 = this._oResourceBundle.getText("ParthasStopSales"); //Part Number has Stop Sales Flag as Yes
-						this.getView().byId("messageStripError").setProperty("visible", true);
-						this.getView().byId("messageStripError").setText(warningMessage1);
-						this.getView().byId("messageStripError").setType("Warning");
-					} 
-
-					this._callTheBackward_Supersession_(supplyingPlant);
-					this._callTheQuanity_service(selectedMaterial);
-					
-					}
 					// });
-					
-					
+
 				}, this),
 
 				error: function () {
@@ -739,7 +762,7 @@ sap.ui.define([
 							this.userClickedSuperSession = false;
 						}
 					}
-					
+
 					var superSession = [];
 					this._superSessionModel.setProperty("/items", superSession); // instatiate here to avoid screen refresh issues. 
 					this.getView().setModel(this._superSessionModel, "superSessionModel");
@@ -897,10 +920,6 @@ sap.ui.define([
 			}
 			// reset the inventory model before loading the data.  
 
-			var materialInventory = []; // instantiate here everytime
-			this._materialInventory.setProperty("/items", materialInventory);
-			this.getView().setModel(this._materialInventory, "inventoryModel");
-
 			materialInventory.push({
 				"Plant": splantReceived,
 				"PlantDesc": sPlantDesc,
@@ -937,11 +956,15 @@ sap.ui.define([
 						if (that.doNotDisplayReceived == true) {
 							item.QtyAvailable = "";
 						}
-						materialInventory.push({
-							"PlantDesc": item.Location,
-							"MatlWrhsStkQtyInMatlBaseUnit": item.QtyAvailable
-								// "Qtybackorder": item.QtyBackorder
-						});
+						let indx = materialInventory.findIndex((itm) => itm.PlantDesc == item.Location);
+
+						if (indx < 0) {
+							materialInventory.push({
+								"PlantDesc": item.Location,
+								"MatlWrhsStkQtyInMatlBaseUnit": item.QtyAvailable
+									// "Qtybackorder": item.QtyBackorder
+							});
+						}
 					});
 
 					this._materialInventory.setProperty("/items", materialInventory);
@@ -1227,14 +1250,14 @@ sap.ui.define([
 									at: "center center"
 								});
 								this.getView().getModel("detailView").setProperty("/SimulateSet", []);
-							}else if(data.results.findIndex(item => item.Flag == "N" && item.MEng == "" && item.Qty == "0") > -1){
+							} else if (data.results.findIndex(item => item.Flag == "N" && item.MEng == "" && item.Qty == "0") > -1) {
 								MessageToast.show("Simulation not available for selected part.", {
 									my: "center center",
 									at: "center center"
 								});
 								this.getView().getModel("detailView").setProperty("/SimulateSet", []);
 							} else {
-							
+
 								this.getView().getModel("detailView").setProperty("/SimulateSet", data.results);
 							}
 							var filternoValue = data.results.filter(item => item.Qty == "0" && item.RqDate == "" && item.MEng == "" && item.MFrn == "");
