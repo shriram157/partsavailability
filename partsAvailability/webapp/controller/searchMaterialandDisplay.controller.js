@@ -373,6 +373,7 @@ sap.ui.define([
 
 		handlePartSearch: function (oEvent) {
 			this.userClickedSuperSession = false;
+			materialInventory = [];
 			// var sCurrentLocale = sap.ui.getCore().getConfiguration().getLanguage();
 			// initialize the material display model also . 
 
@@ -387,6 +388,7 @@ sap.ui.define([
 			this._materialDisplayModel.setProperty("/Partreturnable", "");
 			this._materialDisplayModel.setProperty("/Partstocked", "");
 			this._materialDisplayModel.setProperty("/Shippedvia", "");
+			this._materialDisplayModel.setProperty("/CaReference", "");
 			this._materialDisplayModel.setProperty("/Plantdesc", "");
 
 			var sCurrentLocale = this.sCurrentLocale;
@@ -660,6 +662,7 @@ sap.ui.define([
 						this._materialDisplayModel.setProperty("/Partreturnable", oData.results[elm].Item.Partreturnable);
 						this._materialDisplayModel.setProperty("/Partstocked", oData.results[elm].Item.Partstocked);
 						this._materialDisplayModel.setProperty("/Shippedvia", oData.results[elm].Item.Shippedvia);
+						this._materialDisplayModel.setProperty("/CaReference", oData.results[0].Item.CaReference);
 						this._materialDisplayModel.setProperty("/Plantdesc", oData.results[elm].Item.Plantdesc);
 						// stop sales flag 
 						this._materialDisplayModel.setProperty("/stopSalesFlag", oData.results[elm].Item.Stopsalesdesc);
