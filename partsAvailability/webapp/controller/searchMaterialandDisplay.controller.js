@@ -390,6 +390,8 @@ sap.ui.define([
 			this._materialDisplayModel.setProperty("/Shippedvia", "");
 			this._materialDisplayModel.setProperty("/CaReference", "");
 			this._materialDisplayModel.setProperty("/Plantdesc", "");
+			this._materialDisplayModel.setProperty("/MovementCode", "");
+			
 
 			var sCurrentLocale = this.sCurrentLocale;
 
@@ -664,6 +666,8 @@ sap.ui.define([
 						this._materialDisplayModel.setProperty("/Shippedvia", oData.results[elm].Item.Shippedvia);
 						this._materialDisplayModel.setProperty("/CaReference", oData.results[0].Item.CaReference);
 						this._materialDisplayModel.setProperty("/Plantdesc", oData.results[elm].Item.Plantdesc);
+						this._materialDisplayModel.setProperty("/MovementCode", oData.results[elm].MovementCode);
+						
 						// stop sales flag 
 						this._materialDisplayModel.setProperty("/stopSalesFlag", oData.results[elm].Item.Stopsalesdesc);
 
@@ -686,7 +690,8 @@ sap.ui.define([
 								"Qtybackorder": oData.results[elm].Item.Qtybackorder,
 								"stopSalesFlag": oData.results[elm].Item.Stopsalesdesc,
 								"Z3plqtyavail": oData.results[elm].Item.Z3plqtyavail,
-								"Onpostock": oData.results[elm].Item.Onpostock
+								"Onpostock": oData.results[elm].Item.Onpostock,
+								"MovementCode" : oData.results[elm].MovementCode
 							});
 						}
 
@@ -921,7 +926,7 @@ sap.ui.define([
 				// this.getView().byId("id3PlqtyValue").setVisible(false);
 				// turn of the id 
 			}
-			// reset the inventory model before loading the data.  
+			// reset the inventory model before loading the data. 
 
 			materialInventory.push({
 				"Plant": splantReceived,
@@ -930,7 +935,8 @@ sap.ui.define([
 				"Qtybackorder": sqtyBackOrdered,
 				"stopSalesFlag": sStopSaleFlag,
 				"Z3plqtyavail": sZ3plqtyavail,
-				"Onpostock": sgetOnpostock
+				"Onpostock": sgetOnpostock,
+				"MovementCode" : this._materialDisplayModel.getProperty("/MovementCode")
 			});
 
 			// var sUrlforQuantity = "/ZMD_PRODUCT_FS_V2_SRV/zc_QuantitySet?$filter=Matnr eq" + "'" + (selectedMaterial) + "'" +
@@ -1243,7 +1249,7 @@ sap.ui.define([
 				ozMaterialDisplayModel.read("/ZC_SIMULATESet", {
 					urlParameters: {
 						"$filter": "Matnr eq '" + selectedMaterial + "'and PartnNum eq'" + this.sSelectedDealer + "'and Division eq '" + this.sDivision +
-							"'and SalesDocType eq '" + OrdType + "'and Qty eq " + qty + ""
+							"'and SalesDocType eq '" + OrdType + "'and Plant eq '" + this._materialDisplayModel.getProperty("/SupplyingPlant") + "'and Qty eq " + qty + ""
 					},
 					success: $.proxy(function (data) {
 						if (data.results.length > 0) {
