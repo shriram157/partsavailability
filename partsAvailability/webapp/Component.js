@@ -111,6 +111,7 @@ sap.ui.define([
 				}
 			});
 			this.setModel(oDataModel, "aPiBusinessPartner");
+			this.setModel(models.createLocalDataModel(), "LocalDataModel");
 
 		}
 	});

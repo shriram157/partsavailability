@@ -118,8 +118,8 @@
 						<Text text="{materialDisplayModel>/Partstocked}"/>
 						<Label text="{i18n>SHIPPED_VIA}"/>
 						<Text text="{materialDisplayModel>/Shippedvia}"/>
-						<Label text="{i18n>CA_Reffered}"/>
-						<Text text="{materialDisplayModel>/CaReference}"/>
+						<Label text="{i18n>CA_Reffered}" visible="{LocalDataModel>/VisReffered}"/>
+						<Text text="{materialDisplayModel>/CaReference}" visible="{LocalDataModel>/VisReffered}"/>
 						<Label text="{i18n>DIRECT_TO_DEALER}"/>
 						<Text text="{materialDisplayModel>/Dtd}"/>
 					</f:SimpleForm>
@@ -132,7 +132,7 @@
 									<Text id="isLocationText" text="{i18n>LOCATION_TEXT}"/>
 								</header>
 							</Column>
-							<Column id="idABCIndicator" hAlign="Center" minScreenWidth="Phone">
+							<Column id="idABCIndicator" hAlign="Center" minScreenWidth="Phone" visible="{LocalDataModel>/VisReffered}">
 								<header>
 									<Text id="isABCIndicatorText" text="{i18n>ABC_indicator}"/>
 								</header>
@@ -162,7 +162,7 @@
 							<ColumnListItem>
 								<cells>
 									<Text text="{inventoryModel>PlantDesc}"/>
-									<Text text="{inventoryModel>MovementCode}"/>
+									<Text text="{inventoryModel>MovementCode}" visible="{LocalDataModel>/VisReffered}"/>
 									<Text text="{ path:'inventoryModel>MatlWrhsStkQtyInMatlBaseUnit', formatter:'.formatter.quantity' }"/>
 									<Text text="{ path:'inventoryModel>Onpostock', formatter:'.formatter.quantity' }"/>
 									<Text text="{ path:'inventoryModel>Qtybackorder', formatter:'.formatter.quantity' }"/>
@@ -281,7 +281,7 @@
 									</header>
 								</Column>
 								
-								<Column minScreenWidth="Phone" width="9rem">
+								<Column minScreenWidth="Phone" width="9rem" visible="{LocalDataModel>/VisReffered}">
 									<header>
 										<Text text="{i18n>LOCATION_TEXT}" textAlign="Center"/>
 									</header>
@@ -298,7 +298,7 @@
 									<cells>
 										<Text text="{detailView>Matnr}"/>
 										<Text text="{detailView>Qty}"/>
-										<Text text="{detailView>Location}"/>
+										<Text text="{detailView>Location}" visible="{LocalDataModel>/VisReffered}"/>
 										<Text text="{detailView>RqDate}"/>
 									</cells>
 								</ColumnListItem>

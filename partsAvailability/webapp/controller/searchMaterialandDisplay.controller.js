@@ -391,7 +391,6 @@ sap.ui.define([
 			this._materialDisplayModel.setProperty("/CaReference", "");
 			this._materialDisplayModel.setProperty("/Plantdesc", "");
 			this._materialDisplayModel.setProperty("/MovementCode", "");
-			
 
 			var sCurrentLocale = this.sCurrentLocale;
 
@@ -617,6 +616,12 @@ sap.ui.define([
 				},
 
 				success: $.proxy(function (oData) {
+					if (oData.results[0].Item.CaReference == "") {
+						this.getOwnerComponent().getModel("LocalDataModel").setProperty("/VisReffered", false);
+					} else {
+						this.getOwnerComponent().getModel("LocalDataModel").setProperty("/VisReffered", true);
+					}
+
 					for (var elm in oData.results) {
 						// oData.results.forEach((elm) => {
 						if (oData.results[elm].Item.DoNotDisp !== "X" && !(oData.results[elm].Item.PIOInd === '01' && oDealerType === 'Z001')) {
@@ -667,7 +672,7 @@ sap.ui.define([
 						this._materialDisplayModel.setProperty("/CaReference", oData.results[0].Item.CaReference);
 						this._materialDisplayModel.setProperty("/Plantdesc", oData.results[elm].Item.Plantdesc);
 						this._materialDisplayModel.setProperty("/MovementCode", oData.results[elm].MovementCode);
-						
+
 						// stop sales flag 
 						this._materialDisplayModel.setProperty("/stopSalesFlag", oData.results[elm].Item.Stopsalesdesc);
 
@@ -691,7 +696,7 @@ sap.ui.define([
 								"stopSalesFlag": oData.results[elm].Item.Stopsalesdesc,
 								"Z3plqtyavail": oData.results[elm].Item.Z3plqtyavail,
 								"Onpostock": oData.results[elm].Item.Onpostock,
-								"MovementCode" : oData.results[elm].MovementCode
+								"MovementCode": oData.results[elm].MovementCode
 							});
 						}
 
@@ -936,7 +941,7 @@ sap.ui.define([
 				"stopSalesFlag": sStopSaleFlag,
 				"Z3plqtyavail": sZ3plqtyavail,
 				"Onpostock": sgetOnpostock,
-				"MovementCode" : this._materialDisplayModel.getProperty("/MovementCode")
+				"MovementCode": this._materialDisplayModel.getProperty("/MovementCode")
 			});
 
 			// var sUrlforQuantity = "/ZMD_PRODUCT_FS_V2_SRV/zc_QuantitySet?$filter=Matnr eq" + "'" + (selectedMaterial) + "'" +
@@ -1249,7 +1254,8 @@ sap.ui.define([
 				ozMaterialDisplayModel.read("/ZC_SIMULATESet", {
 					urlParameters: {
 						"$filter": "Matnr eq '" + selectedMaterial + "'and PartnNum eq'" + this.sSelectedDealer + "'and Division eq '" + this.sDivision +
-							"'and SalesDocType eq '" + OrdType + "'and Plant eq '" + this._materialDisplayModel.getProperty("/SupplyingPlant") + "'and Qty eq " + qty + ""
+							"'and SalesDocType eq '" + OrdType + "'and Plant eq '" + this._materialDisplayModel.getProperty("/SupplyingPlant") +
+							"'and Qty eq " + qty + ""
 					},
 					success: $.proxy(function (data) {
 						if (data.results.length > 0) {
