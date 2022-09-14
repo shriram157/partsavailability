@@ -16,7 +16,7 @@ sap.ui.define([
 		formatter: formatter,
 		onInit: function () {
 			// instantiate here everytime
-
+            // KT by Minakshi
 			this.toggleFlg = false;
 			var oI18nModel = new sap.ui.model.resource.ResourceModel({
 				bundleUrl: "i18n/i18n.properties"
