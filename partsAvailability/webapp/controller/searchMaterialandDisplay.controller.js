@@ -711,8 +711,8 @@ sap.ui.define([
 						// 	sgetOnpostock = this._materialDisplayModel.getProperty("/Onpostock");
 
 						/// if the stop sales Flag = Yes then populate the warning message. 
-
-						if ((oData.results[elm].Item.Stopsalesdesc == "Yes" || oData.results[elm].Item.Stopsalesdesc == "Oui") && !(this.doNotDisplayReceived ==
+						//changes added for DMND0003688 by Swetha added slice(0,3)
+						if ((oData.results[elm].Item.Stopsalesdesc.slice(0,3) == "Yes" || oData.results[elm].Item.Stopsalesdesc.slice(0,3) == "Oui") && !(this.doNotDisplayReceived ==
 								true)) {
 
 							var warningMessage1 = this._oResourceBundle.getText("ParthasStopSales"); //Part Number has Stop Sales Flag as Yes
