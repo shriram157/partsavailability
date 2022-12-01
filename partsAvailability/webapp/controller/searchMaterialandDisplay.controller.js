@@ -643,10 +643,25 @@ sap.ui.define([
 								this._materialDisplayModel.setProperty("/Dangerousgoods", "No");
 								this._materialDisplayModel.setProperty("/Dgtooltip", "");
 							}
+							//changes by swetha for INC0223988 on 1-12-2022
+							if (oData.results[elm].Item.Dgind === "Oui") {
+								this._materialDisplayModel.setProperty("/Dangerousgoods", "Oui");
+								this._materialDisplayModel.setProperty("/Dgtooltip", oData.results[elm].Item.MatGrp + " " + oData.results[elm].Item.MatGrpDesc +
+									" " + oData.results[elm].Item.MatGrpDesc60);
+							} else {
+								this._materialDisplayModel.setProperty("/Dangerousgoods", "Non");
+								this._materialDisplayModel.setProperty("/Dgtooltip", "");
+							}
 							if (oData.results[elm].Item.Itmcatgrp === "BANS") {
 								this._materialDisplayModel.setProperty("/Dtd", "Yes");
 							} else {
 								this._materialDisplayModel.setProperty("/Dtd", "No");
+							}
+								//changes by swetha for INC0223988 on 1-12-2022
+							if (oData.results[elm].Item.Itmcatgrp === "BANS") {
+								this._materialDisplayModel.setProperty("/Dtd", "Oui");
+							} else {
+								this._materialDisplayModel.setProperty("/Dtd", "Non");
 							}
 
 						} else {
