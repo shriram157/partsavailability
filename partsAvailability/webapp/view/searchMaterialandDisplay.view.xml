@@ -12,258 +12,301 @@
 							<Text class="clCustomFont" text="{i18n>title}"/>
 						</contentLeft>
 						<contentRight>
-							<Button text="{i18n>LOG_OUT_BTN_TEXT}" press="onLogOutBtnPress" />
+							<Button text="{i18n>LOG_OUT_BTN_TEXT}" press="onLogOutBtnPress"/>
 						</contentRight>
 					</Bar>
 				</customHeader>
-				<uxap:ObjectPageLayout enableLazyLoading="true" id="ObjectPageLayout">
-					<uxap:sections>
-						<uxap:ObjectPageSection showTitle="true" titleUppercase="false" visible="true">
-							<uxap:subSections>
-								<uxap:ObjectPageSubSection title="{selectedDealerModel>/Dealer_Name}">
-									<!-- <uxap:blocks/> -->
-									<uxap:blocks>
-										<MessageStrip id="messageStripError" text="" showIcon="true" showCloseButton="true" class="sapUiMediumMarginBottom"
-											visible="{detailView>/materialFormError}"/>
-									</uxap:blocks>
-									<uxap:blocks>
-										<f:SimpleForm columnsL="1" columnsM="1" editable="true" emptySpanL="0" emptySpanM="0" id="idSimpleFormHeader" labelSpanL="3" labelSpanM="3"
-											layout="ResponsiveGridLayout" maxContainerCols="2" minWidth="1024">
-											<f:content>
-												<!-- <core:Title width="10rem"/> -->
-												<Label design="Standard" id="idDealerInputLabel" text="{i18n>DEALER_SEARCH_FIELD_LABEL}" textAlign="Left">
+				<Panel width="auto" headerText="{selectedDealerModel>/Dealer_Name}" class="sapUiSizeCompact" accessibleRole="Region">
+					<MessageStrip id="messageStripError" text="" showIcon="true" showCloseButton="true" class="sapUiSmallMarginBottom"
+						visible="{detailView>/materialFormError}"/>
+					<f:SimpleForm class="sapUiSmallMarginBottom" columnsL="4" columnsM="1" editable="true" emptySpanL="0" emptySpanM="0" id="idSimpleFormHeader"
+						labelSpanL="3" labelSpanM="3" layout="ResponsiveGridLayout" maxContainerCols="2" minWidth="1024">
+						<f:content>
+							<core:Title/>
+							<Label design="Standard" id="idDealerInputLabel" text="{i18n>DEALER_SEARCH_FIELD_LABEL}" textAlign="Left">
+								<layoutData>
+									<layout:GridData span="L3 M6 S12"/>
+								</layoutData>
+							</Label>
+							<ComboBox showSecondaryValues="true" required="true" visible="{detailView>/visibleByDefault}" fieldGroupIds="requiredField"
+								editable="{detailView>/editAllowed}" width="40rem" placeholder="{i18n>DEALER_PLACEHOLDER_TEXT}" value="{BpDealerModel>/BusinessPartnerKey}"
+								filterSecondaryValues="true" id="dealerID" enabled="{detailView>/onlyShownoEditForChange}"
+								items="{path: 'BpDealerModel>/', sorter: { path: 'BusinessPartner' }, length:750 }" selectedKey="{BusinessPartnerKey}"
+								selectionChange="onBusinessPartnerSelected" showValueStateMessage="false" textAlign="Begin">
+								<core:ListItem key="{BpDealerModel>BusinessPartnerKey}" text="{BpDealerModel>BusinessPartner}"
+									additionalText="{BpDealerModel>BusinessPartnerName}"/>
+								<layoutData>
+									<layout:GridData span="L9 M6 S12"/>
+								</layoutData>
+							</ComboBox>
+							<core:Title/>
+							<Label design="Standard" id="idMaterialInputLabel" text="{i18n>PART_NUMBER}" textAlign="Left">
+								<layoutData>
+									<layout:GridData span="L5 M6 S12"/>
+								</layoutData>
+							</Label>
+							<Input id="material_id" placeholder="{i18n>PART_NUMBER_PLACEHOLDER_TEXT}" name="materialNumberChange"
+								value="{ path: 'materialDisplayModel>/Material', type: 'sap.ui.model.odata.type.String' , constraints : { minLength: 1,maxLength: 20, nullable:false} }"
+								width="auto" type="Text" showSuggestion="true" liveChange="liveChangeDataEntered" suggestionItemSelected="matnrFromSuggestionSelectedChange"
+								valueLiveUpdate="false" change="liveChangeDataEntered" valueHelpRequest="handleValueHelpForMaterial" suggest="handleSuggest"
+								enabled="{detailView>/materialInputAllow}" startSuggestion="3" suggestionItems="{ path: 'materialSuggestionModel>/Matsuggestions' }"
+								fieldWidth="auto" maxSuggestionWidth="500px" submit="handlePartSearch">
+								<suggestionItems>
+									<core:ListItem key="{materialSuggestionModel>Material}" text="{materialSuggestionModel>Material}"
+										additionalText="{materialSuggestionModel>MaterialName}"/>
+								</suggestionItems>
+								<layoutData>
+									<layout:GridData span="L7 M6 S12" linebreak="false" linebreakL="false" linebreakM="false" linebreakS="false" linebreakXL="false"/>
+								</layoutData>
+							</Input>
+							<core:Title/>
+							<Label design="Standard" id="idSuggestionLabel" text="{i18n>TOGGLE}" textAlign="Left">
+								<layoutData>
+									<layout:GridData span="L6 M6 S12"/>
+								</layoutData>
+							</Label>
+							<Switch type="AcceptReject" id="idViewToggleButton1" change="toggleSuggestionSearch" state="false">
+								<layoutData>
+									<layout:GridData span="L4 M6 S12"/>
+								</layoutData>
+							</Switch>
+							<!--<Label design="Standard" id="idMaterialInputLabelD" text="{dummyText}" textAlign="Left">
 													<layoutData>
 														<layout:GridData span="L2 M12 S12"/>
 													</layoutData>
 												</Label>
-												<ComboBox showSecondaryValues="true" required="true" visible="{detailView>/visibleByDefault}" fieldGroupIds="requiredField"
-													editable="{detailView>/editAllowed}" width="40rem" placeholder="{i18n>DEALER_PLACEHOLDER_TEXT}" value="{BpDealerModel>/BusinessPartnerKey}"
-													filterSecondaryValues="true" id="dealerID" enabled="{detailView>/onlyShownoEditForChange}"
-													items="{path: 'BpDealerModel>/', sorter: { path: 'BusinessPartner' }, length:750 }" selectedKey="{BusinessPartnerKey}"
-													selectionChange="onBusinessPartnerSelected" showValueStateMessage="false" textAlign="Begin">
-													<core:ListItem key="{BpDealerModel>BusinessPartnerKey}" text="{BpDealerModel>BusinessPartner}"
-														additionalText="{BpDealerModel>BusinessPartnerName}"/>
-													<layoutData>
-														<layout:GridData span="L2 M12 S12"/>
-													</layoutData>
-												</ComboBox>
-												<!-- <core:Title/> -->
-												<Label design="Standard" id="idMaterialInputLabel" text="{i18n>PART_NUMBER}" textAlign="Left">
-													<layoutData>
-														<layout:GridData span="L2 M12 S12"/>
-													</layoutData>
-												</Label>
-												<Input id="material_id" required="true" placeholder="{i18n>PART_NUMBER_PLACEHOLDER_TEXT}" name="materialNumberChange"
-													value="{ path: 'materialDisplayModel>/Material', type: 'sap.ui.model.odata.type.String' , constraints : { minLength: 1,maxLength: 20, nullable:false} }"
-													width="auto" type="Text" showSuggestion="true" liveChange="liveChangeDataEntered" suggestionItemSelected="matnrFromSuggestionSelectedChange"
-													valueLiveUpdate="false" change="CheckEnteredMatnrChange" valueHelpRequest="handleValueHelpForMaterial" suggest="handleSuggest"
-													enabled="{detailView>/materialInputAllow}" startSuggestion="3" suggestionItems="{ path: 'materialSuggestionModel>/Matsuggestions' }"
-													fieldWidth="auto" maxSuggestionWidth="500px">
-													<suggestionItems>
-														<core:ListItem key="{materialSuggestionModel>Material}" text="{materialSuggestionModel>Material}"
-															additionalText="{materialSuggestionModel>MaterialName}"/>
-													</suggestionItems>
-													<layoutData>
-														<layout:GridData span="L2 M10 S12" linebreak="false" linebreakL="false" linebreakM="false" linebreakS="false" linebreakXL="false"/>
-													</layoutData>
-												</Input>
-												<Label design="Standard" id="idMaterialInputLabelD" text="{dummyText}" textAlign="Left">
-													<layoutData>
-														<layout:GridData span="L2 M12 S12"/>
-													</layoutData>
-												</Label>
-												<Button icon="sap-icon://search" id="idViewSearchButtonl" press="handlePartSearch" width="auto"
-													enabled="{detailView>/enableMaterialEntered}" text="{i18n>SEARCH}" type="Emphasized">
-													<layoutData>
-														<layout:GridData span="L2 M12 S12"/>
-													</layoutData>
-												</Button>
-											</f:content>
-										</f:SimpleForm>
-									</uxap:blocks>
-									<uxap:blocks>
-										<f:SimpleForm id="materialData_id" class="myFormBorder" editable="false" layout="ResponsiveGridLayout" adjustLabelSpan="false"
-											visible="{detailView>/afterMaterialFound}" singleContainerFullSize="true" backgroundDesign="Solid">
-											<core:Title/>
-											<Label text="{i18n>PART_DESCRIPTION}"/>
-											<Text text="{materialDisplayModel>/MaterialText}"/>
-											<Label text="{i18n>DEALER_NET_PRICE}"/>
-											<Text text="{materialDisplayModel>/Dealernet}"/>
-											<Label text="{i18n>BACKWARD_SUPERSESSION}"/>
-											<Link text="{materialDisplayModel>/MatnrSuper}" press="handleMatnrSuperPress"/>
-											<!-- <Text text="{Werks}"/> -->
-											<Label text="{i18n>RETURNABLE}"/>
-											<Text text="{materialDisplayModel>/Partreturnable}"/>
-											<Label text="{i18n>PART_TYPE_CODE}"/>
-											<Text text="{materialDisplayModel>/Parttypedesc}"/>
-											<Label text="{i18n>OBSOLETE}"/>
-											<Text text="{materialDisplayModel>/Obsolete}"/>
-											<Label text="{i18n>DANGEROUS_GOODS}" tooltip="{materialDisplayModel>/Dgtooltip}"/>
-											<Text text="{materialDisplayModel>/Dangerousgoods}" tooltip="{materialDisplayModel>/Dgtooltip}"/>
-											<core:Title/>
-											<Label text="{i18n>SUGGESTED_LIST_PRICE}"/>
-											<Text text="{materialDisplayModel>/Msrp}"/>
-											<Label text="{i18n>SELL_PACKAGE_QTY}" id="sellpackageqtyLabelId"/>
-											<Text text="{path:'materialDisplayModel>/Roundingprofile', formatter:'.formatter.quantity'}"/>
-											<Label text="{i18n>STOP_SALES_FLAG}"/>
-											<Text text="{materialDisplayModel>/stopSalesFlag}"/>
-											<Label text="{i18n>STOCKED}"/>
-											<Text text="{materialDisplayModel>/Partstocked}"/>
-											<Label text="{i18n>SHIPPED_VIA}"/>
-											<Text text="{materialDisplayModel>/Shippedvia}"/>
-											<Label text="{i18n>DIRECT_TO_DEALER}"/>
-											<Text text="{materialDisplayModel>/Dtd}"/>
-										</f:SimpleForm>
-									</uxap:blocks>
-									<uxap:blocks>
-										<Table id="idInventoryT" inset="false" items="{inventoryModel>/items}" mode="None" visible="{detailView>/afterMaterialFound}"
-											alternateRowColors="true" noDataText="{i18n>NO_DATA}">
-											<headerToolbar/>
-											<columns>
-												<Column id="idLocation" hAlign="Center" minScreenWidth="Phone">
-													<header>
-														<Text id="isLocationText" text="{i18n>LOCATION_TEXT}"/>
-													</header>
-												</Column>
-												<Column demandPopin="true" hAlign="Center" id="idQtyAvailable" minScreenWidth="Tablet">
-													<header>
-														<Text id="idQtyAvail" text="{i18n>QTY_AVAILABLE}"/>
-													</header>
-												</Column>
-												
-												<Column demandPopin="true" hAlign="Center" id="idOnpostock" minScreenWidth="Tablet">
-													<header>
-														<Text id="idOnpostockt" text="{i18n>PO_STOCK}"/>
-													</header>
-												</Column>
-				
-												
-												<Column demandPopin="true" id="idQtyBO" hAlign="Center" minScreenWidth="Tablet" popinDisplay="Inline">
-													<header>
-														<Text id="idQtyBackOrd" text="{i18n>QTY_BACK_ORDERED}"/>
-													</header>
-												</Column>
-												<!--
-<Column demandPopin="true" hAlign="Centre" id="idStopSalesflgC" minScreenWidth="Tablet">
--->
-												<!-- 	<header> -->
-												<!--
-		<Text id="idStopSalesflg" text="{i18n>STOP_SALES_FLAG}"/>
--->
-												<!-- 	</header> -->
-												<!-- </Column> -->
-												<Column demandPopin="true" id="PlqtyText" hAlign="Center" minScreenWidth="Tablet" popinDisplay="Inline">
-													<header>
-														<Text id="id3Plqty" text="{i18n>3PL_QTY_AVAIL_TEXT}"/>
-													</header>
-												</Column>
-											</columns>
-											<items>
-												<ColumnListItem>
-													<cells>
-														<!--
+												-->
+							<core:Title/>
+							<Button icon="sap-icon://search" id="idViewSearchButtonl" press="handlePartSearch" width="auto"
+								enabled="{detailView>/enableMaterialEntered}" text="{i18n>SEARCH}" type="Emphasized">
+								<layoutData>
+									<layout:GridData span="L6 M12 S12"/>
+								</layoutData>
+							</Button>
+						</f:content>
+					</f:SimpleForm>
+					<f:SimpleForm id="materialData_id" class="myFormBorder sapUiSmallMarginBottom" editable="false" layout="ResponsiveGridLayout"
+						adjustLabelSpan="false" visible="{detailView>/afterMaterialFound}" singleContainerFullSize="true" backgroundDesign="Solid">
+						<core:Title/>
+						<Label text="{i18n>PART_DESCRIPTION}"/>
+						<Text text="{materialDisplayModel>/MaterialText}"/>
+						<Label text="{i18n>DEALER_NET_PRICE}"/>
+						<Text text="{materialDisplayModel>/Dealernet}"/>
+						<Label text="{i18n>BACKWARD_SUPERSESSION}"/>
+						<Link text="{materialDisplayModel>/MatnrSuper}" press="handleMatnrSuperPress"/>
+						<!-- <Text text="{Werks}"/> -->
+						<Label text="{i18n>RETURNABLE}"/>
+						<Text text="{materialDisplayModel>/Partreturnable}"/>
+						<Label text="{i18n>PART_TYPE_CODE}"/>
+						<Text text="{materialDisplayModel>/Parttypedesc}"/>
+						<Label text="{i18n>OBSOLETE}"/>
+						<Text text="{materialDisplayModel>/Obsolete}"/>
+						<Label text="{i18n>DANGEROUS_GOODS}" tooltip="{materialDisplayModel>/Dgtooltip}"/>
+						<Text text="{materialDisplayModel>/Dangerousgoods}" tooltip="{materialDisplayModel>/Dgtooltip}"/>
+						<core:Title/>
+						<Label text="{i18n>SUGGESTED_LIST_PRICE}"/>
+						<Text text="{materialDisplayModel>/Msrp}"/>
+						<!--Adding New Field Core Charge For CR1050-->
+						<Label text="{i18n>Core_Charge}"/>
+						<Text text="{path:'materialDisplayModel>/Corevalue', formatter:'.formatter.Corevalue'}"/>
+						<!--End-->
+						<Label text="{i18n>SELL_PACKAGE_QTY}" id="sellpackageqtyLabelId"/>
+						<Text text="{path:'materialDisplayModel>/Roundingprofile', formatter:'.formatter.quantity'}"/>
+						<Label text="{i18n>STOP_SALES_FLAG}"/>
+						<Text text="{materialDisplayModel>/stopSalesFlag}"/>
+						<Label text="{i18n>STOCKED}"/>
+						<Text text="{materialDisplayModel>/Partstocked}"/>
+						<Label text="{i18n>SHIPPED_VIA}"/>
+						<Text text="{materialDisplayModel>/Shippedvia}"/>
+						<Label text="{i18n>CA_Reffered}" visible="{LocalDataModel>/VisReffered}"/>
+						<Text text="{materialDisplayModel>/CaReference}" visible="{LocalDataModel>/VisReffered}"/>
+						<Label text="{i18n>DIRECT_TO_DEALER}"/>
+						<Text text="{materialDisplayModel>/Dtd}"/>
+					</f:SimpleForm>
+					<Table id="idInventoryT" class="sapUiSmallMarginBottom" inset="false" items="{inventoryModel>/items}" mode="None"
+						visible="{detailView>/afterMaterialFound}" alternateRowColors="true" noDataText="{i18n>NO_DATA}">
+						<headerToolbar/>
+						<columns>
+							<Column id="idLocation" hAlign="Center" minScreenWidth="Phone">
+								<header>
+									<Text id="isLocationText" text="{i18n>LOCATION_TEXT}"/>
+								</header>
+							</Column>
+							<Column id="idABCIndicator" hAlign="Center" minScreenWidth="Phone" visible="{LocalDataModel>/VisReffered}">
+								<header>
+									<Text id="isABCIndicatorText" text="{i18n>ABC_indicator}"/>
+								</header>
+							</Column>
+							<Column demandPopin="true" hAlign="Center" id="idQtyAvailable" minScreenWidth="Tablet">
+								<header>
+									<Text id="idQtyAvail" text="{i18n>QTY_AVAILABLE}"/>
+								</header>
+							</Column>
+							<Column demandPopin="true" hAlign="Center" id="idOnpostock" minScreenWidth="Tablet">
+								<header>
+									<Text id="idOnpostockt" text="{i18n>PO_STOCK}"/>
+								</header>
+							</Column>
+							<Column demandPopin="true" id="idQtyBO" hAlign="Center" minScreenWidth="Tablet" popinDisplay="Inline">
+								<header>
+									<Text id="idQtyBackOrd" text="{i18n>QTY_BACK_ORDERED}"/>
+								</header>
+							</Column>
+							<Column demandPopin="true" id="PlqtyText" hAlign="Center" minScreenWidth="Tablet" popinDisplay="Inline">
+								<header>
+									<Text id="id3Plqty" text="{i18n>3PL_QTY_AVAIL_TEXT}"/>
+								</header>
+							</Column>
+						</columns>
+						<items>
+							<ColumnListItem>
+								<cells>
+									<Text text="{inventoryModel>PlantDesc}"/>
+									<Text text="{inventoryModel>MovementCode}" visible="{LocalDataModel>/VisReffered}"/>
+									<Text text="{ path:'inventoryModel>MatlWrhsStkQtyInMatlBaseUnit', formatter:'.formatter.quantity' }"/>
+									<Text text="{ path:'inventoryModel>Onpostock', formatter:'.formatter.quantity' }"/>
+									<Text text="{ path:'inventoryModel>Qtybackorder', formatter:'.formatter.quantity' }"/>
+									<Text text="{ path:'inventoryModel>Z3plqtyavail', formatter:'.formatter.quantity' }" visible="{detailView>/visibleZ3plqty}" id="id3PlValue"/>
+								</cells>
+							</ColumnListItem>
+						</items>
+					</Table>
+					<Table id="idForwardSupersession" class="myFormBorder sapUiSmallMarginBottom" inset="false"
+						items="{ path: 'superSessionModel>/items', sorter: { path: 'Type', descending:true } }" mode="None"
+						visible="{detailView>/afterMaterialFound}" alternateRowColors="true" noDataText="{i18n>NO_DATA}">
+						<headerToolbar>
+							<Toolbar>
+								<Label id="idToolbarLabel" text="{i18n>FORWARD_SUPER_SESSION}"/>
+								<Text id="idSuperSessionDescriptiont" text="{materialDisplayModel>/headerTypeDesc}"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</headerToolbar>
+						<columns>
+							<Column id="idPartNumberCol" minScreenWidth="Phone">
+								<header>
+									<Text id="idPartNumberText" text="{i18n>PART_NUMBER}"/>
+								</header>
+							</Column>
+							<Column demandPopin="true" hAlign="Center" id="idPartDescCol" minScreenWidth="Tablet" visible="{superSessionModel>/CurrentStockVisible}">
+								<header>
+									<Text id="idPartDescriptions" text="{i18n>PART_DESCRIPTION}"/>
+								</header>
+							</Column>
+							<Column demandPopin="true" hAlign="Center" id="idTypeCol" minScreenWidth="Tablet">
+								<header>
+									<Text id="idType" text="{i18n>TYPE}"/>
+								</header>
+							</Column>
+							<Column demandPopin="true" hAlign="Center" id="idDealerNet" minScreenWidth="Tablet" popinDisplay="Inline"
+								visible="{superSessionModel>/CurrentStockVisible}">
+								<header>
+									<Text id="idDealerNetText" text="{i18n>DEALER_NET_TEXT}"/>
+								</header>
+							</Column>
+							<Column demandPopin="true" hAlign="Center" id="idQtyRequired" minScreenWidth="Tablet"
+								visible="{superSessionModel>/BlockedStockQuantityVisible}">
+								<header>
+									<Text id="idQtyRequiredText" text="{i18n>QTY_REQUIRED_TEXT}"/>
+								</header>
+							</Column>
+							<Column demandPopin="true" hAlign="Center" id="quantityAvail" minScreenWidth="Tablet" popinDisplay="Inline"
+								visible="{superSessionModel>/BlockedStockQuantityVisible}">
+								<header>
+									<Text id="idQuantityAvail" text="{i18n>QUAN_AVAIL_TEXT}"/>
+								</header>
+							</Column>
+							<Column demandPopin="true" hAlign="Center" id="idPartforwardSuper" minScreenWidth="Tablet"
+								visible="{superSessionModel>/QualityInspectionStockQuantityVisible}">
+								<header>
+									<Text id="idPartForwardSuperSessionText" text="{i18n>PART_HAS_FORWARD_SUPERSESSION}"/>
+								</header>
+							</Column>
+							<Column demandPopin="true" hAlign="Center" id="idLAstUpdatedDateC" minScreenWidth="Tablet"
+								visible="{superSessionModel>/QualityInspectionStockQuantityVisible}">
+								<header>
+									<Text id="idLastUpdatedDate" text="{i18n>LAST_UPDATED_DATE}"/>
+								</header>
+							</Column>
+						</columns>
+						<items>
+							<ColumnListItem type="Active" press="onPressSuperSession" id="supersessionData">
+								<cells>
+									<!--
 <Text text="{superSessionModel>MatnrSuper}" width="100%"/>
 -->
-														<Text text="{inventoryModel>PlantDesc}"/>
-														<!--
-<Text text="{inventoryModel>MatlWrhsStkQtyInMatlBaseUnit}"/>
--->
-														<Text text="{ path:'inventoryModel>MatlWrhsStkQtyInMatlBaseUnit', formatter:'.formatter.quantity' }"/>
-													<Text text="{ path:'inventoryModel>Onpostock', formatter:'.formatter.quantity' }"/>
-														<Text text="{ path:'inventoryModel>Qtybackorder', formatter:'.formatter.quantity' }"/>
-														<!-- <Text text="{inventoryModel>Qtybackorder}"/> -->
-														<!-- <Text text="{inventoryModel>stopSalesFlag}"/> -->
-														<!-- <Text text="{inventoryModel>Z3plqtyavail}"/> -->
-														<Text text="{ path:'inventoryModel>Z3plqtyavail', formatter:'.formatter.quantity' }" visible="{detailView>/visibleZ3plqty}" id="id3PlValue"/>
-													</cells>
-												</ColumnListItem>
-											</items>
-										</Table>
-										<Table id="idForwardSupersession" class="myFormBorder" inset="false"
-											items="{ path: 'superSessionModel>/items', sorter: { path: 'Type', descending:true } }" mode="None"
-											visible="{detailView>/afterMaterialFound}" alternateRowColors="true" noDataText="{i18n>NO_DATA}">
-											<headerToolbar>
-												<Toolbar>
-													<Label id="idToolbarLabel" text="{i18n>FORWARD_SUPER_SESSION}"/>
-													<Text id="idSuperSessionDescriptiont" text="{materialDisplayModel>/headerTypeDesc}"/>
-													<ToolbarSpacer/>
-												</Toolbar>
-											</headerToolbar>
-											<columns>
-												<Column id="idPartNumberCol" minScreenWidth="Phone">
-													<header>
-														<Text id="idPartNumberText" text="{i18n>PART_NUMBER}"/>
-													</header>
-												</Column>
-												<Column demandPopin="true" hAlign="Center" id="idPartDescCol" minScreenWidth="Tablet" visible="{superSessionModel>/CurrentStockVisible}">
-													<header>
-														<Text id="idPartDescriptions" text="{i18n>PART_DESCRIPTION}"/>
-													</header>
-												</Column>
-												<Column demandPopin="true" hAlign="Center" id="idTypeCol" minScreenWidth="Tablet">
-													<header>
-														<Text id="idType" text="{i18n>TYPE}"/>
-													</header>
-												</Column>
-												<Column demandPopin="true" hAlign="Center" id="idDealerNet" minScreenWidth="Tablet" popinDisplay="Inline"
-													visible="{superSessionModel>/CurrentStockVisible}">
-													<header>
-														<Text id="idDealerNetText" text="{i18n>DEALER_NET_TEXT}"/>
-													</header>
-												</Column>
-												<Column demandPopin="true" hAlign="Center" id="idQtyRequired" minScreenWidth="Tablet"
-													visible="{superSessionModel>/BlockedStockQuantityVisible}">
-													<header>
-														<Text id="idQtyRequiredText" text="{i18n>QTY_REQUIRED_TEXT}"/>
-													</header>
-												</Column>
-												<Column demandPopin="true" hAlign="Center" id="quantityAvail" minScreenWidth="Tablet" popinDisplay="Inline"
-													visible="{superSessionModel>/BlockedStockQuantityVisible}">
-													<header>
-														<Text id="idQuantityAvail" text="{i18n>QUAN_AVAIL_TEXT}"/>
-													</header>
-												</Column>
-												<Column demandPopin="true" hAlign="Center" id="idPartforwardSuper" minScreenWidth="Tablet"
-													visible="{superSessionModel>/QualityInspectionStockQuantityVisible}">
-													<header>
-														<Text id="idPartForwardSuperSessionText" text="{i18n>PART_HAS_FORWARD_SUPERSESSION}"/>
-													</header>
-												</Column>
-												<Column demandPopin="true" hAlign="Center" id="idLAstUpdatedDateC" minScreenWidth="Tablet"
-													visible="{superSessionModel>/QualityInspectionStockQuantityVisible}">
-													<header>
-														<Text id="idLastUpdatedDate" text="{i18n>LAST_UPDATED_DATE}"/>
-													</header>
-												</Column>
-											</columns>
-											<items>
-												<ColumnListItem type="Active" press="onPressSuperSession" id="supersessionData">
-													<cells>
-														<!--
-<Text text="{superSessionModel>MatnrSuper}" width="100%"/>
--->
-														<ObjectIdentifier title="{superSessionModel>MatnrSuper}" text="{Description}" titleActive="true" titlePress="handleMatnrSuperPress"/>
-														<Text text="{superSessionModel>PartDesc}"/>
-														<Text text="{superSessionModel>Type}"/>
-														<Text text="{superSessionModel>DealerNet}"/>
-														<!-- <Text text="{superSessionModel>QtyReqd}"/> -->
-														<Text text="{ path:'superSessionModel>QtyReqd', formatter:'.formatter.quantity' }"/>
-														<!-- <Text text="{superSessionModel>QtyAvail}"/> -->
-														<Text text="{ path:'superSessionModel>QtyAvail', formatter:'.formatter.quantity' }"/>
-														<Text text="{superSessionModel>HasForwSuper}"/>
-														<Text
-															text="{ path: 'superSessionModel>LastUpdDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd', strictParsing: true , UTC: true } }"/>
-													</cells>
-												</ColumnListItem>
-											</items>
-										</Table>
-									</uxap:blocks>
-								</uxap:ObjectPageSubSection>
-							</uxap:subSections>
-							<uxap:customAnchorBarButton/>
-						</uxap:ObjectPageSection>
-					</uxap:sections>
-				</uxap:ObjectPageLayout>
+									<ObjectIdentifier title="{superSessionModel>MatnrSuper}" text="{Description}" titleActive="true" titlePress="handleMatnrSuperPress"/>
+									<Text text="{superSessionModel>PartDesc}"/>
+									<Text text="{superSessionModel>Type}"/>
+									<Text text="{superSessionModel>DealerNet}"/>
+									<!-- <Text text="{superSessionModel>QtyReqd}"/> -->
+									<Text text="{ path:'superSessionModel>QtyReqd', formatter:'.formatter.quantity' }"/>
+									<!-- <Text text="{superSessionModel>QtyAvail}"/> -->
+									<Text text="{ path:'superSessionModel>QtyAvail', formatter:'.formatter.quantity' }"/>
+									<Text text="{superSessionModel>HasForwSuper}"/>
+									<Text
+										text="{ path: 'superSessionModel>LastUpdDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd', strictParsing: true , UTC: true } }"/>
+								</cells>
+							</ColumnListItem>
+						</items>
+					</Table>
+					<!--DMND0002972  start by Minakshi-->
+					<VBox width="100%" visible="{detailView>/afterMaterialFound}" class="myFormBorder">
+						<Table inset="false" items="{detailView>/SimulateSet}" mode="None" alternateRowColors="true" noDataText="{i18n>NO_DATA}">
+							<headerToolbar>
+								<Toolbar>
+									<Label class="sapUiTinyMarginEnd" text="{i18n>PART_NUMBER}"/>
+									<Input enabled="false"
+										value="{ path: 'materialDisplayModel>/Material', type: 'sap.ui.model.odata.type.String' , constraints : { minLength: 1,maxLength: 20, nullable:false} }"
+										width="10rem" class="sapUiTinyMarginEnd"></Input>
+									<Label text="{i18n>OrderType}" class="sapUiTinyMarginEnd"/>
+									<!--<Input value="{detailView>/ordTp}" width="10rem" change="onChangeSimulateVal" class="sapUiTinyMarginEnd"/>-->
+									<Select id="idOrdType" selectedKey="{detailView>/ordTp}" width="10rem" class="sapUiTinyMarginEnd">
+										<core:Item key="ZOR" text="{i18n>order.type.standard}" />
+										<core:Item key="ZRO" text="{i18n>order.type.rush}" enabled="{detailView>/rushVisible}"/>
+									</Select>
+									<Label text="{i18n>OrderQuantity}" class="sapUiTinyMarginEnd"/>
+									<Input type="Number" liveChange="onChangeSimulateVal" value="{detailView>/ordQty}"  width="10rem" class="sapUiTinyMarginEnd"/>
+									<Button type="Emphasized" press="onPressSimulate" enabled="{detailView>/toggleVisibility}" text="{i18n>Simulate}" class="sapUiTinyMarginEnd"/>
+								</Toolbar>
+							</headerToolbar>
+							<columns>
+								<Column minScreenWidth="Phone" width="9rem">
+									<header>
+										<Text text="{i18n>Material}" textAlign="Center"/>
+									</header>
+								</Column>
+								<Column minScreenWidth="Phone" width="9rem">
+									<header>
+										<Text text="{i18n>ConfirmQuantity}" textAlign="Center"/>
+									</header>
+								</Column>
+								
+								<Column minScreenWidth="Phone" width="9rem" visible="{LocalDataModel>/VisReffered}">
+									<header>
+										<Text text="{i18n>LOCATION_TEXT}" textAlign="Center"/>
+									</header>
+								</Column>
+								
+								<Column minScreenWidth="Phone" width="9rem">
+									<header>
+										<Text text="{i18n>DeliveryDate}" textAlign="Center"/>
+									</header>
+								</Column>
+							</columns>
+							<items>
+								<ColumnListItem type="Active">
+									<cells>
+										<Text text="{detailView>Matnr}"/>
+										<Text text="{detailView>Qty}"/>
+										<Text text="{detailView>Location}" visible="{LocalDataModel>/VisReffered}"/>
+										<Text text="{detailView>RqDate}"/>
+									</cells>
+								</ColumnListItem>
+							</items>
+						</Table>
+					</VBox>
+				</Panel>
+				<!--DMND0002972  start by Minakshi end-->
 				<footer>
 					<OverflowToolbar>
 						<ToolbarSpacer/>

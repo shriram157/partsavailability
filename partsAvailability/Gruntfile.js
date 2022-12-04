@@ -32,7 +32,7 @@ module.exports = function (grunt) {
 					"!dist/**",
 					"!webapp/**"
 				],
-				dest: "dist",
+				dest: "dist"
 			}
 		},
 		mkdir: {
