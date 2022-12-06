@@ -62,7 +62,7 @@ sap.ui.define([
 			};
 
 			// ============================== md_product service==========================Begin
-			var mConfig = this.getMetadata().getManifestEntry("/sap.app/dataSources/MD_PRODUCT_FS_SRV");
+			var mConfig = this.getMetadata().getManifestEntry("/sap.app/dataSources/MD_PRODUCT_OP_SRV");
 			//  if running on a local version,  use the destination otherwise use /node.			
 			var sLocation = window.location.host;
 			var sLocation_conf = sLocation.search("webide");
