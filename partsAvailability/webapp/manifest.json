@@ -16,12 +16,12 @@
 			"version": "0.0.0"
 		},
 		"dataSources": {
-			"MD_PRODUCT_OP_SRV": {
-				"uri": "/node/MD_PRODUCT_OP_SRV/",
+			"MD_PRODUCT_FS_SRV": {
+				"uri": "/node/MD_PRODUCT_FS_SRV/",
 				"type": "OData",
 				"settings": {
 					"odataVersion": "2.0",
-					"localUri": "localService/MD_PRODUCT_OP_SRV/metadata.xml"
+					"localUri": "localService/MD_PRODUCT_FS_SRV/metadata.xml"
 				}
 			},
 			"ZMD_PRODUCT_FS_V2_SRV": {
@@ -91,7 +91,7 @@
 				}
 			},
 			"materialDisplayModeloData": {
-				"uri": "/node/MD_PRODUCT_OP_SRV/",
+				"uri": "/node/MD_PRODUCT_FS_SRV/",
 				"type": "sap.ui.model.odata.v2.ODataModel",
 				"settings": {
 					"defaultOperationMode": "Server",
@@ -101,7 +101,7 @@
 						"X-Requested-With": "XMLHttpRequest"
 					}
 				},
-				"dataSource": "MD_PRODUCT_OP_SRV",
+				"dataSource": "MD_PRODUCT_FS_SRV",
 				"preload": true
 			},
 			"zMaterialDisplayModel": {
