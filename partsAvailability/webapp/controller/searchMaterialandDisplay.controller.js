@@ -431,7 +431,7 @@ sap.ui.define([
 			var oMaterialDisplayModel = this.getModel("materialDisplayModeloData");
 			//	var oMaterialDisplayModel = [];
 
-			// /MD_PRODUCT_FS_SRV/I_MaterialText(Material='4261A53341',Language='EN')?$select=MaterialName
+			// /MD_PRODUCT_OP_SRV/I_MaterialText(Material='4261A53341',Language='EN')?$select=MaterialName
 			//this._oODataModel.read("/TReqHdrSet('" + AttReqno + "')/FileSet"
 			//	oMaterialDisplayModel.read("/I_MaterialText(Material=" + materialFromScreen  + ",Language=" + sCurrentLocale + ")"){
 
@@ -540,7 +540,7 @@ sap.ui.define([
 
 			var that = this;
 
-			// var sUrlforSupplyingPlant = this.nodeJsUrl + "/MD_PRODUCT_FS_SRV/A_Customer?customer=" + (selectedCustomer) +
+			// var sUrlforSupplyingPlant = this.nodeJsUrl + "/MD_PRODUCT_OP_SRV/A_Customer?customer=" + (selectedCustomer) +
 			// 	"&division=" + (this.sDivision) + "";
 
 			// var that = this;
@@ -1163,7 +1163,7 @@ sap.ui.define([
 
 		_forhandleSuggestCallData: function (matnrEntered) {
 			var oViewModel = this.getView().getModel("detailView");
-			///sap/opu/odata/sap/MD_PRODUCT_FS_SRV/I_MaterialText?$filter=startswith(Material,'335')
+			///sap/opu/odata/sap/MD_PRODUCT_OP_SRV/I_MaterialText?$filter=startswith(Material,'335')
 
 			//	var url = "https://fioridev1.dev.toyota.ca:44300/sap/opu/odata/sap";
 			// var sCurrentLocale = sap.ui.getCore().getConfiguration().getLanguage();
