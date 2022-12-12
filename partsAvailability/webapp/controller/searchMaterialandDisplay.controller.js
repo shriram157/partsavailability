@@ -635,19 +635,44 @@ sap.ui.define([
 							this._materialDisplayModel.setProperty("/Roundingprofile", oData.results[elm].Item.Roundingprofile);
 							//26-06
 							this._materialDisplayModel.setProperty("/Onpostock", oData.results[elm].Item.Onpostock);
-							if (oData.results[elm].Item.Dgind === "Yes") {
-								this._materialDisplayModel.setProperty("/Dangerousgoods", "Yes");
-								this._materialDisplayModel.setProperty("/Dgtooltip", oData.results[elm].Item.MatGrp + " " + oData.results[elm].Item.MatGrpDesc +
+							//changes by swetha for INC0223988 on 1-12-2022 start
+							 
+								if (oData.results[elm].Item.Dgind == "Yes") {
+									this._materialDisplayModel.setProperty("/Dangerousgoods", "Yes");
+									this._materialDisplayModel.setProperty("/Dgtooltip", oData.results[elm].Item.MatGrp + " " + oData.results[elm].Item.MatGrpDesc +
 									" " + oData.results[elm].Item.MatGrpDesc60);
+							    } else if (oData.results[elm].Item.Dgind == "Oui") {
+							    	this._materialDisplayModel.setProperty("/Dangerousgoods", "Oui");
+								this._materialDisplayModel.setProperty("/Dgtooltip", oData.results[elm].Item.MatGrp + " " + oData.results[elm].Item.MatGrpDesc +
+									" " + oData.results[elm].Item.MatGrpDesc60);	
+							    } else if(oData.results[elm].Item.Dgind == "No"){
+									this._materialDisplayModel.setProperty("/Dangerousgoods", "No");
+									this._materialDisplayModel.setProperty("/Dgtooltip", "");
+								} else if(oData.results[elm].Item.Dgind == "Non") {
+									this._materialDisplayModel.setProperty("/Dangerousgoods", "Non");
+									this._materialDisplayModel.setProperty("/Dgtooltip", "");	
+								}
+							
+							//changes by swetha for CaReference field on 2/12/2022
+						   
+							
+							if (oData.results[elm].Item.Itmcatgrp == "BANS") {
+								if(jQuery.sap.getUriParameters().get("Language")=="en") {
+									this._materialDisplayModel.setProperty("/Dtd", "Yes");
+								} else if (jQuery.sap.getUriParameters().get("Language")=="fr") {
+									this._materialDisplayModel.setProperty("/Dtd", "Oui");
+								} 
 							} else {
-								this._materialDisplayModel.setProperty("/Dangerousgoods", "No");
-								this._materialDisplayModel.setProperty("/Dgtooltip", "");
+								if (jQuery.sap.getUriParameters().get("Language")=="en") {
+									this._materialDisplayModel.setProperty("/Dtd", "No");	
+								} else if (jQuery.sap.getUriParameters().get("Language")== "fr"){
+									this._materialDisplayModel.setProperty("/Dtd", "Non");
+								}
+								
 							}
-							if (oData.results[elm].Item.Itmcatgrp === "BANS") {
-								this._materialDisplayModel.setProperty("/Dtd", "Yes");
-							} else {
-								this._materialDisplayModel.setProperty("/Dtd", "No");
-							}
+							
+								
+		
 
 						} else {
 							this.doNotDisplayReceived = true;
@@ -711,8 +736,8 @@ sap.ui.define([
 						// 	sgetOnpostock = this._materialDisplayModel.getProperty("/Onpostock");
 
 						/// if the stop sales Flag = Yes then populate the warning message. 
-
-						if ((oData.results[elm].Item.Stopsalesdesc == "Yes" || oData.results[elm].Item.Stopsalesdesc == "Oui") && !(this.doNotDisplayReceived ==
+						//changes added for DMND0003688 by Swetha added slice(0,3)
+						if ((oData.results[elm].Item.Stopsalesdesc.slice(0,3) == "Yes" || oData.results[elm].Item.Stopsalesdesc.slice(0,3) == "Oui") && !(this.doNotDisplayReceived ==
 								true)) {
 
 							var warningMessage1 = this._oResourceBundle.getText("ParthasStopSales"); //Part Number has Stop Sales Flag as Yes

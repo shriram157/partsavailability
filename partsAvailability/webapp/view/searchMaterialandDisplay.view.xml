@@ -7,8 +7,8 @@
 				<customHeader>
 					<Bar class="sapUiSmallPaddingBeginEnd clCustomHeaderBg">
 						<contentLeft>
-							<Image id="idLogo" width="100px"/>
-							<Text text="|" class="sapUiTinyMarginBeginEnd"/>
+						<!--	<Image id="idLogo" width="100px"/>--> <!--changes by Swetha on 1/11/2022 for DMND0003688-->
+						<!--	<Text text="|" class="sapUiTinyMarginBeginEnd"/>-->
 							<Text class="clCustomFont" text="{i18n>title}"/>
 						</contentLeft>
 						<contentRight>
