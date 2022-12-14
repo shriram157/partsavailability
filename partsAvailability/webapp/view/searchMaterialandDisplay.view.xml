@@ -34,7 +34,7 @@
 								items="{path: 'BpDealerModel>/', sorter: { path: 'BusinessPartner' }, length:750 }" selectedKey="{BusinessPartnerKey}"
 								selectionChange="onBusinessPartnerSelected" showValueStateMessage="false" textAlign="Begin">
 								<core:ListItem key="{BpDealerModel>BusinessPartnerKey}" text="{BpDealerModel>BusinessPartner}"
-									additionalText="{BpDealerModel>BusinessPartnerName}"/>
+									additionalText="{BpDealerModel>BusinessPartnerName}"/> <!--changes need to be done for INC0224689-->
 								<layoutData>
 									<layout:GridData span="L9 M6 S12"/>
 								</layoutData>
