@@ -32,7 +32,7 @@
 								editable="{detailView>/editAllowed}" width="40rem" placeholder="{i18n>DEALER_PLACEHOLDER_TEXT}" value="{BpDealerModel>/BusinessPartnerKey}"
 								filterSecondaryValues="true" id="dealerID" enabled="{detailView>/onlyShownoEditForChange}"
 								items="{path: 'BpDealerModel>/', sorter: { path: 'BusinessPartner' }, length:750 }" selectedKey="{BusinessPartnerKey}"
-								selectionChange="onBusinessPartnerSelected" showValueStateMessage="false" textAlign="Begin">
+								change="onBusinessPartnerSelected" showValueStateMessage="false" textAlign="Begin">
 								<core:ListItem key="{BpDealerModel>BusinessPartnerKey}" text="{BpDealerModel>BusinessPartner}"
 									additionalText="{BpDealerModel>BusinessPartnerName}"/> <!--changes need to be done for INC0224689-->
 								<layoutData>
