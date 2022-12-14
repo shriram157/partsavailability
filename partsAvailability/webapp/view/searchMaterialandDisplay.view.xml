@@ -29,7 +29,7 @@
 								</layoutData>
 							</Label>
 							<ComboBox showSecondaryValues="true" required="true" visible="{detailView>/visibleByDefault}" fieldGroupIds="requiredField"
-								editable="{detailView>/editAllowed}" width="40rem" placeholder="{i18n>DEALER_PLACEHOLDER_TEXT}" value="{BpDealerModel>/BusinessPartnerKey}"
+								editable="{detailView>/editAllowed}" width="40rem" placeholder="{i18n>DEALER_PLACEHOLDER_TEXT}" value=""
 								filterSecondaryValues="true" id="dealerID" enabled="{detailView>/onlyShownoEditForChange}"
 								items="{path: 'BpDealerModel>/', sorter: { path: 'BusinessPartner' }, length:750 }" selectedKey="{BusinessPartnerKey}"
 								change="onBusinessPartnerSelected" showValueStateMessage="false" textAlign="Begin">
