@@ -124,7 +124,7 @@ sap.ui.define([
 
 					});
 					that.getView().setModel(new sap.ui.model.json.JSONModel(BpDealer), "BpDealerModel");
-					that.getView().byId("dealerID").bindValue("BpDealerModel>/BusinessPartnerKey");
+					//that.getView().byId("dealerID").bindValue("BpDealerModel>/BusinessPartnerKey");
 					userAttributes.push({
 						"UserType": oData.samlAttributes.UserType[0],
 						"DealerCode": oData.samlAttributes.DealerCode ? oData.samlAttributes.DealerCode[0] : null,
