@@ -1073,7 +1073,9 @@ sap.ui.define([
 			//  validate only to check the business partners from the screen.  do not allow anything else. 
 			var oViewModel = this.getView().getModel("detailView");
 			var currentImageSource;
-			if (oEvent.getParameter("\selectedItem") == null) {
+			// if (oEvent.getParameter("\selectedItem") == null) {
+			
+			if (this.getView().byId('dealerID').getValue() == " ") {
 				this.getView().byId("dealerID").setValueState("Error");
 				oEvent.getSource().setValue("");
 				oViewModel.setProperty("/enableMaterialEntered", false);
@@ -1101,9 +1103,12 @@ sap.ui.define([
 				oViewModel.setProperty("/enableMaterialEntered", true);
 			}
 
-			var sSelectedDealer = oEvent.getParameter("\selectedItem").getProperty("key");
-			var sSelectedDealerText = oEvent.getParameter("\selectedItem").getProperty("additionalText");
-			var sSelectedText = oEvent.getParameter("\selectedItem").getProperty("text");
+			// var sSelectedDealer = oEvent.getParameter("\selectedItem").getProperty("key");
+			// var sSelectedDealerText = oEvent.getParameter("\selectedItem").getProperty("additionalText");
+			// var sSelectedText = oEvent.getParameter("\selectedItem").getProperty("text");
+			var sSelectedDealer=this.getView().byId('dealerID').getSelectedItem().mProperties.key;
+			 var sSelectedDealerText=this.getView().byId('dealerID').getSelectedItem().mProperties.additionalText;
+			 var sSelectedText=this.getView().byId('dealerID').getSelectedItem().mProperties.text;
 
 			this.sSelectedDealer = sSelectedDealer;
 			this._selectedDealerModel.setProperty("/Dealer_No", sSelectedDealer);
