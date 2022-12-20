@@ -30,8 +30,8 @@
 								</layoutData>
 							</Label>
 							<ComboBox showSecondaryValues="true" required="true" visible="{detailView>/visibleByDefault}" fieldGroupIds="requiredField" editable="{detailView>/editAllowed}"
-								width="40rem" placeholder="{i18n>DEALER_PLACEHOLDER_TEXT}" value="" id="dealerID" enabled="{detailView>/onlyShownoEditForChange}"
-								items="{path: 'BpDealerModel>/', sorter: { path: 'BusinessPartner' }, length:750 }" selectedKey="" change="onBusinessPartnerSelected"
+								width="40rem" placeholder="{i18n>DEALER_PLACEHOLDER_TEXT}" value="" id="dealerID" enabled="{detailView>/onlyShownoEditForChange}" 
+								items="{path: 'BpDealerModel>/', sorter: { path: 'BusinessPartner' }, length:750 }" selectedKey="{path:'BpDealerModel>/0/BusinessPartnerKey'}" change="onBusinessPartnerSelected"
 								showValueStateMessage="false" textAlign="Begin">
 								<core:ListItem key="{BpDealerModel>BusinessPartnerKey}" text="{BpDealerModel>BusinessPartner}"
 									additionalText="{BpDealerModel>BusinessPartnerName}"/>
