@@ -124,6 +124,7 @@ sap.ui.define([
 
 					});
 					that.getView().setModel(new sap.ui.model.json.JSONModel(BpDealer), "BpDealerModel");
+					//that.getView().byId("dealerID").bindValue("BpDealerModel>/BusinessPartnerKey");
 					userAttributes.push({
 						"UserType": oData.samlAttributes.UserType[0],
 						"DealerCode": oData.samlAttributes.DealerCode ? oData.samlAttributes.DealerCode[0] : null,
@@ -175,7 +176,7 @@ sap.ui.define([
 
 				if (!this.sDivision) {
 					var currentImageSource = this.getView().byId("idLogo");
-					currentImageSource.setProperty("src", "images/toyotaLexus.png");
+					//currentImageSource.setProperty("src", "images/toyotaLexus.png");
 				}
 				oViewModel.setProperty("/editAllowed", true);
 			} else {
@@ -188,11 +189,11 @@ sap.ui.define([
 					if (this.sDivision == '10') // set the toyota logo
 					{
 						var currentImageSource = this.getView().byId("idLogo");
-						currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
+					//	currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
 
 					} else { // set the lexus logo
 						var currentImageSource = this.getView().byId("idLogo");
-						currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
+					//	currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
 					}
 				}
 
@@ -251,11 +252,11 @@ sap.ui.define([
 						if (this.sDivision == '10') // set the toyota logo
 						{
 							var currentImageSource = this.getView().byId("idLogo");
-							currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
+						//	currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
 
 						} else { // set the lexus logo
 							var currentImageSource = this.getView().byId("idLogo");
-							currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
+						//	currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
 
 						}
 
@@ -285,11 +286,11 @@ sap.ui.define([
 					if (this.sDivision == '10') // set the toyota logo
 					{
 						var currentImageSource = this.getView().byId("idLogo");
-						currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
+					//	currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
 
 					} else { // set the lexus logo
 						var currentImageSource = this.getView().byId("idLogo");
-						currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
+					//	currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
 
 					}
 
@@ -304,18 +305,18 @@ sap.ui.define([
 					if (this.sDivision == '10') // set the toyota logo
 					{
 						var currentImageSource = this.getView().byId("idLogo");
-						currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
+					//	currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
 
 					} else { // set the lexus logo
 						var currentImageSource = this.getView().byId("idLogo");
-						currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
+					//	currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
 
 					}
 
 				} else {
 					// just set a both logo
 					var currentImageSource = this.getView().byId("idLogo");
-					currentImageSource.setProperty("src", "images/toyotaLexus.png");
+				//	currentImageSource.setProperty("src", "images/toyotaLexus.png");
 
 				}
 
@@ -692,7 +693,10 @@ sap.ui.define([
 						}
 						this._materialDisplayModel.setProperty("/Corevalue", oData.results[elm].Item.Corevalue); // added new field for CR1050 
 						this._materialDisplayModel.setProperty("/Partreturnable", oData.results[elm].Item.Partreturnable);
+						if(oData.results[elm].Item.Plant==supplyingPlant)
+						{
 						this._materialDisplayModel.setProperty("/Partstocked", oData.results[elm].Item.Partstocked);
+					}
 						this._materialDisplayModel.setProperty("/Shippedvia", oData.results[elm].Item.Shippedvia);
 						this._materialDisplayModel.setProperty("/CaReference", oData.results[0].Item.CaReference);
 						this._materialDisplayModel.setProperty("/Plantdesc", oData.results[elm].Item.Plantdesc);
@@ -1072,7 +1076,9 @@ sap.ui.define([
 			//  validate only to check the business partners from the screen.  do not allow anything else. 
 			var oViewModel = this.getView().getModel("detailView");
 			var currentImageSource;
-			if (oEvent.getParameter("\selectedItem") == null) {
+			// if (oEvent.getParameter("\selectedItem") == null) {
+			
+			if (this.getView().byId('dealerID').getValue() == " ") {
 				this.getView().byId("dealerID").setValueState("Error");
 				oEvent.getSource().setValue("");
 				oViewModel.setProperty("/enableMaterialEntered", false);
@@ -1100,9 +1106,12 @@ sap.ui.define([
 				oViewModel.setProperty("/enableMaterialEntered", true);
 			}
 
-			var sSelectedDealer = oEvent.getParameter("\selectedItem").getProperty("key");
-			var sSelectedDealerText = oEvent.getParameter("\selectedItem").getProperty("additionalText");
-			var sSelectedText = oEvent.getParameter("\selectedItem").getProperty("text");
+			// var sSelectedDealer = oEvent.getParameter("\selectedItem").getProperty("key");
+			// var sSelectedDealerText = oEvent.getParameter("\selectedItem").getProperty("additionalText");
+			// var sSelectedText = oEvent.getParameter("\selectedItem").getProperty("text");
+			var sSelectedDealer=this.getView().byId('dealerID').getSelectedItem().mProperties.key;
+			 var sSelectedDealerText=this.getView().byId('dealerID').getSelectedItem().mProperties.additionalText;
+			 var sSelectedText=this.getView().byId('dealerID').getSelectedItem().mProperties.text;
 
 			this.sSelectedDealer = sSelectedDealer;
 			this._selectedDealerModel.setProperty("/Dealer_No", sSelectedDealer);
@@ -1126,7 +1135,7 @@ sap.ui.define([
 					if (this.sDivision == '10') // set the toyota logo
 					{
 						currentImageSource = this.getView().byId("idLogo");
-						currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
+					//	currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
 
 					} else { // set the lexus logo
 						if (this.sDivision == "Dual") {
@@ -1137,19 +1146,19 @@ sap.ui.define([
 								this.sDivision = window.location.search.match(/Division=([^&]*)/i)[1];
 								if (this.sDivision == 10) {
 									currentImageSource = this.getView().byId("idLogo");
-									currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
+								//	currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
 								} else {
 									currentImageSource = this.getView().byId("idLogo");
-									currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
+								//	currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
 								}
 							} else { // for default behaviour we use toyota. 
 								this.sDivision = "10";
 								currentImageSource = this.getView().byId("idLogo");
-								currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
+							//	currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
 							}
 						} else { // it is lexus
 							currentImageSource = this.getView().byId("idLogo");
-							currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
+							//currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
 
 						}
 
