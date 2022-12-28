@@ -431,11 +431,11 @@ sap.ui.define([
 			var oMaterialDisplayModel = this.getModel("materialDisplayModeloData");
 			//	var oMaterialDisplayModel = [];
 
-			// /MD_PRODUCT_OP_SRV/I_MaterialText(Material='4261A53341',Language='EN')?$select=MaterialName
+			// /MD_PRODUCT_OP_SRV/C_ProductObjPg(Material='4261A53341',Language='EN')?$select=MaterialName
 			//this._oODataModel.read("/TReqHdrSet('" + AttReqno + "')/FileSet"
-			//	oMaterialDisplayModel.read("/I_MaterialText(Material=" + materialFromScreen  + ",Language=" + sCurrentLocale + ")"){
+			//	oMaterialDisplayModel.read("/C_ProductObjPg(Material=" + materialFromScreen  + ",Language=" + sCurrentLocale + ")"){
 
-			oMaterialDisplayModel.read("/I_MaterialText(Material='" + materialFromScreen + "',Language='" + sCurrentLocale + "')", {
+			oMaterialDisplayModel.read("/C_ProductObjPg(Product='" + materialFromScreen + "')", {
 
 				urlParameters: {
 					// "$filter": "(Material='" + (materialFromScreen) + "',Language='" + (sCurrentLocale) + "')"
@@ -444,13 +444,13 @@ sap.ui.define([
 
 				success: $.proxy(function (oData) {
 					this.dealerSearchError = false;
-					this._materialDisplayModel.setProperty("/MaterialText", oData.MaterialName);
+					this._materialDisplayModel.setProperty("/MaterialText", oData.ProductName);
 					// material found put the screen for display. 
 					this._oViewModel.setProperty("/afterMaterialFound", true);
 
 					this.getView().byId("messageStripError").setProperty("visible", false);
 					//  lets make one more call to get the Division. 
-					this._getTheDivision(oData.Material);
+					this._getTheDivision(oData.Product);
 
 				}, this),
 				error: function () {
@@ -1163,7 +1163,7 @@ sap.ui.define([
 
 		_forhandleSuggestCallData: function (matnrEntered) {
 			var oViewModel = this.getView().getModel("detailView");
-			///sap/opu/odata/sap/MD_PRODUCT_OP_SRV/I_MaterialText?$filter=startswith(Material,'335')
+			///sap/opu/odata/sap/MD_PRODUCT_OP_SRV/C_ProductObjPg?$filter=startswith(Material,'335')
 
 			//	var url = "https://fioridev1.dev.toyota.ca:44300/sap/opu/odata/sap";
 			// var sCurrentLocale = sap.ui.getCore().getConfiguration().getLanguage();
@@ -1176,10 +1176,10 @@ sap.ui.define([
 
 			var oMaterialDisplayModel = this.getModel("materialDisplayModeloData");
 
-			oMaterialDisplayModel.read("/I_MaterialText", {
+			oMaterialDisplayModel.read("/C_ProductObjPg", {
 				urlParameters: {
 
-					"$filter": "startswith(Material," + "'" + (sTerm) + "')"
+					"$filter": "startswith(Product," + "'" + (sTerm) + "')"
 				},
 
 				success: $.proxy(function (oData) {
@@ -1206,8 +1206,8 @@ sap.ui.define([
 					$.each(oData.results, function (i, item) {
 						if (item.Language == sCurrentLocale) {
 							Matsuggestions.push({
-								"Material": item.Material,
-								"MaterialName": item.MaterialName
+								"Material": item.Product,
+								"MaterialName": item.ProductName
 							});
 						}
 					});
