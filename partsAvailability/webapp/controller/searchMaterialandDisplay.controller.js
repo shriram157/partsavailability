@@ -444,7 +444,7 @@ sap.ui.define([
 
 				success: $.proxy(function (oData) {
 					this.dealerSearchError = false;
-					this._materialDisplayModel.setProperty("/MaterialText", oData.ProductName);
+					this._materialDisplayModel.setProperty("/MaterialText", oData.ProductDescription);
 					// material found put the screen for display. 
 					this._oViewModel.setProperty("/afterMaterialFound", true);
 
@@ -1163,7 +1163,7 @@ sap.ui.define([
 
 		_forhandleSuggestCallData: function (matnrEntered) {
 			var oViewModel = this.getView().getModel("detailView");
-			///sap/opu/odata/sap/MD_PRODUCT_OP_SRV/C_Product?$filter=startswith(Material,'335')
+			///sap/opu/odata/sap/MD_PRODUCT_OP_SRV/C_ProductObjPg?$filter=startswith(Material,'335')
 
 			//	var url = "https://fioridev1.dev.toyota.ca:44300/sap/opu/odata/sap";
 			// var sCurrentLocale = sap.ui.getCore().getConfiguration().getLanguage();
@@ -1207,7 +1207,7 @@ sap.ui.define([
 						if (item.Language == sCurrentLocale) {
 							Matsuggestions.push({
 								"Material": item.Product,
-								"MaterialName": item.ProductName
+								"MaterialName": item.ProductDescription
 							});
 						}
 					});
