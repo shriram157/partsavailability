@@ -690,6 +690,22 @@ sap.ui.define([
 							this._materialDisplayModel.setProperty("/Dealernet", "");
 							this._materialDisplayModel.setProperty("/Roundingprofile", "");
 							this._materialDisplayModel.setProperty("/Onpostock", "");
+							//changes by swetha for Direct to Dealer on 3/1/2023 start
+							if (oData.results[elm].Item.Itmcatgrp === "BANS") {
+								if(jQuery.sap.getUriParameters().get("Language")=="en") {
+									this._materialDisplayModel.setProperty("/Dtd", "Yes");
+								} else if (jQuery.sap.getUriParameters().get("Language")=="fr") {
+									this._materialDisplayModel.setProperty("/Dtd", "Oui");
+								} 
+							} else {
+								if (jQuery.sap.getUriParameters().get("Language")=="en") {
+									this._materialDisplayModel.setProperty("/Dtd", "No");	
+								} else if (jQuery.sap.getUriParameters().get("Language")== "fr"){
+									this._materialDisplayModel.setProperty("/Dtd", "Non");
+								}
+								
+							}
+							//changes by swetha for Direct to Dealer on 3/1/2023 end
 						}
 						this._materialDisplayModel.setProperty("/Corevalue", oData.results[elm].Item.Corevalue); // added new field for CR1050 
 						this._materialDisplayModel.setProperty("/Partreturnable", oData.results[elm].Item.Partreturnable);
