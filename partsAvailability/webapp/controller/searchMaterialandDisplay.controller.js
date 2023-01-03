@@ -657,7 +657,7 @@ sap.ui.define([
 							//changes by swetha for CaReference field on 2/12/2022
 						   
 							
-							if (oData.results[elm].Item.Itmcatgrp == "BANS") {
+							if (oData.results[elm].Item.Itmcatgrp === "BANS") {
 								if(jQuery.sap.getUriParameters().get("Language")=="en") {
 									this._materialDisplayModel.setProperty("/Dtd", "Yes");
 								} else if (jQuery.sap.getUriParameters().get("Language")=="fr") {
