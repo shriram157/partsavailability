@@ -429,13 +429,14 @@ sap.ui.define([
 			sap.ui.core.BusyIndicator.show();
 
 			var oMaterialDisplayModel = this.getModel("materialDisplayModeloData");
+			var guid="00000000-0000-0000-0000-000000000000"; // added by ReddyVi - defect #17654
 			//	var oMaterialDisplayModel = [];
 
 			// /MD_PRODUCT_OP_SRV/C_Product(Material='4261A53341',Language='EN')?$select=MaterialName
 			//this._oODataModel.read("/TReqHdrSet('" + AttReqno + "')/FileSet"
 			//	oMaterialDisplayModel.read("/C_Product(Material=" + materialFromScreen  + ",Language=" + sCurrentLocale + ")"){
 
-			oMaterialDisplayModel.read("/C_Product(Product='" + materialFromScreen + "')", {
+			oMaterialDisplayModel.read("/C_Product(Product='" + materialFromScreen + "',DraftUUID=guid'" + guid + "',IsActiveEntity=" + true + ")", {
 
 				urlParameters: {
 					// "$filter": "(Material='" + (materialFromScreen) + "',Language='" + (sCurrentLocale) + "')"
@@ -1173,14 +1174,22 @@ sap.ui.define([
 			this.dealerSearchError = false;
 			var sTerm = matnrEntered;
 			sap.ui.core.BusyIndicator.show();
+			
+			/* ReddyVi - defect #17654 start of changes */
+			var sFilters=[];
+			sFilters.push(new sap.ui.model.Filter("Product", sap.ui.model.FilterOperator.StartsWith, sTerm));
+            sFilters.push( new sap.ui.model.Filter("IsActiveEntity", sap.ui.model.FilterOperator.EQ, true)); 
+            /* ReddyVi - defect #17654 end of changes */
 
 			var oMaterialDisplayModel = this.getModel("materialDisplayModeloData");
 
 			oMaterialDisplayModel.read("/C_Product", {
-				urlParameters: {
+				// urlParameters: {
 
-					"$filter": "startswith(Product," + "'" + (sTerm) + "')"
-				},
+				// 	"$filter": "startswith(Product," + "'" + (sTerm) + "')"
+				// },
+				
+				filters:sFilters, // ReddyVi - defect #17654
 
 				success: $.proxy(function (oData) {
 
@@ -1204,12 +1213,12 @@ sap.ui.define([
 					//set the model materialSuggestionModel
 
 					$.each(oData.results, function (i, item) {
-						if (item.Language == sCurrentLocale) {
+						// if (item.Language == sCurrentLocale) { // ReddyVi - defect #17654
 							Matsuggestions.push({
 								"Material": item.Product,
 								"MaterialName": item.ProductDescription
 							});
-						}
+						// }
 					});
 
 					this._materialSuggestionModel.setProperty("/Matsuggestions", Matsuggestions);
