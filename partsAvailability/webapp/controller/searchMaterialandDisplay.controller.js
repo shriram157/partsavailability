@@ -657,7 +657,7 @@ sap.ui.define([
 							//changes by swetha for CaReference field on 2/12/2022
 						   
 							
-							if (oData.results[elm].Item.Itmcatgrp == "BANS") {
+							if (oData.results[elm].Item.Itmcatgrp === "BANS") {
 								if(jQuery.sap.getUriParameters().get("Language")=="en") {
 									this._materialDisplayModel.setProperty("/Dtd", "Yes");
 								} else if (jQuery.sap.getUriParameters().get("Language")=="fr") {
@@ -690,6 +690,37 @@ sap.ui.define([
 							this._materialDisplayModel.setProperty("/Dealernet", "");
 							this._materialDisplayModel.setProperty("/Roundingprofile", "");
 							this._materialDisplayModel.setProperty("/Onpostock", "");
+							//changes by swetha for Direct to Dealer on 3/1/2023 start
+							if (oData.results[elm].Item.Dgind == "Yes") {
+									this._materialDisplayModel.setProperty("/Dangerousgoods", "Yes");
+									this._materialDisplayModel.setProperty("/Dgtooltip", oData.results[elm].Item.MatGrp + " " + oData.results[elm].Item.MatGrpDesc +
+									" " + oData.results[elm].Item.MatGrpDesc60);
+							    } else if (oData.results[elm].Item.Dgind == "Oui") {
+							    	this._materialDisplayModel.setProperty("/Dangerousgoods", "Oui");
+								this._materialDisplayModel.setProperty("/Dgtooltip", oData.results[elm].Item.MatGrp + " " + oData.results[elm].Item.MatGrpDesc +
+									" " + oData.results[elm].Item.MatGrpDesc60);	
+							    } else if(oData.results[elm].Item.Dgind == "No"){
+									this._materialDisplayModel.setProperty("/Dangerousgoods", "No");
+									this._materialDisplayModel.setProperty("/Dgtooltip", "");
+								} else if(oData.results[elm].Item.Dgind == "Non") {
+									this._materialDisplayModel.setProperty("/Dangerousgoods", "Non");
+									this._materialDisplayModel.setProperty("/Dgtooltip", "");	
+								}
+							if (oData.results[elm].Item.Itmcatgrp === "BANS") {
+								if(jQuery.sap.getUriParameters().get("Language")=="en") {
+									this._materialDisplayModel.setProperty("/Dtd", "Yes");
+								} else if (jQuery.sap.getUriParameters().get("Language")=="fr") {
+									this._materialDisplayModel.setProperty("/Dtd", "Oui");
+								} 
+							} else {
+								if (jQuery.sap.getUriParameters().get("Language")=="en") {
+									this._materialDisplayModel.setProperty("/Dtd", "No");	
+								} else if (jQuery.sap.getUriParameters().get("Language")== "fr"){
+									this._materialDisplayModel.setProperty("/Dtd", "Non");
+								}
+								
+							}
+							//changes by swetha for Direct to Dealer on 3/1/2023 end
 						}
 						this._materialDisplayModel.setProperty("/Corevalue", oData.results[elm].Item.Corevalue); // added new field for CR1050 
 						this._materialDisplayModel.setProperty("/Partreturnable", oData.results[elm].Item.Partreturnable);
