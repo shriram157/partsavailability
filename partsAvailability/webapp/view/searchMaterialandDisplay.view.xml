@@ -7,8 +7,9 @@
 				<customHeader>
 					<Bar class="sapUiSmallPaddingBeginEnd clCustomHeaderBg">
 						<contentLeft>
+						<!--changes by Swetha (DMND0003688) for U42
 							<Image id="idLogo" width="100px"/>
-							<Text text="|" class="sapUiTinyMarginBeginEnd"/>
+							<Text text="|" class="sapUiTinyMarginBeginEnd"/>-->
 							<Text class="clCustomFont" text="{i18n>title}"/>
 						</contentLeft>
 						<contentRight>
@@ -28,11 +29,12 @@
 									<layout:GridData span="L3 M6 S12"/>
 								</layoutData>
 							</Label>
+							<!--changes by swetha for U42 -->
 							<ComboBox showSecondaryValues="true" required="true" visible="{detailView>/visibleByDefault}" fieldGroupIds="requiredField"
-								editable="{detailView>/editAllowed}" width="40rem" placeholder="{i18n>DEALER_PLACEHOLDER_TEXT}" value="{BpDealerModel>/BusinessPartnerKey}"
-								filterSecondaryValues="true" id="dealerID" enabled="{detailView>/onlyShownoEditForChange}"
-								items="{path: 'BpDealerModel>/', sorter: { path: 'BusinessPartner' }, length:750 }" selectedKey="{BusinessPartnerKey}"
-								selectionChange="onBusinessPartnerSelected" showValueStateMessage="false" textAlign="Begin">
+								editable="{detailView>/editAllowed}" width="40rem" placeholder="{i18n>DEALER_PLACEHOLDER_TEXT}" value=""
+								id="dealerID" enabled="{detailView>/onlyShownoEditForChange}"
+								items="{path: 'BpDealerModel>/', sorter: { path: 'BusinessPartner' }, length:750 }" selectedKey="{path:'BpDealerModel>/0/BusinessPartnerKey'}"     
+								change="onBusinessPartnerSelected" showValueStateMessage="false" textAlign="Begin">
 								<core:ListItem key="{BpDealerModel>BusinessPartnerKey}" text="{BpDealerModel>BusinessPartner}"
 									additionalText="{BpDealerModel>BusinessPartnerName}"/>
 								<layoutData>

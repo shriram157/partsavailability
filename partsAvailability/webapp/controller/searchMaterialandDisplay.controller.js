@@ -175,7 +175,7 @@ sap.ui.define([
 
 				if (!this.sDivision) {
 					var currentImageSource = this.getView().byId("idLogo");
-					currentImageSource.setProperty("src", "images/toyotaLexus.png");
+					//currentImageSource.setProperty("src", "images/toyotaLexus.png");
 				}
 				oViewModel.setProperty("/editAllowed", true);
 			} else {
@@ -188,11 +188,11 @@ sap.ui.define([
 					if (this.sDivision == '10') // set the toyota logo
 					{
 						var currentImageSource = this.getView().byId("idLogo");
-						currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
+						//currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
 
 					} else { // set the lexus logo
 						var currentImageSource = this.getView().byId("idLogo");
-						currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
+						//currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
 					}
 				}
 
@@ -251,11 +251,11 @@ sap.ui.define([
 						if (this.sDivision == '10') // set the toyota logo
 						{
 							var currentImageSource = this.getView().byId("idLogo");
-							currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
+							//currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
 
 						} else { // set the lexus logo
 							var currentImageSource = this.getView().byId("idLogo");
-							currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
+							//currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
 
 						}
 
@@ -285,11 +285,11 @@ sap.ui.define([
 					if (this.sDivision == '10') // set the toyota logo
 					{
 						var currentImageSource = this.getView().byId("idLogo");
-						currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
+						//currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
 
 					} else { // set the lexus logo
 						var currentImageSource = this.getView().byId("idLogo");
-						currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
+						//currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
 
 					}
 
@@ -304,18 +304,18 @@ sap.ui.define([
 					if (this.sDivision == '10') // set the toyota logo
 					{
 						var currentImageSource = this.getView().byId("idLogo");
-						currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
+						//currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
 
 					} else { // set the lexus logo
 						var currentImageSource = this.getView().byId("idLogo");
-						currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
+						//currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
 
 					}
 
 				} else {
 					// just set a both logo
 					var currentImageSource = this.getView().byId("idLogo");
-					currentImageSource.setProperty("src", "images/toyotaLexus.png");
+					//currentImageSource.setProperty("src", "images/toyotaLexus.png");
 
 				}
 
@@ -638,7 +638,23 @@ sap.ui.define([
 							this._materialDisplayModel.setProperty("/Roundingprofile", oData.results[elm].Item.Roundingprofile);
 							//26-06
 							this._materialDisplayModel.setProperty("/Onpostock", oData.results[elm].Item.Onpostock);
-							if (oData.results[elm].Item.Dgind === "Yes") {
+							
+							if (oData.results[elm].Item.Dgind == "Yes") {
+									this._materialDisplayModel.setProperty("/Dangerousgoods", "Yes");
+									this._materialDisplayModel.setProperty("/Dgtooltip", oData.results[elm].Item.MatGrp + " " + oData.results[elm].Item.MatGrpDesc +
+									" " + oData.results[elm].Item.MatGrpDesc60);
+							    } else if (oData.results[elm].Item.Dgind == "Oui") {
+							    	this._materialDisplayModel.setProperty("/Dangerousgoods", "Oui");
+								this._materialDisplayModel.setProperty("/Dgtooltip", oData.results[elm].Item.MatGrp + " " + oData.results[elm].Item.MatGrpDesc +
+									" " + oData.results[elm].Item.MatGrpDesc60);	
+							    } else if(oData.results[elm].Item.Dgind == "No"){
+									this._materialDisplayModel.setProperty("/Dangerousgoods", "No");
+									this._materialDisplayModel.setProperty("/Dgtooltip", "");
+								} else if(oData.results[elm].Item.Dgind == "Non") {
+									this._materialDisplayModel.setProperty("/Dangerousgoods", "Non");
+									this._materialDisplayModel.setProperty("/Dgtooltip", "");	
+								}
+							/*if (oData.results[elm].Item.Dgind === "Yes") {
 								this._materialDisplayModel.setProperty("/Dangerousgoods", "Yes");
 								this._materialDisplayModel.setProperty("/Dgtooltip", oData.results[elm].Item.MatGrp + " " + oData.results[elm].Item.MatGrpDesc +
 									" " + oData.results[elm].Item.MatGrpDesc60);
@@ -650,6 +666,20 @@ sap.ui.define([
 								this._materialDisplayModel.setProperty("/Dtd", "Yes");
 							} else {
 								this._materialDisplayModel.setProperty("/Dtd", "No");
+							}*/
+							if (oData.results[elm].Item.Itmcatgrp === "BANS") {
+								if(jQuery.sap.getUriParameters().get("Language")=="en") {
+									this._materialDisplayModel.setProperty("/Dtd", "Yes");
+								} else if (jQuery.sap.getUriParameters().get("Language")=="fr") {
+									this._materialDisplayModel.setProperty("/Dtd", "Oui");
+								} 
+							} else {
+								if (jQuery.sap.getUriParameters().get("Language")=="en") {
+									this._materialDisplayModel.setProperty("/Dtd", "No");	
+								} else if (jQuery.sap.getUriParameters().get("Language")== "fr"){
+									this._materialDisplayModel.setProperty("/Dtd", "Non");
+								}
+								
 							}
 
 						} else {
@@ -667,10 +697,42 @@ sap.ui.define([
 							this._materialDisplayModel.setProperty("/Dealernet", "");
 							this._materialDisplayModel.setProperty("/Roundingprofile", "");
 							this._materialDisplayModel.setProperty("/Onpostock", "");
+							if (oData.results[elm].Item.Dgind == "Yes") {
+									this._materialDisplayModel.setProperty("/Dangerousgoods", "Yes");
+									this._materialDisplayModel.setProperty("/Dgtooltip", oData.results[elm].Item.MatGrp + " " + oData.results[elm].Item.MatGrpDesc +
+									" " + oData.results[elm].Item.MatGrpDesc60);
+							    } else if (oData.results[elm].Item.Dgind == "Oui") {
+							    	this._materialDisplayModel.setProperty("/Dangerousgoods", "Oui");
+								this._materialDisplayModel.setProperty("/Dgtooltip", oData.results[elm].Item.MatGrp + " " + oData.results[elm].Item.MatGrpDesc +
+									" " + oData.results[elm].Item.MatGrpDesc60);	
+							    } else if(oData.results[elm].Item.Dgind == "No"){
+									this._materialDisplayModel.setProperty("/Dangerousgoods", "No");
+									this._materialDisplayModel.setProperty("/Dgtooltip", "");
+								} else if(oData.results[elm].Item.Dgind == "Non") {
+									this._materialDisplayModel.setProperty("/Dangerousgoods", "Non");
+									this._materialDisplayModel.setProperty("/Dgtooltip", "");	
+								}
+							if (oData.results[elm].Item.Itmcatgrp === "BANS") {
+								if(jQuery.sap.getUriParameters().get("Language")=="en") {
+									this._materialDisplayModel.setProperty("/Dtd", "Yes");
+								} else if (jQuery.sap.getUriParameters().get("Language")=="fr") {
+									this._materialDisplayModel.setProperty("/Dtd", "Oui");
+								} 
+							} else {
+								if (jQuery.sap.getUriParameters().get("Language")=="en") {
+									this._materialDisplayModel.setProperty("/Dtd", "No");	
+								} else if (jQuery.sap.getUriParameters().get("Language")== "fr"){
+									this._materialDisplayModel.setProperty("/Dtd", "Non");
+								}
+								
+							}
 						}
 						this._materialDisplayModel.setProperty("/Corevalue", oData.results[elm].Item.Corevalue); // added new field for CR1050 
 						this._materialDisplayModel.setProperty("/Partreturnable", oData.results[elm].Item.Partreturnable);
+						if(oData.results[elm].Item.Plant==supplyingPlant)
+						{
 						this._materialDisplayModel.setProperty("/Partstocked", oData.results[elm].Item.Partstocked);
+						}
 						this._materialDisplayModel.setProperty("/Shippedvia", oData.results[elm].Item.Shippedvia);
 						this._materialDisplayModel.setProperty("/CaReference", oData.results[0].Item.CaReference);
 						this._materialDisplayModel.setProperty("/Plantdesc", oData.results[elm].Item.Plantdesc);
@@ -715,7 +777,7 @@ sap.ui.define([
 
 						/// if the stop sales Flag = Yes then populate the warning message. 
 
-						if ((oData.results[elm].Item.Stopsalesdesc == "Yes" || oData.results[elm].Item.Stopsalesdesc == "Oui") && !(this.doNotDisplayReceived ==
+						if ((oData.results[elm].Item.Stopsalesdesc.slice(0,3) == "Yes" || oData.results[elm].Item.Stopsalesdesc.slice(0,3) == "Oui") && !(this.doNotDisplayReceived ==
 								true)) {
 
 							var warningMessage1 = this._oResourceBundle.getText("ParthasStopSales"); //Part Number has Stop Sales Flag as Yes
@@ -1050,7 +1112,8 @@ sap.ui.define([
 			//  validate only to check the business partners from the screen.  do not allow anything else. 
 			var oViewModel = this.getView().getModel("detailView");
 			var currentImageSource;
-			if (oEvent.getParameter("\selectedItem") == null) {
+			//if (oEvent.getParameter("\selectedItem") == null) {
+			if (this.getView().byId('dealerID').getValue() == " ") {
 				this.getView().byId("dealerID").setValueState("Error");
 				oEvent.getSource().setValue("");
 				oViewModel.setProperty("/enableMaterialEntered", false);
@@ -1078,10 +1141,12 @@ sap.ui.define([
 				oViewModel.setProperty("/enableMaterialEntered", true);
 			}
 
-			var sSelectedDealer = oEvent.getParameter("\selectedItem").getProperty("key");
-			var sSelectedDealerText = oEvent.getParameter("\selectedItem").getProperty("additionalText");
-			var sSelectedText = oEvent.getParameter("\selectedItem").getProperty("text");
-
+			//var sSelectedDealer = oEvent.getParameter("\selectedItem").getProperty("key");
+			//var sSelectedDealerText = oEvent.getParameter("\selectedItem").getProperty("additionalText");
+			//var sSelectedText = oEvent.getParameter("\selectedItem").getProperty("text");
+			var sSelectedDealer=this.getView().byId('dealerID').getSelectedItem().mProperties.key;
+			var sSelectedDealerText=this.getView().byId('dealerID').getSelectedItem().mProperties.additionalText;
+			var sSelectedText=this.getView().byId('dealerID').getSelectedItem().mProperties.text;
 			this.sSelectedDealer = sSelectedDealer;
 			this._selectedDealerModel.setProperty("/Dealer_No", sSelectedDealer);
 			this._selectedDealerModel.setProperty("/Dealer_Name", sSelectedDealerText);
@@ -1104,7 +1169,7 @@ sap.ui.define([
 					if (this.sDivision == '10') // set the toyota logo
 					{
 						currentImageSource = this.getView().byId("idLogo");
-						currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
+						//currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
 
 					} else { // set the lexus logo
 						if (this.sDivision == "Dual") {
@@ -1115,19 +1180,19 @@ sap.ui.define([
 								this.sDivision = window.location.search.match(/Division=([^&]*)/i)[1];
 								if (this.sDivision == 10) {
 									currentImageSource = this.getView().byId("idLogo");
-									currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
+									//currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
 								} else {
 									currentImageSource = this.getView().byId("idLogo");
-									currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
+									//currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
 								}
 							} else { // for default behaviour we use toyota. 
 								this.sDivision = "10";
 								currentImageSource = this.getView().byId("idLogo");
-								currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
+								//currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
 							}
 						} else { // it is lexus
 							currentImageSource = this.getView().byId("idLogo");
-							currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
+							//currentImageSource.setProperty("src", "images/i_lexus_black_full.png");
 
 						}
 
