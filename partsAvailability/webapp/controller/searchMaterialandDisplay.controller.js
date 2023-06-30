@@ -15,7 +15,7 @@ sap.ui.define([
 	return Controller.extend("partsAvailability.controller.searchMaterialandDisplay", {
 		formatter: formatter,
 		onInit: function () {
-			// instantiate here everytime
+			//  instantiate here everytime
             // KT by Minakshi
 			this.toggleFlg = false;
 			var oI18nModel = new sap.ui.model.resource.ResourceModel({
