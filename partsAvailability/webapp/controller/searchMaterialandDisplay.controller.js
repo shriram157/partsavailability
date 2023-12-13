@@ -440,7 +440,7 @@ sap.ui.define([
 
 				urlParameters: {
 					// "$filter": "(Material='" + (materialFromScreen) + "',Language='" + (sCurrentLocale) + "')"
-					Language : Lan;                               //changes by swetha for INC0245015 on 13th Dec, 2023
+					Language : Lan                               //changes by swetha for INC0245015 on 13th Dec, 2023
 				},
 
 				success: $.proxy(function (oData) {
