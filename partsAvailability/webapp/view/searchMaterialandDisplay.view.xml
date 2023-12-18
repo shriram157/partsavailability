@@ -93,7 +93,7 @@
 						<Label text="{i18n>PART_DESCRIPTION}"/>
 					<!--	<Text text="{path:'zc_BackSuperSet>/BackPartsSuper/PartDesc'}"/> -->  <!--changes by Swetha for INC0245015 on 7th Dec, 2023-->
 				    <!--	<Text text="{materialDisplayModel>/MaterialText}"/>-->
-				    	<Text text="{zc_PriceSet>/Matnrdesc}"/>
+				    	<Text text="{materialDisplayModel>/Matnrdesc}"/>
 						<Label text="{i18n>DEALER_NET_PRICE}"/>
 						<Text text="{materialDisplayModel>/Dealernet}"/>
 						<Label text="{i18n>BACKWARD_SUPERSESSION}"/>
