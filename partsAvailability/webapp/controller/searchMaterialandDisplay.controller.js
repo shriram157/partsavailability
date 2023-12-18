@@ -436,7 +436,7 @@ sap.ui.define([
 			//this._oODataModel.read("/TReqHdrSet('" + AttReqno + "')/FileSet"
 			//	oMaterialDisplayModel.read("/C_Product(Material=" + materialFromScreen  + ",Language=" + sCurrentLocale + ")"){
 			var Lan = this.sCurrentLocale;    //changes by swetha for INC0245015 on 13th Dec, 2023
-			oMaterialDisplayModel.read("/C_Product(Product='" + materialFromScreen + "',DraftUUID=guid'" + guid + "',IsActiveEntity=" + true + ", Language = " +Lan+")", {      //changes by swetha for INC0245015 on 13th Dec, 2023
+			oMaterialDisplayModel.read("/C_Product(Product='" + materialFromScreen + "',DraftUUID=guid'" + guid + "',IsActiveEntity=" + true + ")", {      //changes by swetha for INC0245015 on 13th Dec, 2023
 
 				urlParameters: {
 					// "$filter": "(Material='" + (materialFromScreen) + "',Language='" + (sCurrentLocale) + "')"
