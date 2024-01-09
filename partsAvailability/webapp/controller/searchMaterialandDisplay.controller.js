@@ -435,12 +435,12 @@ sap.ui.define([
 			// /MD_PRODUCT_OP_SRV/C_Product(Material='4261A53341',Language='EN')?$select=MaterialName
 			//this._oODataModel.read("/TReqHdrSet('" + AttReqno + "')/FileSet"
 			//	oMaterialDisplayModel.read("/C_Product(Material=" + materialFromScreen  + ",Language=" + sCurrentLocale + ")"){
-
-			oMaterialDisplayModel.read("/C_Product(Product='" + materialFromScreen + "',DraftUUID=guid'" + guid + "',IsActiveEntity=" + true + ")", {
+			var Lan = this.sCurrentLocale;    //changes by swetha for INC0245015 on 13th Dec, 2023
+			oMaterialDisplayModel.read("/C_Product(Product='" + materialFromScreen + "',DraftUUID=guid'" + guid + "',IsActiveEntity=" + true + ")", {      
 
 				urlParameters: {
 					// "$filter": "(Material='" + (materialFromScreen) + "',Language='" + (sCurrentLocale) + "')"
-
+					                               
 				},
 
 				success: $.proxy(function (oData) {
@@ -635,6 +635,7 @@ sap.ui.define([
 							this._materialDisplayModel.setProperty("/Z3plqtyavail", oData.results[elm].Item.Z3plqtyavail);
 							this._materialDisplayModel.setProperty("/invQtyReceived", oData.results[elm].Item.Qtyavail);
 							this._materialDisplayModel.setProperty("/Dealernet", oData.results[elm].Item.Dealernet);
+							this._materialDisplayModel.setProperty("/Matnrdesc", oData.results[elm].Item.Matnrdesc);   //changes by swetha for INC0245015 on 18th Dec, 2023
 							this._materialDisplayModel.setProperty("/Roundingprofile", oData.results[elm].Item.Roundingprofile);
 							//26-06
 							this._materialDisplayModel.setProperty("/Onpostock", oData.results[elm].Item.Onpostock);
